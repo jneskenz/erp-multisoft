@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="{{ asset('vuexy/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vuexy/vendor/fonts/tabler-icons.css') }}" />
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('vuexy/vendor/css/core.css') }}" class="template-customizer-core-css" />
@@ -40,24 +40,34 @@
     <script src="{{ asset('vuexy/js/config.js') }}"></script>
     
     @livewireStyles
+
+    @props(['apariencia' => 'vertical',])
+
 </head>
 
 <body>
-    <!-- Layout wrapper -->
+
+    
+    @if($apariencia == 'vertical')
+
+    <!-- Layout wrapper | vertical -->
+
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <!-- Menu -->
-            @include('layouts.vuexy.sidebar')
-            <!-- / Menu -->
 
-            <!-- Layout container -->
+            <!-- Menu principal -->
+            @include('layouts.vuexy.sidebar')
+            <!-- / Menu principal -->
+
             <div class="layout-page">
+
                 <!-- Navbar -->
                 @include('layouts.vuexy.navbar')
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
+                    
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
                         @yield('content')
@@ -71,14 +81,63 @@
                     <div class="content-backdrop fade"></div>
                 </div>
                 <!-- Content wrapper -->
+
+
             </div>
-            <!-- / Layout page -->
         </div>
 
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
+
     </div>
-    <!-- / Layout wrapper -->
+
+    @else
+
+    <!-- Layout wrapper | horizontal -->
+
+    <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
+        <div class="layout-container">
+
+            <!-- Menu principal -->
+            @include('layouts.vuexy.headerbar')
+            <!-- / Menu principal -->
+
+            <div class="layout-page">
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+
+                    <!-- Menu -->
+                    @include('layouts.vuexy.menu')
+                    <!-- / Menu -->
+
+                    <!-- Content -->
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('content')
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    @include('layouts.vuexy.footer')
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+
+            </div>
+
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+    </div>
+
+    
+    @endif
+
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

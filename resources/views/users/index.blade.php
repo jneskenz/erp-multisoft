@@ -17,8 +17,8 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="alert alert-info d-flex" role="alert">
-                            <span class="badge badge-center rounded-pill bg-info border-label-info p-3 me-2">
-                                <i class="bx bx-user fs-6"></i>
+                            <span class="badge badge-center rounded-pill bg-info border-label-info me-2">
+                                <i class="ti ti-user"></i>
                             </span>
                             <div>
                                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Sistema de Usuarios</h6>

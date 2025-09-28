@@ -29,6 +29,10 @@ class RolePermissionSeeder extends Seeder
             'permissions.create',
             'permissions.edit',
             'permissions.delete',
+            'empresas.view',
+            'empresas.create',
+            'empresas.edit',
+            'empresas.delete',
             'dashboard.access',
         ];
 

@@ -17,8 +17,8 @@
                 <div class="row mb-4">
                     <div class="col-md-8">
                         <div class="alert alert-warning d-flex" role="alert">
-                            <span class="badge badge-center rounded-pill bg-warning border-label-warning p-3 me-2">
-                                <i class="bx bx-shield fs-6"></i>
+                            <span class="badge badge-center rounded-pill bg-warning border-label-warning me-2">
+                                <i class="ti ti-shield"></i>
                             </span>
                             <div>
                                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Control de Acceso</h6>

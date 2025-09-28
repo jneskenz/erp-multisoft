@@ -3,7 +3,7 @@
     <div class="card-header flex-column flex-md-row border-bottom">
         <div class="head-label text-center">
             <h5 class="card-title mb-0">
-                <i class="bx bx-user me-2"></i>
+                <i class="ti ti-user me-2"></i>
                 Gestión de Usuarios
             </h5>
         </div>
@@ -11,7 +11,7 @@
             <div class="dt-buttons row g-2">
                 <div class="col-sm-12 col-md-6">
                     <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="bx bx-search"></i></span>
+                        <span class="input-group-text"><i class="ti ti-search"></i></span>
                         <input type="text" wire:model.live="search" class="form-control" placeholder="Buscar usuarios...">
                     </div>
                 </div>
@@ -33,8 +33,8 @@
     <!-- Mensajes de estado con estilo Vuexy -->
     @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible d-flex" role="alert">
-            <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2">
-                <i class="bx bx-check fs-6"></i>
+            <span class="badge badge-center rounded-pill bg-success border-label-success me-2">
+                <i class="ti ti-check"></i>
             </span>
             <div>
                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
@@ -46,8 +46,8 @@
 
     @if (session()->has('error'))
         <div class="alert alert-danger alert-dismissible d-flex" role="alert">
-            <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2">
-                <i class="bx bx-x fs-6"></i>
+            <span class="badge badge-center rounded-pill bg-danger border-label-danger me-2">
+                <i class="ti ti-x"></i>
             </span>
             <div>
                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Error</h6>
@@ -62,10 +62,10 @@
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th><i class="bx bx-user me-2"></i>Usuario</th>
-                <th><i class="bx bx-envelope me-2"></i>Email</th>
-                <th class="text-center"><i class="bx bx-shield me-2"></i>Rol</th>
-                <th class="text-center"><i class="bx bx-calendar me-2"></i>Registro</th>
+                <th><i class="ti ti-user me-2"></i>Usuario</th>
+                <th><i class="ti ti-envelope me-2"></i>Email</th>
+                <th class="text-center"><i class="ti ti-shield me-2"></i>Rol</th>
+                <th class="text-center"><i class="ti ti-calendar me-2"></i>Registro</th>
                 <th class="text-center">Estado</th>
                 @can('users.edit')
                     <th class="text-center">Acciones</th>
@@ -99,11 +99,11 @@
                         <span class="text-muted">{{ $user->email }}</span>
                         @if($user->email_verified_at)
                             <span class="badge bg-label-success ms-1">
-                                <i class="bx bx-check-shield"></i>
+                                <i class="ti ti-shield-check"></i>
                             </span>
                         @else
                             <span class="badge bg-label-warning ms-1">
-                                <i class="bx bx-shield-x"></i>
+                                <i class="ti ti-shield-x"></i>
                             </span>
                         @endif
                     </td>
@@ -129,7 +129,7 @@
                             </span>
                         @empty
                             <span class="badge bg-label-secondary">
-                                <i class="bx bx-user-x me-1"></i>
+                                <i class="ti ti-user-x me-1"></i>
                                 Sin rol
                             </span>
                         @endforelse
@@ -141,63 +141,63 @@
                     </td>
                     <td class="text-center">
                         <span class="badge bg-label-success">
-                            <i class="bx bx-check-circle me-1"></i>
+                            <i class="ti ti-circle-check me-1"></i>
                             Activo
                         </span>
                     </td>
-                    @can('users.edit')
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <h6 class="dropdown-header">Gestionar Usuario</h6>
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="bx bx-show-alt me-1"></i> Ver Perfil
+                    <td class="text-center">
+                        {{-- @can('users.edit') --}}
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="ti ti-user-cog"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <h6 class="dropdown-header">Gestionar Usuario</h6>
+                                <a class="dropdown-item" href="javascript:void(0);">
+                                    <i class="ti ti-show-alt me-1"></i> Ver Perfil
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0);">
+                                    <i class="ti ti-edit-alt me-1"></i> Editar Info
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">Asignar Rol</h6>
+                                @foreach($roles as $role)
+                                    <a class="dropdown-item" 
+                                        href="#" 
+                                        wire:click.prevent="assignRole({{ $user->id }}, '{{ $role->name }}')">
+                                        @php
+                                            $icon = match($role->name) {
+                                                'admin' => 'bx-crown text-warning',
+                                                'manager' => 'bx-user-voice text-info',
+                                                'user' => 'bx-user text-primary',
+                                                default => 'bx-shield text-secondary'
+                                            };
+                                        @endphp
+                                        <i class="bx {{ $icon }} me-1"></i>
+                                        {{ ucfirst($role->name) }}
+                                        @if($user->hasRole($role->name))
+                                            <span class="badge bg-success ms-2">✓</span>
+                                        @endif
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="bx bx-edit-alt me-1"></i> Editar Info
-                                    </a>
+                                @endforeach
+                                
+                                @if($user->id !== auth()->id())
                                     <div class="dropdown-divider"></div>
-                                    <h6 class="dropdown-header">Asignar Rol</h6>
-                                    @foreach($roles as $role)
-                                        <a class="dropdown-item" 
-                                           href="#" 
-                                           wire:click.prevent="assignRole({{ $user->id }}, '{{ $role->name }}')">
-                                            @php
-                                                $icon = match($role->name) {
-                                                    'admin' => 'bx-crown text-warning',
-                                                    'manager' => 'bx-user-voice text-info',
-                                                    'user' => 'bx-user text-primary',
-                                                    default => 'bx-shield text-secondary'
-                                                };
-                                            @endphp
-                                            <i class="bx {{ $icon }} me-1"></i>
-                                            {{ ucfirst($role->name) }}
-                                            @if($user->hasRole($role->name))
-                                                <span class="badge bg-success ms-2">✓</span>
-                                            @endif
-                                        </a>
-                                    @endforeach
-                                    
-                                    @if($user->id !== auth()->id())
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);"
-                                           wire:confirm="¿Estás seguro de eliminar este usuario?">
-                                            <i class="bx bx-trash me-1"></i> Eliminar Usuario
-                                        </a>
-                                    @endif
-                                </div>
+                                    <a class="dropdown-item text-danger" href="javascript:void(0);"
+                                        wire:confirm="¿Estás seguro de eliminar este usuario?">
+                                        <i class="ti ti-trash me-1"></i> Eliminar Usuario
+                                    </a>
+                                @endif
                             </div>
-                        </td>
-                    @endcan
+                        </div>
+                        {{-- @endcan --}}
+                    </td>
                 </tr>
             @empty
                 <tr>
                     <td colspan="7" class="text-center py-5">
                         <div class="d-flex flex-column align-items-center">
-                            <img src="{{ asset('vuexy/img/illustrations/page-misc-error-light.png') }}" 
+                            <img src="{{ asset('vuexy/img/illustrations/page-misc-error.png') }}" 
                                  alt="No usuarios" width="120" class="mb-3">
                             <h6 class="mb-1">No se encontraron usuarios</h6>
                             <p class="text-muted mb-0">Intenta ajustar tu búsqueda o filtros para encontrar usuarios.</p>
@@ -212,7 +212,7 @@
     <div class="card-footer d-flex justify-content-between align-items-center">
         <div>
             <small class="text-muted">
-                <i class="bx bx-info-circle me-1"></i>
+                <i class="ti ti-info-circle me-1"></i>
                 Mostrando {{ $users->count() }} de {{ $users->total() }} usuarios
             </small>
         </div>

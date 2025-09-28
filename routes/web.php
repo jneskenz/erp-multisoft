@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Erp\EmpresaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,4 +26,8 @@ Route::middleware(['auth'])->group(function () {
     
     // Rutas de roles
     Route::resource('roles', RoleController::class);
+
+    Route::resource('empresas', EmpresaController::class);
+
+
 });
