@@ -3,6 +3,7 @@
 use function Livewire\Volt\{layout, title};
 
 layout('layouts.app');
+
 title('Gestión de Usuarios');
 
 ?>
