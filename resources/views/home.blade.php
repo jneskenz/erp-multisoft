@@ -37,10 +37,21 @@
                     </div>
 
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-primary">Botón 1</button>
-                        <button type="button" class="btn btn-outline-secondary">Botón 2</button>
-                        <button type="button" class="btn btn-outline-success">Botón 3</button>
+                        @can('users.view')
+                            <a href="{{ route('users.index') }}" class="btn btn-outline-primary">Gestionar Usuarios</a>
+                        @endcan
+                        @can('roles.view')
+                            <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary">Gestionar Roles</a>
+                        @endcan
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Modal Bootstrap</button>
                     </div>
+
+                    <!-- Componente Livewire -->
+                    @can('users.view')
+                        <div class="mt-4">
+                            <livewire:user-manager />
+                        </div>
+                    @endcan
                 </div>
             </div>
         </div>
