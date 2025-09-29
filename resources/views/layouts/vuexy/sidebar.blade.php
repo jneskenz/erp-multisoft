@@ -38,7 +38,7 @@
         <!-- Gestión de Usuarios -->
         @canany(['users.view', 'roles.view'])
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Gestión de Usuarios</span>
+            <span class="menu-header-text">Admin. del Sistema</span>
         </li>
         @endcanany
 

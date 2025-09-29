@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Erp;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class EmpresaRequest extends FormRequest
 {
@@ -22,7 +23,9 @@ class EmpresaRequest extends FormRequest
     public function rules(): array
     {
 
+        
         $empresaId = $this->route('empresa') ? $this->route('empresa')->id : null;
+        Log::info('Validando datos de empresa');
 
         return [
             'numerodocumento' => [

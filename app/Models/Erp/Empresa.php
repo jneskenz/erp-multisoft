@@ -5,11 +5,13 @@ namespace App\Models\Erp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Empresa extends Model
 {
     
-    use HasFactory, HasRoles;
+    use HasFactory, HasRoles, LogsActivity;
 
     protected $table = 'empresas';
 
@@ -30,7 +32,19 @@ class Empresa extends Model
         return $this->belongsTo(Pais::class, 'pais_id');
     }
 
-    
-
-
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'numerodocumento',
+                'razon_social', 
+                'nombre_comercial',
+                'direccion',
+                'telefono',
+                'correo',
+                'estado'
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 }
