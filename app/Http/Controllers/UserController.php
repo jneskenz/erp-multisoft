@@ -19,13 +19,15 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users.index');
+        return view('erp.users.index', [
+            'users' => User::with('roles')->orderBy('name')->paginate(10)
+        ]);
     }
 
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        return view('erp.users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -51,7 +53,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        return view('erp.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)

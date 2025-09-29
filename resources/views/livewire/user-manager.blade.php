@@ -2,10 +2,7 @@
     <!-- Filtros superiores con estilo Vuexy -->
     <div class="card-header flex-column flex-md-row border-bottom">
         <div class="head-label text-center">
-            <h5 class="card-title mb-0">
-                <i class="ti ti-user me-2"></i>
-                Gestión de Usuarios
-            </h5>
+            {{-- <h5 class="card-title mb-0"> <i class="ti ti-users me-2"></i> Gestión de Usuarios </h5> --}}
         </div>
         <div class="dt-action-buttons text-end pt-3 pt-md-0">
             <div class="dt-buttons row g-2">
@@ -62,13 +59,13 @@
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th><i class="ti ti-user me-2"></i>Usuario</th>
-                <th><i class="ti ti-envelope me-2"></i>Email</th>
-                <th class="text-center"><i class="ti ti-shield me-2"></i>Rol</th>
-                <th class="text-center"><i class="ti ti-calendar me-2"></i>Registro</th>
-                <th class="text-center">Estado</th>
+                <th><i class="ti ti-user me-2"></i>USUARIO</th>
+                <th><i class="ti ti-envelope me-2"></i>CORREO</th>
+                <th class="text-center">ROL</th>
+                <th class="text-center">REGISTRO</th>
+                <th class="text-center">ESTADO</th>
                 @can('users.edit')
-                    <th class="text-center">Acciones</th>
+                    <th class="text-center">ACCIONES</th>
                 @endcan
             </tr>
         </thead>
@@ -96,7 +93,6 @@
                         </div>
                     </td>
                     <td>
-                        <span class="text-muted">{{ $user->email }}</span>
                         @if($user->email_verified_at)
                             <span class="badge bg-label-success ms-1">
                                 <i class="ti ti-shield-check"></i>
@@ -106,6 +102,7 @@
                                 <i class="ti ti-shield-x"></i>
                             </span>
                         @endif
+                        <span class="text-muted">{{ $user->email }}</span>
                     </td>
                     <td class="text-center">
                         @forelse($user->roles as $role)
@@ -117,14 +114,14 @@
                                     default => 'bg-label-secondary'
                                 };
                                 $icon = match($role->name) {
-                                    'admin' => 'bx-crown',
-                                    'manager' => 'bx-user-voice',
-                                    'user' => 'bx-user',
-                                    default => 'bx-shield'
+                                    'admin' => 'ti-crown',
+                                    'manager' => 'ti-user-share',
+                                    'user' => 'ti-user',
+                                    default => 'ti-user'
                                 };
                             @endphp
                             <span class="badge {{ $badgeClass }} me-1">
-                                <i class="bx {{ $icon }} me-1"></i>
+                                <i class="ti {{ $icon }} me-1"></i>
                                 {{ ucfirst($role->name) }}
                             </span>
                         @empty
@@ -154,33 +151,33 @@
                             <div class="dropdown-menu">
                                 <h6 class="dropdown-header">Gestionar Usuario</h6>
                                 <a class="dropdown-item" href="javascript:void(0);">
-                                    <i class="ti ti-show-alt me-1"></i> Ver Perfil
+                                    <i class="ti ti-clipboard-list me-1"></i> Ver Perfil
                                 </a>
                                 <a class="dropdown-item" href="javascript:void(0);">
-                                    <i class="ti ti-edit-alt me-1"></i> Editar Info
+                                    <i class="ti ti-edit me-1"></i> Editar Info
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Asignar Rol</h6>
                                 @foreach($roles as $role)
-                                    <a class="dropdown-item" 
-                                        href="#" 
+                                    <a class="dropdown-item"
+                                        href="#"
                                         wire:click.prevent="assignRole({{ $user->id }}, '{{ $role->name }}')">
                                         @php
                                             $icon = match($role->name) {
-                                                'admin' => 'bx-crown text-warning',
-                                                'manager' => 'bx-user-voice text-info',
-                                                'user' => 'bx-user text-primary',
-                                                default => 'bx-shield text-secondary'
+                                                'admin' => 'ti-crown',
+                                                'manager' => 'ti-user-share',
+                                                'user' => 'ti-user',
+                                                default => 'ti-user'
                                             };
                                         @endphp
-                                        <i class="bx {{ $icon }} me-1"></i>
+                                        <i class="ti {{ $icon }} me-1"></i>
                                         {{ ucfirst($role->name) }}
                                         @if($user->hasRole($role->name))
                                             <span class="badge bg-success ms-2">✓</span>
                                         @endif
                                     </a>
                                 @endforeach
-                                
+
                                 @if($user->id !== auth()->id())
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item text-danger" href="javascript:void(0);"
@@ -197,7 +194,7 @@
                 <tr>
                     <td colspan="7" class="text-center py-5">
                         <div class="d-flex flex-column align-items-center">
-                            <img src="{{ asset('vuexy/img/illustrations/page-misc-error.png') }}" 
+                            <img src="{{ asset('vuexy/img/illustrations/page-misc-error.png') }}"
                                  alt="No usuarios" width="120" class="mb-3">
                             <h6 class="mb-1">No se encontraron usuarios</h6>
                             <p class="text-muted mb-0">Intenta ajustar tu búsqueda o filtros para encontrar usuarios.</p>

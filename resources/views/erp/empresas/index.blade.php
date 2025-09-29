@@ -3,25 +3,38 @@
 @section('title', 'Gestión de Empresas - ERP Multisoft')
 
 @php
-   $dataBreadcrumb = [
-      'title' => 'Gestión de Empresas',
-      'description' => 'Administra las empresas del sistema ERP Multisoft.',
-      'icon' => 'ti ti-building',
-      'breadcrumbs' => [
-         ['name' => 'Admin. del Sistema', 'url' => route('home')],
-         ['name' => 'Empresas', 'url' => route('empresas.index'), 'active' => true]
-      ],
-      'actions' => [
-         ['name' => 'Nueva Empresa', 'url' => route('empresas.create'), 'icon' => 'ti ti-plus', 'permission' => 'empresas.create'],
-         ['name' => 'Importar Empresas', 'url' => route('empresas.create'), 'icon' => 'ti ti-upload', 'permission' => 'empresas.create']
-      ],
-      'stats' => [
-         ['name' => 'Total Empresas', 'value' => $empresas->count(), 'icon' => 'ti ti-building', 'color' => 'bg-label-primary'],
-         ['name' => 'Empresas Activas', 'value' => $empresas->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success']
-      ]
-   ];
+
+    $dataBreadcrumb = [
+        'title' => 'Gestión de Empresas',
+        'description' => 'Administra las empresas del sistema ERP Multisoft.',
+        'icon' => 'ti ti-building',
+        'breadcrumbs' => [
+            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Empresas', 'url' => route('empresas.index'), 'active' => true]
+        ],
+        //   'actions' => [
+        //      ['name' => 'Nueva Empresa', 'url' => route('empresas.create'), 'icon' => 'ti ti-plus', 'permission' => 'empresas.create'],
+        //      ['name' => 'Importar Empresas', 'url' => route('empresas.create'), 'icon' => 'ti ti-upload', 'permission' => 'empresas.create']
+        //   ],
+        'stats' => [
+            ['name' => 'Total Empresas', 'value' => $empresas->count(), 'icon' => 'ti ti-building', 'color' => 'bg-label-primary'],
+            ['name' => 'Empresas Activas', 'value' => $empresas->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success']
+        ]
+    ];
+
+    $dataHeaderCard = [
+        'title' => 'Sistema de Empresas',
+        'description' => 'Administra las empresas del sistema.',
+        'icon' => 'ti ti-building',
+        'bgColor' => 'alert-info',
+        'allowClose' => true,
+        'actions' => [
+            ['name' => 'Crear Empresa', 'url' => route('empresas.create'), 'icon' => 'ti ti-plus', 'permission' => 'empresas.create'],
+        ],
+    ];
+
 @endphp
-   
+
 
 @section('content')
 
@@ -32,43 +45,14 @@
    <div class="row">
       <div class="col-12">
          <div class="card">
-               <div class="card-header d-flex justify-content-between align-items-center">
-                  {{-- <h5 class="mb-0">
-                     <i class="ti ti-building me-2"></i>
-                     Gestión de Empresas
-                  </h5>
-                  <div>
-                     <span class="badge bg-label-primary">Total: {{ $empresas->count() }} empresas</span>
-                  </div> --}}
-                  <div>
-                     <div class="alert alert-info alert-dismissible d-flex mb-0" role="alert">
-                        <span class="alert-icon rounded"><i class="ti ti-building"></i></span>
-                        <div class="d-flex flex-column ps-1">
-                           <h6 class="alert-heading fw-bold mb-1">Sistema de Empresas</h6>
-                           <p class="mb-0">Administra las empresas del sistema ERP Multisoft.</p>
-                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                     </div>
-                  </div>
-                  <div>
-                     <div class="d-flex justify-content-end">
-                        @can('empresas.create')
-                           <a href="{{ route('empresas.create') }}" class="btn btn-primary">
-                                 <i class="ti ti-plus me-1"></i>
-                                 Nueva Empresa
-                           </a>
-                        @endcan
-                     </div>
-                  </div>
-               </div>
-               
+
+            @include('layouts.vuexy.header-card', $dataHeaderCard)
+
                <div class="card-body">
                   <!-- Mensajes de estado -->
                   @if (session('success'))
                      <div class="alert alert-success alert-dismissible d-flex" role="alert">
-                           <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2">
-                              <i class="ti ti-check fs-6"></i>
-                           </span>
+                           <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
                            <div>
                               <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
                               <p class="mb-0">{{ session('success') }}</p>
@@ -79,9 +63,7 @@
 
                   @if (session('error'))
                      <div class="alert alert-danger alert-dismissible d-flex" role="alert">
-                           <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2">
-                              <i class="ti ti-x fs-6"></i>
-                           </span>
+                           <span class="alert-icon rounded"><i class="ti ti-x"></i></span>
                            <div>
                               <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Error</h6>
                               <p class="mb-0">{{ session('error') }}</p>
@@ -166,7 +148,7 @@
                                                       @endcan
                                                       @can('empresas.delete')
                                                          <li><hr class="dropdown-divider"></li>
-                                                         <li><form action="{{ route('empresas.destroy', $empresa) }}" method="POST" 
+                                                         <li><form action="{{ route('empresas.destroy', $empresa) }}" method="POST"
                                                                      onsubmit="return confirm('¿Estás seguro de eliminar esta empresa?')">
                                                                @csrf
                                                                @method('DELETE')
@@ -184,7 +166,7 @@
                                  <tr>
                                        <td colspan="7" class="text-center py-5">
                                           <div class="d-flex flex-column align-items-center">
-                                             <img src="{{ asset('vuexy/img/illustrations/page-misc-error.png') }}" 
+                                             <img src="{{ asset('vuexy/img/illustrations/page-misc-error.png') }}"
                                                    alt="No empresas" width="120" class="mb-3">
                                              <h6 class="mb-1">No se encontraron empresas</h6>
                                              <p class="text-muted mb-0">Comienza creando tu primera empresa en el sistema.</p>
@@ -231,7 +213,7 @@
                </div>
          </div>
       </div>
-      
+
       <div class="col-lg-3 col-md-6 col-12 mb-4">
          <div class="card">
                <div class="card-body">
@@ -241,7 +223,7 @@
                      </div>
                   </div>
                   <span class="fw-semibold d-block mb-1">Empresas Activas</span>
-                  <h3 class="card-title mb-2">{{ $empresas->where('activo', true)->count() }}</h3>
+                  <h3 class="card-title mb-2">{{ $empresas->where('estado', true)->count() }}</h3>
                   <small class="text-info fw-semibold">
                      <i class="ti ti-check-circle"></i> Operativas
                   </small>

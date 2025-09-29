@@ -38,7 +38,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file to customize your theme -->
     <script src="{{ asset('vuexy/js/config.js') }}"></script>
-    
+
     @livewireStyles
 
     @props(['apariencia' => 'vertical',])
@@ -47,7 +47,7 @@
 
 <body>
 
-    
+
     @if($apariencia == 'vertical')
 
     <!-- Layout wrapper | vertical -->
@@ -67,8 +67,8 @@
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    
-                    <!-- Content -->                    
+
+                    <!-- Content -->
                         @yield('content')
                     <!-- / Content -->
 
@@ -132,7 +132,7 @@
 
     </div>
 
-    
+
     @endif
 
 

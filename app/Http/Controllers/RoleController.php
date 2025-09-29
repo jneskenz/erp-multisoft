@@ -19,13 +19,15 @@ class RoleController extends Controller
 
     public function index()
     {
-        return view('roles.index');
+        return view('erp.roles.index', [
+            'roles' => Role::all()
+        ]);
     }
 
     public function create()
     {
         $permissions = Permission::all();
-        return view('roles.create', compact('permissions'));
+        return view('erp.roles.create', compact('permissions'));
     }
 
     public function store(Request $request)
@@ -36,7 +38,7 @@ class RoleController extends Controller
         ]);
 
         $role = Role::create(['name' => $request->name]);
-        
+
         if ($request->permissions) {
             $role->givePermissionTo($request->permissions);
         }
@@ -47,7 +49,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        return view('roles.edit', compact('role', 'permissions'));
+        return view('erp.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(Request $request, Role $role)
@@ -58,7 +60,7 @@ class RoleController extends Controller
         ]);
 
         $role->update(['name' => $request->name]);
-        
+
         $role->syncPermissions($request->permissions ?? []);
 
         return redirect()->route('roles.index')->with('success', 'Rol actualizado exitosamente');
