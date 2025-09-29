@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('paises', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion', 50);
-            $table->string('alias', 10)->nullable();
-            $table->string('moneda', 10)->nullable();
-            $table->string('simbolo', 10)->nullable();
+            $table->string('codigo', 10);
+            $table->string('moneda', 20)->nullable();
+            $table->string('codigo_moneda', 10)->nullable();
+            $table->string('simbolo_moneda', 10)->nullable();
+
             $table->boolean('estado')->default(1);
             $table->timestamps();
         });

@@ -29,5 +29,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('empresas', EmpresaController::class);
 
+    // Rutas de sedes
+    Route::resource('sedes', App\Http\Controllers\Erp\SedeController::class);
+
 
 });

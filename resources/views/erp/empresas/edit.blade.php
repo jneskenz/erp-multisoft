@@ -13,21 +13,33 @@
         ],
         'actions' => [
             [
-                'name' => 'Volver',
+                'name' => 'Regresar',
                 'url' => route('empresas.index'),
                 'typebtn' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
                 'permission' => 'empresas.view'
             ],
+
+        ],
+    ];
+
+    $dataHeaderCard = [
+        'title' => 'Editando: ' . $empresa->nombre_comercial ?? $empresa->razon_social,
+        'description' => 'Modifique los campos necesarios y guarde los cambios. Todos los cambios serán registrados en el historial.',
+        'icon' => 'ti ti-edit',
+        'bgColor' => 'alert-warning',
+        'allowClose' => false,
+        'actions' => [
             [
                 'name' => 'Ver detalle',
                 'url' => route('empresas.show', $empresa),
-                'typebtn' => 'btn-label-info',
+                'typebtn' => 'btn-info',
                 'icon' => 'ti ti-eye',
                 'permission' => 'empresas.view'
             ],
         ],
     ];
+
 @endphp
 
 @section('content')
@@ -38,7 +50,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+
+                {{-- <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="alert alert-warning d-flex mb-4" role="alert">
                         <span class="alert-icon rounded"><i class="ti ti-edit"></i></span>
                         <div>
@@ -47,7 +60,9 @@
                         </div>
                     </div>
                     <div></div>
-                </div>
+                </div> --}}
+
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
 
                 <div class="card-body">
                     {{-- Mensajes de alerta --}}

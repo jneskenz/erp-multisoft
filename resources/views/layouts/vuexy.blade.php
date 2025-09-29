@@ -1,5 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="{{ asset('vuexy/') }}" data-template="vertical-menu-template-free">
+{{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="{{ asset('vuexy/') }}" data-template="vertical-menu-template-free"> --}}
+@props(['apariencia' => 'vertical',])
+
+<html
+  lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+  class="light-style {{ $apariencia == 'vertical' ? 'layout-navbar-fixed' : 'test' }}  layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="{{  asset('vuexy').'/' }}"
+  data-template="{{ $apariencia == 'vertical' ? 'vertical-menu-template-starter' : 'horizontal-menu-template-starter' }}">
 
 <head>
     <meta charset="utf-8" />
@@ -35,13 +44,15 @@
     <!-- Helpers -->
     <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>
 
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>
+
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file to customize your theme -->
     <script src="{{ asset('vuexy/js/config.js') }}"></script>
 
     @livewireStyles
-
-    @props(['apariencia' => 'vertical',])
+    
 
 </head>
 
@@ -136,6 +147,11 @@
     @endif
 
 
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -143,6 +159,11 @@
     <script src="{{ asset('vuexy/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('vuexy/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('vuexy/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
+    <script src="{{ asset('vuexy/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('vuexy/vendor/libs/hammer/hammer.js') }}"></script>
+    {{-- <script src="{{ asset('vuexy/vendor/libs/i18n/i18n.js') }}"></script> --}}
+    <script src="{{ asset('vuexy/vendor/libs/typeahead-js/typeahead.js') }}"></script>
 
     <script src="{{ asset('vuexy/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->

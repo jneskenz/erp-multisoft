@@ -48,5 +48,8 @@ class EmpresaSeeder extends Seeder
         foreach ($empresas as $empresa) {
             Empresa::create($empresa);
         }
+
+        Empresa::factory(15)->create();
+
     }
 }

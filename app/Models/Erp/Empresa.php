@@ -32,6 +32,11 @@ class Empresa extends Model
         return $this->belongsTo(Pais::class, 'pais_id');
     }
 
+    public function sedes()
+    {
+        return $this->hasMany(Sede::class, 'empresa_id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

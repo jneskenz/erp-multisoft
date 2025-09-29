@@ -19,8 +19,9 @@
             
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
+            <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
         </a>
     </div>
 
@@ -73,6 +74,18 @@
                 <div data-i18n="Basic">Empresas</div>
                 @if(App\Models\Erp\Empresa::count() > 0)
                     <div class="badge badge-center rounded-pill bg-primary w-px-20 h-px-20 ms-auto">{{ App\Models\Erp\Empresa::count() }}</div>
+                @endif
+            </a>
+        </li>
+        @endcan
+
+        @can('sedes.view')
+        <li class="menu-item {{ request()->routeIs('sedes.*') ? 'active' : '' }}">
+            <a href="{{ route('sedes.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-building-bank"></i>
+                <div data-i18n="Basic">Sedes</div>
+                @if(App\Models\Erp\Sede::count() > 0)
+                    <div class="badge badge-center rounded-pill bg-success w-px-20 h-px-20 ms-auto">{{ App\Models\Erp\Sede::count() }}</div>
                 @endif
             </a>
         </li>

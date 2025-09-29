@@ -12,8 +12,8 @@
             ['name' => 'Usuarios', 'url' => route('users.index'), 'active' => true]
         ],
         'actions' => [
-            ['name' => 'Crear Usuario', 'url' => route('users.create'), 'icon' => 'ti ti-plus', 'permission' => 'users.create'],
-            ['name' => 'Importar Usuarios', 'url' => route('users.create'), 'icon' => 'ti ti-upload', 'permission' => 'users.create']
+            // ['name' => 'Crear Usuario', 'url' => route('users.create'), 'icon' => 'ti ti-plus', 'permission' => 'users.create'],
+            // ['name' => 'Importar Usuarios', 'url' => route('users.create'), 'icon' => 'ti ti-upload', 'permission' => 'users.create']
         ],
         'stats' => [
             ['name' => 'Total Usuarios', 'value' => $users->count(), 'icon' => 'ti ti-users', 'color' => 'bg-label-primary'],

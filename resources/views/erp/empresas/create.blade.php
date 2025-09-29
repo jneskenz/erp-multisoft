@@ -5,7 +5,7 @@
 
 @php
     $dataBreadcrumb = [
-        'title' => 'Gestión de Empresas',
+        'title' => 'Crear Nueva Empresa',
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
         'breadcrumbs' => [
@@ -14,7 +14,7 @@
         ],
         'actions' => [
             [
-                'name' => 'Volver',
+                'name' => 'Regresar',
                 'url' => route('empresas.index'),
                 'typebtn' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
@@ -22,6 +22,17 @@
             ],
         ],
     ];
+
+    $dataHeaderCard = [
+        'title' => 'Formulario de registro para Empresa',
+        'description' => 'Complete todos los campos requeridos para registrar una nueva empresa en el sistema.',
+        'icon' => 'ti ti-plus',
+        'bgColor' => 'alert-info',
+        'allowClose' => false,
+        'actions' => [],
+    ];
+
+
 @endphp
 
 
@@ -33,6 +44,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
 
                 <div class="card-body">
                     {{-- Mensajes de alerta --}}
@@ -73,17 +86,6 @@
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-
-                    <div class="mb-4">
-                        <div class="alert alert-info alert-dismissible d-flex mb-0" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-info-circle"></i></span>
-                            <div class="d-flex flex-column ps-1">
-                                <h6 class="alert-heading fw-bold mb-1">Información Importante</h6>
-                                <p class="mb-0">Complete todos los campos requeridos para registrar una nueva empresa en el sistema.</p>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </div>
 
                     <form action="{{ route('empresas.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf

@@ -13,21 +13,39 @@
         ],
         'actions' => [
             [
-                'name' => 'Volver',
+                'name' => 'Regresar',
                 'url' => route('empresas.index'),
                 'typebtn' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
                 'permission' => 'empresas.view'
             ],
+
+        ],
+    ];
+
+    $dataHeaderCard = [
+        'title' => $empresa->nombre_comercial ?? $empresa->razon_social,
+        'description' => 'Administra las empresas del sistema.',
+        'icon' => 'ti ti-eye',
+        'bgColor' => 'alert-info',
+        'allowClose' => false,
+        'actions' => [
+            [
+                'name' => $empresa->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
+                'url' => '#',
+                'icon' => $empresa->estado == 1 ? 'ti ti-check' : 'ti ti-x',
+                'permission' => null,
+                'typebtn' => $empresa->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+            ],
             [
                 'name' => 'Editar',
                 'url' => route('empresas.edit', $empresa),
-                'typebtn' => 'btn-label-info',
                 'icon' => 'ti ti-edit',
                 'permission' => 'empresas.edit'
             ],
         ],
     ];
+
 @endphp
 
 @section('content')
@@ -38,7 +56,10 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
+
+                {{-- <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="mt-1">
                         <h4 class="card-title mb-0">{{ $empresa->nombre_comercial ?? $empresa->razon_social }}</h4>
 
@@ -48,7 +69,7 @@
                             {{ $empresa->estado == 1 ? 'Activo' : 'Inactivo' }}
                         </span>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="card-body">
                     <div class="row">

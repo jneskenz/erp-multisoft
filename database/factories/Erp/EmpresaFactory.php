@@ -1,19 +1,14 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Erp;
 
-use App\Models\Erp\Empresa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Erp\Empresa>
  */
 class EmpresaFactory extends Factory
 {
-
-    protected $model = Empresa::class;
-
-    
     /**
      * Define the model's default state.
      *
@@ -29,22 +24,8 @@ class EmpresaFactory extends Factory
             'telefono' => $this->faker->optional()->phoneNumber(),
             'correo' => $this->faker->optional()->companyEmail(),
             'avatar' => $this->faker->optional()->url(),
-            'estado' => $this->faker->randomElement(['1', '0'])
+            'estado' => $this->faker->randomElement(['1', '0']),
+            'pais_id' => \App\Models\Erp\Pais::factory(),
         ];
     }
-
-    public function activo(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'estado' => 'activo',
-        ]);
-    }
-
-    public function inactivo(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'estado' => 'inactivo',
-        ]);
-    }
-
 }

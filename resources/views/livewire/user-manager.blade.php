@@ -30,9 +30,7 @@
     <!-- Mensajes de estado con estilo Vuexy -->
     @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible d-flex" role="alert">
-            <span class="badge badge-center rounded-pill bg-success border-label-success me-2">
-                <i class="ti ti-check"></i>
-            </span>
+            <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
             <div>
                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
                 <p class="mb-0">{{ session('success') }}</p>
@@ -43,9 +41,7 @@
 
     @if (session()->has('error'))
         <div class="alert alert-danger alert-dismissible d-flex" role="alert">
-            <span class="badge badge-center rounded-pill bg-danger border-label-danger me-2">
-                <i class="ti ti-x"></i>
-            </span>
+            <span class="alert-icon rounded"><i class="ti ti-x"></i></span>
             <div>
                 <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Error</h6>
                 <p class="mb-0">{{ session('error') }}</p>
@@ -146,7 +142,9 @@
                         {{-- @can('users.edit') --}}
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="ti ti-user-cog"></i>
+                                <span class="badge bg-label-primary px-2">
+                                    <i class="ti ti-user-cog"></i>
+                                </span>
                             </button>
                             <div class="dropdown-menu">
                                 <h6 class="dropdown-header">Gestionar Usuario</h6>

@@ -34,7 +34,7 @@ class UserManager extends Component
 
         $user = User::findOrFail($userId);
         $user->syncRoles([$roleName]);
-        
+
         session()->flash('success', "Rol '{$roleName}' asignado a {$user->name} correctamente.");
     }
 
@@ -43,9 +43,9 @@ class UserManager extends Component
         $query = User::with('roles');
 
         if ($this->search) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
+                    ->orWhere('email', 'like', '%' . $this->search . '%');
             });
         }
 
