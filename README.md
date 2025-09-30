@@ -1,4 +1,4 @@
-# 🏢 ERP Multisoft
+# 🏢 ERP Sistema de Gestiín general
 
 <div align="center">
 
@@ -459,7 +459,7 @@ Este proyecto está bajo la licencia **MIT**. Ver el archivo [LICENSE](LICENSE) 
 
 **⭐ Si este proyecto te resultó útil, considera darle una estrella en GitHub**
 
-**🔗 [Ver Demo](https://demo.erpmultisoft.com) • [Documentación Completa](docs/) • [API Docs](docs/API.md)**
+**🔗 [Ver pronto una demo aquí](https://demo.multisoft.com) • [Documentación Completa](docs/) • [API Docs](docs/API.md)**
 
 **Hecho con ❤️ por el equipo de ERP Multisoft | joelneskenz@gmail.com**
 
