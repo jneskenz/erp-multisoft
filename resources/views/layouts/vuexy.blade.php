@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="{{ asset('vuexy/') }}" data-template="vertical-menu-template-free"> --}}
+
 @props(['apariencia' => 'vertical',])
 
 <html
@@ -91,7 +91,6 @@
                 </div>
                 <!-- Content wrapper -->
 
-
             </div>
         </div>
 
@@ -178,6 +177,37 @@
     @stack('scripts')
 
     @livewireScripts
+
+    <!-- Error Counter for SuperAdmin -->
+    @auth
+        @if(auth()->user()->isSuperAdmin())
+            <script>
+                // Función para actualizar contador de errores en el sidebar
+                function updateErrorCounter() {
+                    fetch('{{ route('admin.logs.stats') }}')
+                        .then(response => response.json())
+                        .then(data => {
+                            const errorCount = document.getElementById('errorCount');
+                            if (errorCount && data.error_count_today > 0) {
+                                errorCount.textContent = data.error_count_today;
+                                errorCount.style.display = 'inline';
+                            } else if (errorCount) {
+                                errorCount.style.display = 'none';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching log stats:', error);
+                        });
+                }
+
+                // Actualizar cada 30 segundos
+                $(document).ready(function() {
+                    updateErrorCounter(); // Ejecutar inmediatamente
+                    setInterval(updateErrorCounter, 30000); // Cada 30 segundos
+                });
+            </script>
+        @endif
+    @endauth
 </body>
 
 </html>

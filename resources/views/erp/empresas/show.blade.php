@@ -9,6 +9,7 @@
         'icon' => 'ti ti-building',
         'breadcrumbs' => [
             ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Empresas', 'url' => route('empresas.index')],
             ['name' => 'Detalle Empresa', 'url' => '', 'active' => true]
         ],
         'actions' => [
@@ -24,11 +25,11 @@
     ];
 
     $dataHeaderCard = [
-        'title' => $empresa->nombre_comercial ?? $empresa->razon_social,
-        'description' => 'Administra las empresas del sistema.',
-        'icon' => 'ti ti-eye',
-        'bgColor' => 'alert-info',
-        'allowClose' => false,
+        'title' => 'Información de la empresa ',
+        'description' => ($empresa->nombre_comercial ?? $empresa->razon_social),
+        'textColor' => 'text-info',
+        'icon' => 'ti ti-list-search',
+        'iconColor' => 'bg-label-info',
         'actions' => [
             [
                 'name' => $empresa->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
@@ -104,7 +105,7 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <th class="bg-light" style="width: 35%;">Email</th>
+                                        <th class="bg-light" style="width: 35%;">CORREO</th>
                                         <td>
                                             @if($empresa->correo)
                                                 <a href="mailto:{{ $empresa->correo }}">{{ $empresa->correo }}</a>
@@ -148,13 +149,13 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-hover">
+                                            <table class="table table-striped table-hover table-bordered text-center">
                                                 <thead class="table-dark">
                                                     <tr>
-                                                        <th>Fecha</th>
-                                                        <th>Acción</th>
-                                                        <th>Usuario</th>
-                                                        <th>Cambios</th>
+                                                        <th>FECHA REGISTRO</th>
+                                                        <th>ACCIÓN</th>
+                                                        <th>USUARIO</th>
+                                                        <th>CAMBIOS</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -208,15 +209,15 @@
                                                             </td>
                                                             <td>
                                                                 @if($activity->properties && $activity->properties->has('attributes'))
-                                                                    <button class="btn btn-sm btn-outline-primary"
+                                                                    <button class="btn btn-outline-primary waves-effect"
                                                                             type="button"
                                                                             data-bs-toggle="collapse"
                                                                             data-bs-target="#changes-{{ $activity->id }}"
                                                                             aria-expanded="false">
-                                                                        <i class="ti ti-eye"></i> Ver cambios
+                                                                        <i class="ti ti-eye me-2"></i> Ver cambios
                                                                     </button>
                                                                     <div class="collapse mt-2" id="changes-{{ $activity->id }}">
-                                                                        <div class="card card-body bg-light">
+                                                                        <div class="card card-body bg-light text-start">
                                                                             @if($activity->properties->has('old') && $activity->properties->has('attributes'))
                                                                                 @php
                                                                                     $old = $activity->properties->get('old', []);

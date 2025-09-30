@@ -45,6 +45,7 @@
                     <option value="50">50</option>
                 </select>
             </div>
+            
             <div class="col-md-4">
                 <div class="input-group">
                     <span class="input-group-text">
@@ -230,8 +231,8 @@
         <div class="row mt-4 align-items-center">
             <div class="col-sm-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
                 <div class="text-muted">
-                    <i class="ti ti-filter-check me-1"></i>
                     @if($sedes->total() > 0)
+                        <i class="ti ti-filter-check me-1"></i>
                         Mostrando <strong class="text-primary">{{ $sedes->firstItem() }}</strong> a 
                         <strong class="text-primary">{{ $sedes->lastItem() }}</strong> de 
                         <strong class="text-primary">{{ $sedes->total() }}</strong> 

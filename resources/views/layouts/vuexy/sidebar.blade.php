@@ -16,7 +16,6 @@
                 </svg>
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">{{ config('app.name') }}</span>
-            
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -28,6 +27,12 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+        <li class="menu-header small text-uppercase text-center pt-1 ">
+            <span class="menu-header-text">Magdalena del Mar</span>
+        </li>
+
+        {{-- MENU VERTICAL --}}
+
         <!-- Dashboard -->
         <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
             <a href="{{ route('home') }}" class="menu-link">
@@ -38,58 +43,132 @@
 
         <!-- Gestión de Usuarios -->
         @canany(['users.view', 'roles.view'])
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Admin. del Sistema</span>
-        </li>
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Admin. del Sistema</span>
+            </li>
         @endcanany
 
-        @can('users.view')
-        <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-            <a href="{{ route('users.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-user"></i>
-                <div data-i18n="Basic">Usuarios</div>
-                @if(App\Models\User::count() > 0)
-                    <div class="badge badge-center rounded-pill bg-danger w-px-20 h-px-20 ms-auto">{{ App\Models\User::count() }}</div>
-                @endif
+        {{-- Config. del sistema --}}
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-device-desktop-cog"></i>
+                <div data-i18n="Layouts">Config. del sistema</div>
             </a>
-        </li>
-        @endcan
 
-        @can('roles.view')
-        <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-            <a href="{{ route('roles.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-shield"></i>
-                <div data-i18n="Basic">Roles y Permisos</div>
-                @if(Spatie\Permission\Models\Role::count() > 0)
-                    <div class="badge badge-center rounded-pill bg-primary w-px-20 h-px-20 ms-auto">{{ Spatie\Permission\Models\Role::count() }}</div>
-                @endif
-            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Without menu">Menús</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Without navbar">Apariencia</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Container">Personalización</div>
+                    </a>
+                </li>
+            </ul>
         </li>
-        @endcan
+        {{-- Config. del sistema --}}
 
-        @can('empresas.view')
-        <li class="menu-item {{ request()->routeIs('empresas.*') ? 'active' : '' }}">
-            <a href="{{ route('empresas.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-building"></i>
-                <div data-i18n="Basic">Empresas</div>
-                @if(App\Models\Erp\Empresa::count() > 0)
-                    <div class="badge badge-center rounded-pill bg-primary w-px-20 h-px-20 ms-auto">{{ App\Models\Erp\Empresa::count() }}</div>
-                @endif
-            </a>
-        </li>
-        @endcan
 
-        @can('sedes.view')
-        <li class="menu-item {{ request()->routeIs('sedes.*') ? 'active' : '' }}">
-            <a href="{{ route('sedes.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-building-bank"></i>
-                <div data-i18n="Basic">Sedes</div>
-                @if(App\Models\Erp\Sede::count() > 0)
-                    <div class="badge badge-center rounded-pill bg-success w-px-20 h-px-20 ms-auto">{{ App\Models\Erp\Sede::count() }}</div>
-                @endif
+        {{-- Config. administrativa --}}
+
+        <li class="menu-item open active">
+            <a href="javascript:void(0);" class="menu-link menu-toggle ">
+                <i class="menu-icon tf-icons ti ti-password-user"></i>
+                <div data-i18n="Layouts">Config. Administrativa</div>
             </a>
+
+            <ul class="menu-sub">
+                @can('users.view')
+                    <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                        <a href="{{ route('users.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-user"></i>
+                            <div data-i18n="Basic">Usuarios</div>
+                            @if (App\Models\User::count() > 0)
+                                <div class="badge text-bg-primary rounded-pill ms-auto">
+                                    {{ App\Models\User::count() }}
+                                </div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+                @can('roles.view')
+                    <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                        <a href="{{ route('roles.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-shield"></i>
+                            <div data-i18n="Basic">Roles y Permisos</div>
+                            @if (Spatie\Permission\Models\Role::count() > 0)
+                                <div class="badge text-bg-info rounded-pill ms-auto">
+                                    {{ Spatie\Permission\Models\Role::count() }}</div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+
+                @can('empresas.view')
+                    <li class="menu-item {{ request()->routeIs('empresas.*') ? 'active' : '' }}">
+                        <a href="{{ route('empresas.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-building"></i>
+                            <div data-i18n="Basic">Empresas</div>
+                            @if (App\Models\Erp\Empresa::count() > 0)
+                                <div class="badge text-bg-primary rounded-pill ms-auto">
+                                    {{ App\Models\Erp\Empresa::count() }}</div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+
+                @can('sedes.view')
+                    <li class="menu-item {{ request()->routeIs('sedes.*') ? 'active' : '' }}">
+                        <a href="{{ route('sedes.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-building-bank"></i>
+                            <div data-i18n="Basic">Sedes</div>
+                            @if (App\Models\Erp\Sede::count() > 0)
+                                <div class="badge text-bg-primary rounded-pill ms-auto">
+                                    {{ App\Models\Erp\Sede::count() }}</div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+                @can('locales.view')
+                    <li class="menu-item {{ request()->routeIs('locales.*') ? 'active' : '' }}">
+                        <a href="{{ route('locales.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-building-store"></i>
+                            <div data-i18n="Basic">Locales</div>
+                            @if (App\Models\Erp\Local::count() > 0)
+                                <div class="badge text-bg-primary rounded-pill ms-auto">
+                                    {{ App\Models\Erp\Local::count() }}
+                                </div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+                {{-- acceso solo para superadmin con medelwire --}}
+
+                
+            </ul>
         </li>
-        @endcan
+
+
+        {{-- Config. administrativa --}}
+
+        @superadmin
+            <li class="menu-item {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.logs.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-bug"></i>
+                    <div data-i18n="Analytics">Logs System</div>
+                    <div class="badge text-bg-danger rounded-pill ms-auto" id="errorCount" style="display: none;">
+                        0
+                    </div>
+                </a>
+            </li>
+        @endsuperadmin
 
         <!-- Módulos del ERP -->
         <li class="menu-header small text-uppercase">
@@ -201,7 +280,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Reportes y Analytics</span>
         </li>
-        
+
         <li class="menu-item">
             <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-report"></i>

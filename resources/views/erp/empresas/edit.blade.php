@@ -9,6 +9,7 @@
         'icon' => 'ti ti-building',
         'breadcrumbs' => [
             ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Empresas', 'url' => route('empresas.index')],
             ['name' => 'Editar Empresa', 'url' => '', 'active' => true]
         ],
         'actions' => [
@@ -24,17 +25,17 @@
     ];
 
     $dataHeaderCard = [
-        'title' => 'Editando: ' . $empresa->nombre_comercial ?? $empresa->razon_social,
-        'description' => 'Modifique los campos necesarios y guarde los cambios. Todos los cambios serán registrados en el historial.',
+        'title' => 'Editando la empresa',
+        'description' => $empresa->nombre_comercial ?? $empresa->razon_social,
+        'textColor' => 'text-warning',
         'icon' => 'ti ti-edit',
-        'bgColor' => 'alert-warning',
-        'allowClose' => false,
+        'iconColor' => 'bg-warning',
         'actions' => [
             [
                 'name' => 'Ver detalle',
                 'url' => route('empresas.show', $empresa),
                 'typebtn' => 'btn-info',
-                'icon' => 'ti ti-eye',
+                'icon' => 'ti ti-list-search',
                 'permission' => 'empresas.view'
             ],
         ],
@@ -90,7 +91,7 @@
 
                     @if ($errors->any())
                         <div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-alert"></i></span>
+                            <span class="alert-icon rounded"><i class="ti ti-alert-square-rounded"></i></span>
                             <div class="flex-grow-1">
                                 <h6 class="alert-heading fw-bold mb-1">¡Atención!</h6>
                                 <p class="mb-2">Se encontraron los siguientes errores:</p>
@@ -135,6 +136,9 @@
                                 @enderror
                                 <div class="form-text">Ingrese el RUC de 11 dígitos</div>
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
 
                             <div class="col-md-6">
                                 <label for="razon_social" class="form-label">
@@ -150,9 +154,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="nombre_comercial" class="form-label">
                                     Nombre Comercial
@@ -167,17 +169,6 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-check form-switch mt-4">
-                                    <input class="form-check-input"
-                                        type="checkbox"
-                                        id="estado" name="estado"
-                                        value="1"
-                                        {{ old('estado', $empresa->estado) == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="estado">Empresa Activa</label>
-                                </div>
-                                <div class="form-text">La empresa estará disponible para operaciones</div>
-                            </div>
                         </div>
 
                         <div class="row mb-3">
@@ -193,6 +184,34 @@
                                 @error('direccion')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="representante_legal" class="form-label">Representante Legal</label>
+                                <input type="text"
+                                    class="form-control @error('representante_legal') is-invalid @enderror"
+                                    id="representante_legal" name="representante_legal"
+                                    value="{{ old('direccion', $empresa->direccion) }}"
+                                    placeholder="Nombre del representante legal">
+                                @error('representante_legal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mt-4">
+                                    <input class="form-check-input"
+                                        type="checkbox"
+                                        id="estado" name="estado"
+                                        value="1"
+                                        {{ old('estado', true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="estado">Empresa Activa</label>
+                                </div>
+                                <div class="form-text" title="No puede inactivar o suspender la empresa por este formulario">
+                                    Esta opción solo está permitido para activar la empresa.
+                                </div>
                             </div>
                         </div>
 

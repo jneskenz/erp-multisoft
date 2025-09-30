@@ -25,6 +25,7 @@ class Empresa extends Model
         'avatar',
         'estado',
         'pais_id',
+        'representante_legal'
     ];
 
     public function pais()
@@ -47,7 +48,9 @@ class Empresa extends Model
                 'direccion',
                 'telefono',
                 'correo',
-                'estado'
+                'estado',
+                'pais_id',
+                'representante_legal'
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();

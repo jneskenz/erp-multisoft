@@ -5,12 +5,13 @@
 
 @php
     $dataBreadcrumb = [
-        'title' => 'Crear Nueva Empresa',
+        'title' => 'Gestión de Empresas',
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
         'breadcrumbs' => [
             ['name' => 'Admin. del Sistema', 'url' => route('home')],
-            ['name' => 'Nueva Empresa', 'url' => route('empresas.index'), 'active' => true]
+            ['name' => 'Empresas', 'url' => route('empresas.index')],
+            ['name' => 'Crear Empresa', 'url' => '', 'active' => true]
         ],
         'actions' => [
             [
@@ -24,8 +25,8 @@
     ];
 
     $dataHeaderCard = [
-        'title' => 'Formulario de registro para Empresa',
-        'description' => 'Complete todos los campos requeridos para registrar una nueva empresa en el sistema.',
+        'title' => 'Formulario de registro',
+        'description' => '',
         'icon' => 'ti ti-plus',
         'bgColor' => 'alert-info',
         'allowClose' => false,

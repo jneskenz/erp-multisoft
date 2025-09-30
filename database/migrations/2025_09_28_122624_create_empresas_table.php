@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('telefono', 20)->nullable();
             $table->string('correo', 100)->nullable();
             $table->string('avatar', 200)->nullable();
+            $table->string('representante_legal', 100)->nullable();
             $table->boolean('estado')->default(1)->comment('1=activo,0=inactivo,5=eliminado');
             
             $table->unsignedBigInteger('pais_id')->nullable();
