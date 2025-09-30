@@ -455,11 +455,16 @@ Este proyecto está bajo la licencia **MIT**. Ver el archivo [LICENSE](LICENSE) 
 
 ---
 
+![Previsualización](public/assets/image.png)
+
+---
+
+
 <div align="center">
 
 **⭐ Si este proyecto te resultó útil, considera darle una estrella en GitHub**
 
-**🔗 [Ver pronto una demo aquí](https://demo.multisoft.com) • [Documentación Completa](docs/) • [API Docs](docs/API.md)**
+**🔗 [Ver pronto una demo](https://demo.multisoft.com) • [Documentación Completa](docs/) • [API Docs](docs/API.md)**
 
 **Hecho con ❤️ por el equipo de ERP Multisoft | joelneskenz@gmail.com**
 
