@@ -9,7 +9,7 @@
         'description' => 'Administra las sedes del sistema',
         'icon' => 'ti ti-building-bank',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Sedes', 'url' => route('sedes.index'), 'active' => true],
         ],
         'stats' => [
@@ -29,13 +29,15 @@
     ];
 
     $dataHeaderCard = [
-        'title' => 'Sistema de Sedes',
-        'description' => 'Administra las sedes del sistema.',
-        'icon' => 'ti ti-building',
-        'bgColor' => 'alert-info',
-        'allowClose' => false,
+        'title' => 'Lista de Sedes',
+        'description' => '',
+        'textColor' => 'text-primary',
+        'icon' => 'ti ti-building-bank',
+        'iconColor' => 'bg-label-primary',
         'actions' => [
             [
+                'typeAction' => 'btnLink', // btnIdEvent, btnLink, btnToggle, btnInfo
+                'typeButton' => 'btn-primary', // btn-primary, btn-info, btn-success, btn-danger, btn-warning, btn-secondary
                 'name' => 'Crear Sede',
                 'url' => route('sedes.create'),
                 'icon' => 'ti ti-plus',
@@ -43,6 +45,7 @@
             ],
         ],
     ];
+
 
 @endphp
 
@@ -69,7 +72,7 @@
                                 <li class="nav-item mb-2 mb-md-0 me-0 me-md-3">
                                     <a class="nav-link active" href="javascript:void(0);">
                                         <i class="ti-sm ti ti-building-bank me-1"></i>
-                                        Sede
+                                        Sedes
                                     </a>
                                 </li>
                                 <li class="nav-item mb-2 mb-md-0 me-0 me-md-3">
@@ -82,11 +85,11 @@
                         </div>
                     </div>
 
+                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+
                     <div class="card-body">
                         <!-- Componente Livewire con estilo Vuexy -->
-                        <div class="table-responsive">
-                            @livewire('erp.sedes-data-table')
-                        </div>
+                        @livewire('erp.sedes-data-table')
                     </div>
                 </div>
             </div>

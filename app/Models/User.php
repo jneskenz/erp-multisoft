@@ -107,4 +107,25 @@ class User extends Authenticatable
         // Si no es superadministrador, usar la lógica normal de Spatie
         return parent::can($abilities, $arguments);
     }
+
+    /**
+     * Relación con las personalizaciones del usuario
+     */
+    public function customization()
+    {
+        return $this->hasOne(UserCustomization::class);
+    }
+
+    /**
+     * Obtener o crear las personalizaciones del usuario
+     */
+    public function getCustomization()
+    {
+        if (!$this->customization) {
+            $this->customization()->create(UserCustomization::getDefaults());
+            $this->load('customization');
+        }
+        
+        return $this->customization;
+    }
 }

@@ -20,6 +20,7 @@ class LocalController extends Controller
         $this->middleware('can:locales.create')->only('create', 'store');
         $this->middleware('can:locales.edit')->only('edit', 'update');
         $this->middleware('can:locales.delete')->only('destroy');
+        $this->middleware('can:locales.update')->only('update');
 
     }
 
@@ -28,7 +29,8 @@ class LocalController extends Controller
      */
     public function index()
     {
-        return view('erp.locales.index');
+        $locales = Local::with('sede')->get();
+        return view('erp.locales.index', compact('locales'));
     }
 
     /**

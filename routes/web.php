@@ -35,7 +35,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas de locales
     Route::resource('locales', App\Http\Controllers\Erp\LocalController::class);
-    // Route::post('locales/{local}/toggle-status', [App\Http\Controllers\Erp\LocalController::class, 'toggleStatus'])->name('locales.toggle-status');
+    Route::post('locales/{locale}/toggle-status', [App\Http\Controllers\Erp\LocalController::class, 'toggleStatus'])->name('locales.toggle-status');
+
+    // Rutas de personalización
+    Route::prefix('customization')->name('customization.')->group(function () {
+        Route::get('/', [App\Http\Controllers\CustomizationController::class, 'index'])->name('index');
+        Route::post('/update', [App\Http\Controllers\CustomizationController::class, 'update'])->name('update');
+        Route::post('/reset', [App\Http\Controllers\CustomizationController::class, 'reset'])->name('reset');
+        Route::get('/settings', [App\Http\Controllers\CustomizationController::class, 'getSettings'])->name('settings');
+    });
 
     // Rutas de administración de logs (solo para superadmin)
     Route::prefix('admin')->name('admin.')->middleware('superadmin')->group(function () {

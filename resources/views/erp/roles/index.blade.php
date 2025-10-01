@@ -5,11 +5,11 @@
 @php
     $dataBreadcrumb = [
         'title' => 'Gestión de Roles y Permisos',
-        'description' => 'Administra los roles y permisos del sistema.',
+        'description' => 'Gestiona y controla los roles y permisos',
         'icon' => 'ti ti-shield',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
-            ['name' => 'Roles y Permisos', 'url' => route('roles.index'), 'active' => true]
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
+            ['name' => 'Roles y permisos', 'url' => route('roles.index'), 'active' => true]
         ],
         'actions' => [
             // ['name' => 'Crear Rol', 'url' => route('roles.create'), 'icon' => 'ti ti-plus', 'permission' => 'roles.create'],
@@ -19,6 +19,25 @@
             ['name' => 'Total Permisos Asignados', 'value' => $roles->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success'],
         ]
     ];
+
+    $dataHeaderCard = [
+        'title' => 'Lista de Roles y Permisos',
+        'description' => 'Gestiona y controla roles y asigna permisos',
+        'textColor' => 'text-primary',
+        'icon' => 'ti ti-shield',
+        'iconColor' => 'alert-primary',
+        'actions' => [
+            [
+                'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
+                'name' => 'Crear Rol',
+                'icon' => 'ti ti-plus',
+                'permission' => 'roles.create',
+                'typeButton' => 'btn-primary',
+                'idModal' => 'createRoleModal' // necesario si es btnToggle
+            ],
+        ],
+    ];
+
 @endphp
 
 @section('content')
@@ -29,28 +48,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="alert alert-info alert-dismissible d-flex mb-0" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-users"></i></span>
-                            <div class="d-flex flex-column ps-1">
-                            <h6 class="alert-heading fw-bold mb-1">Gestión de Usuarios</h6>
-                            <p class="mb-0">Gestiona usuarios, asigna roles y controla permisos del sistema ERP.</p>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="d-flex justify-content-end">
-                            @can('roles.create')
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
-                                    <i class="ti ti-plus me-1"></i>
-                                    Crear Rol
-                                </button>
-                            @endcan
-                        </div>
-                    </div>
-                </div>
+
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
 
                 <div class="card-header">
                     <h6 class="mb-0">

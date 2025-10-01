@@ -8,15 +8,15 @@
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Empresas', 'url' => route('empresas.index')],
-            ['name' => 'Detalle Empresa', 'url' => '', 'active' => true]
+            ['name' => 'Detalle empresa', 'url' => '', 'active' => true]
         ],
         'actions' => [
             [
                 'name' => 'Regresar',
                 'url' => route('empresas.index'),
-                'typebtn' => 'btn-label-dark',
+                'typeButton' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
                 'permission' => 'empresas.view'
             ],
@@ -32,13 +32,15 @@
         'iconColor' => 'bg-label-info',
         'actions' => [
             [
+                'typeAction' => 'btnInfo',
                 'name' => $empresa->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
                 'url' => '#',
                 'icon' => $empresa->estado == 1 ? 'ti ti-check' : 'ti ti-x',
                 'permission' => null,
-                'typebtn' => $empresa->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+                'typeButton' => $empresa->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
             ],
             [
+                'typeAction' => 'btnLink',
                 'name' => 'Editar',
                 'url' => route('empresas.edit', $empresa),
                 'icon' => 'ti ti-edit',

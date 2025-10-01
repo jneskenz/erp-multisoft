@@ -4,11 +4,11 @@
 
 @php
     $dataBreadcrumb = [
-        'title' => 'Crear Nueva Sede',
+        'title' => 'Gestión de Sedes',
         'description' => 'Registra una nueva sede en el sistema',
         'icon' => 'ti ti-building-bank',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Sedes', 'url' => route('sedes.index')],
             ['name' => 'Crear sede', 'url' => route('sedes.create'), 'active' => true],
         ],
@@ -16,7 +16,7 @@
             [
                 'name' => 'Regresar',
                 'url' => route('empresas.index'),
-                'typebtn' => 'btn-label-dark',
+                'typeButton' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
                 'permission' => 'empresas.view'
             ],
@@ -24,11 +24,11 @@
     ];
 
     $dataHeaderCard = [
-        'title' => 'Formulario de registro para Sede',
-        'description' => 'Complete todos los campos requeridos para registrar una nueva sede en el sistema.',
-        'icon' => 'ti ti-edit',
-        'bgColor' => 'alert-info',
-        'allowClose' => false,
+        'title' => 'Formulario de registro',
+        'description' => '',
+        'textColor' => 'text-info',
+        'icon' => 'ti ti-plus',
+        'iconColor' => 'bg-label-info',
         'actions' => [],
     ];
 
@@ -53,6 +53,13 @@
                     <form action="{{ route('sedes.store') }}" method="POST">
                         @csrf
                         <div class="card-body">
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
                             {{-- Empresa --}}
                             <div class="row mb-3">
                                 <div class="col-12">

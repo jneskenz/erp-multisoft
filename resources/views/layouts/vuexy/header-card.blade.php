@@ -13,13 +13,30 @@
             <div class="d-flex gap-3">
                 @if ($dataHeaderCard['actions'] ?? false)
                     @foreach ($dataHeaderCard['actions'] as $action)
-                        @can($action['permission'])
-                            <a href="{{ $action['url'] }}"
-                                class="btn {{ $action['typebtn'] ?? 'btn-primary' }} waves-effect">
-                                <i class="{{ $action['icon'] }} me-2"></i>
-                                {{ $action['name'] }}
-                            </a>
-                        @endcan
+                        @if($action['typeAction'] == 'btnLink')
+                            @can($action['permission'])
+                                <a href="{{ $action['url'] ?? 'javascript:void(0)' }}"
+                                    class="btn {{ $action['typeButton'] ?? 'btn-primary' }} waves-effect">
+                                    <i class="{{ $action['icon'] }} me-2"></i>
+                                    {{ $action['name'] }}
+                                </a>
+                            @endcan
+                        @elseif($action['typeAction'] == 'btnToggle')
+                            @can($action['permission'])
+                                <button type="button" class="btn {{ $action['typeButton'] ?? 'btn-primary' }} waves-effect" data-bs-toggle="modal" data-bs-target="#{{ $action['idModal'] }}">
+                                    <i class="{{ $action['icon'] }} me-2"></i>
+                                    {{ $action['name'] }}
+                                </button>
+                            @endcan
+                        @else
+                            @can($action['permission'])
+                                <a href="{{ $action['url'] ?? 'javascript:void(0)' }}"
+                                    class="btn {{ $action['typeButton'] ?? 'btn-primary' }} waves-effect">
+                                    <i class="{{ $action['icon'] }} me-2"></i>
+                                    {{ $action['name'] }}
+                                </a>
+                            @endcan
+                        @endif
                     @endforeach
                 @endif
             </div>

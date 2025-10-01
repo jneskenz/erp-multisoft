@@ -5,20 +5,19 @@
 @php
 
     $dataBreadcrumb = [
-        'title' => 'Editar Sede',
-        'description' => 'Modifica la información de la sede',
+        'title' => 'Gestión de Sedes',
+        'description' => '',
         'icon' => 'ti ti-building-bank',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Sedes', 'url' => route('sedes.index')],
-            ['name' => $sede->nombre, 'url' => route('sedes.show', $sede)],
-            ['name' => 'Editar', 'url' => route('sedes.edit', $sede), 'active' => true],
+            ['name' => 'Editar sede', 'url' => 'javascript:void(0)', 'active' => true],
         ],
         'actions' => [
             [
                 'name' => 'Regresar',
                 'url' => route('sedes.index'),
-                'typebtn' => 'btn-label-dark',
+                'typeButton' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
                 'permission' => 'sedes.view'
             ],
@@ -27,24 +26,26 @@
     ];
 
     $dataHeaderCard = [
-        'title' => 'Editando: ' . $sede->nombre ?? 'sede',
-        'description' => 'Modifique los campos necesarios y guarde los cambios. Todos los cambios serán registrados en el historial.',
+        'title' => 'Editando la sede',
+        'description' => $sede->nombre,
+        'textColor' => 'text-warning',
         'icon' => 'ti ti-edit',
-        'bgColor' => 'alert-warning',
-        'allowClose' => false,
+        'iconColor' => 'bg-label-warning',        
         'actions' => [
             [
+                'typeAction' => 'btnInfo',
                 'name' => $sede->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
                 'url' => '#',
                 'icon' => $sede->estado == 1 ? 'ti ti-check' : 'ti ti-x',
                 'permission' => null,
-                'typebtn' => $sede->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+                'typeButton' => $sede->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
             ],
             [
+                'typeAction' => 'btnLink',
                 'name' => 'Ver detalle',
                 'url' => route('sedes.show', $sede),
-                'typebtn' => 'btn-info',
-                'icon' => 'ti ti-eye',
+                'typeButton' => 'btn-info',
+                'icon' => 'ti ti-list-search',
                 'permission' => 'sedes.view'
             ],
             
@@ -64,6 +65,14 @@
 
 
                     @include('layouts.vuexy.header-card', $dataHeaderCard)
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bx bx-error-circle me-2"></i>
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     <form action="{{ route('sedes.update', $sede) }}" method="POST">
                         @csrf

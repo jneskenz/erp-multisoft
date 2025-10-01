@@ -4,39 +4,65 @@
 
 @php
     $dataBreadcrumb = [
-        'title' => 'Detalles de la Sede',
+        'title' => 'Gestión de Sedes',
         'description' => 'Información completa de la sede',
         'icon' => 'ti ti-building-bank',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Sedes', 'url' => route('sedes.index')],
-            ['name' => $sede->nombre, 'url' => route('sedes.show', $sede), 'active' => true],
+            ['name' => 'Detalle sede', 'url' => route('sedes.show', $sede), 'active' => true],
         ],
         'actions' => [
             [
                 'name' => 'Regresar',
-                'url' => route('empresas.index'),
-                'typebtn' => 'btn-label-dark',
+                'url' => route('sedes.index'),
+                'typeButton' => 'btn-label-dark',
                 'icon' => 'ti ti-arrow-left',
-                'permission' => 'empresas.view'
+                'permission' => 'sedes.view'
             ],
 
         ],
         // 'stats' => [
-        //     [
-        //         'name' => 'Estado',
-        //         'value' => $sede->estado ? 'Activo' : 'Inactivo',
-        //         'icon' => 'ti ti-' . ($sede->estado ? 'check' : 'x'),
-        //         'color' => $sede->estado ? 'success' : 'danger'
-        //     ],
-        //     [
-        //         'name' => 'Empresa',
-        //         'value' => $sede->empresa->nombre_comercial ?? $sede->empresa->razon_social,
-        //         'icon' => 'ti ti-building',
-        //         'color' => 'primary'
-        //     ],
+            //     [
+            //         'name' => 'Estado',
+            //         'value' => $sede->estado ? 'Activo' : 'Inactivo',
+            //         'icon' => 'ti ti-' . ($sede->estado ? 'check' : 'x'),
+            //         'color' => $sede->estado ? 'success' : 'danger'
+            //     ],
+            //     [
+            //         'name' => 'Empresa',
+            //         'value' => $sede->empresa->nombre_comercial ?? $sede->empresa->razon_social,
+            //         'icon' => 'ti ti-building',
+            //         'color' => 'primary'
+            //     ],
         // ]
     ];
+
+    $dataHeaderCard = [
+        'title' => 'Información de la sede ',
+        'description' => ($sede->nombre ?? ''),
+        'textColor' => 'text-info',
+        'icon' => 'ti ti-list-search',
+        'iconColor' => 'bg-label-info',
+        'actions' => [
+            [
+                'typeAction' => 'btnInfo',
+                'name' => $sede->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
+                'url' => '#',
+                'icon' => $sede->estado == 1 ? 'ti ti-check' : 'ti ti-x',
+                'permission' => null,
+                'typeButton' => $sede->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+            ],
+            [
+                'typeAction' => 'btnLink',
+                'name' => 'Editar',
+                'url' => route('sedes.edit', $sede),
+                'icon' => 'ti ti-edit',
+                'permission' => 'sedes.edit'
+            ],
+        ],
+    ];
+
 @endphp
 
 @section('content')
@@ -48,7 +74,10 @@
             {{-- Información Principal --}}
             <div class="col-lg-8">
                 <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
+
+                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+
+                    {{-- <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
                             <div class="avatar avatar-lg me-3">
                                 <span class="avatar-initial rounded-circle bg-label-primary">
@@ -69,7 +98,7 @@
                                 {{ $sede->estado ? 'Activo' : 'Inactivo' }}
                             </span>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="card-body">
                         {{-- Información Básica --}}
@@ -203,12 +232,12 @@
                                 @endcan
                             </div>
                             <div class="d-flex gap-2">
-                                @can('sedes.edit')
+                                {{-- @can('sedes.edit')
                                     <a href="{{ route('sedes.edit', $sede) }}" class="btn btn-primary">
                                         <i class="ti ti-edit me-1"></i>
                                         Editar
                                     </a>
-                                @endcan
+                                @endcan --}}
                                 
                             </div>
                         </div>

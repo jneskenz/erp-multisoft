@@ -8,7 +8,7 @@
         'description' => 'Administra los usuarios del sistema ERP Multisoft.',
         'icon' => 'ti ti-users',
         'breadcrumbs' => [
-            ['name' => 'Admin. del Sistema', 'url' => route('home')],
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Usuarios', 'url' => route('users.index'), 'active' => true]
         ],
         'actions' => [
@@ -20,6 +20,33 @@
             ['name' => 'Usuarios Activos', 'value' => $users->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success']
         ]
     ];
+
+    $dataHeaderCard = [
+        'title' => 'Lista de Usuarios',
+        'description' => 'Gestiona usuarios y asigna roles',
+        'textColor' => 'text-primary',
+        'icon' => 'ti ti-users',
+        'iconColor' => 'alert-primary',
+        'actions' => [
+            // [
+            //     'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
+            //     'name' => 'Crear Usuario',
+            //     'url' => route('users.create'),
+            //     'icon' => 'ti ti-plus',
+            //     'permission' => 'users.create',
+            //     'typeButton' => 'btn-primary' // btn-primary, btn-info, btn-success, btn-danger, btn-warning, btn-secondary
+            // ],
+            [
+                'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
+                'name' => 'Crear Usuario',
+                'icon' => 'ti ti-plus',
+                'permission' => 'users.create',
+                'typeButton' => 'btn-primary',
+                'idModal' => 'createUserModal' // necesario si es btnToggle
+            ],
+        ],
+    ];
+
 @endphp
 
 
@@ -31,28 +58,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="alert alert-info alert-dismissible d-flex mb-0" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-users"></i></span>
-                            <div class="d-flex flex-column ps-1">
-                            <h6 class="alert-heading fw-bold mb-1">Gestión de Usuarios</h6>
-                            <p class="mb-0">Gestiona usuarios, asigna roles y controla permisos del sistema ERP.</p>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="d-flex justify-content-end">
-                            @can('empresas.create')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
-                                    <i class="bx bx-plus me-1"></i>
-                                    Crear Usuario
-                                </button>
-                            @endcan
-                        </div>
-                    </div>
-                </div>
+
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
 
                 <div class="card-body">
                     <!-- Componente Livewire con estilo Vuexy -->

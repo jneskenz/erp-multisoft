@@ -35,6 +35,7 @@ class EmpresaController extends Controller
         if ($request->filled('buscar')) {
             $query->where(function ($q) use ($request) {
                 $q->where('razon_social', 'like', '%'.$request->input('buscar').'%')
+                    ->orWhere('nombre_comercial', 'like', '%'.$request->input('buscar').'%')
                     ->orWhere('numerodocumento', 'like', '%'.$request->input('buscar').'%');
             });
         }
@@ -48,7 +49,11 @@ class EmpresaController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('erp.empresas.index', compact('empresas'));
+        // Obtener estadísticas generales (sin filtros)
+        $totalEmpresas = Empresa::count();
+        $empresasActivas = Empresa::where('estado', true)->count();
+
+        return view('erp.empresas.index', compact('empresas', 'totalEmpresas', 'empresasActivas'));
 
     }
 

@@ -2,41 +2,91 @@
 
 @section('title', 'Editar Local')
 
-@section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Editar Local: {{ $local->descripcion }}</h4>
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('locales.index') }}">Locales</a></li>
-                        <li class="breadcrumb-item active">Editar</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
+@php
 
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bx bx-error-circle me-2"></i>
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+    $dataBreadcrumb = [
+        'title' => 'Gestión de Locales',
+        'description' => '',
+        'icon' => 'ti ti-building-store',
+        'breadcrumbs' => [
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
+            ['name' => 'Locales', 'url' => route('locales.index')],
+            ['name' => 'Editar local', 'url' => 'javascript:void(0)', 'active' => true],
+        ],
+        'actions' => [
+            [
+                'name' => 'Regresar',
+                'url' => route('locales.index'),
+                'typeButton' => 'btn-label-dark',
+                'icon' => 'ti ti-arrow-left',
+                'permission' => 'locales.view'
+            ],
+
+        ],
+    ];
+
+    $dataHeaderCard = [
+        'title' => 'Editando el local',
+        'description' => $local->descripcion,
+        'textColor' => 'text-warning',
+        'icon' => 'ti ti-edit',
+        'iconColor' => 'bg-label-warning',        
+        'actions' => [
+            [
+                'typeAction' => 'btnInfo',
+                'name' => $local->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
+                'url' => '#',
+                'icon' => $local->estado == 1 ? 'ti ti-check' : 'ti ti-x',
+                'permission' => null,
+                'typeButton' => $local->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+            ],
+            [
+                'typeAction' => 'btnLink',
+                'name' => 'Ver detalle',
+                'url' => route('locales.show', $local),
+                'typeButton' => 'btn-info',
+                'icon' => 'ti ti-list-search',
+                'permission' => 'locales.view'
+            ],
+            
+        ],
+    ];
+
+@endphp
+
+@section('content')
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Breadcrumb Component -->
+    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="bx bx-edit me-2"></i>
-                        Información del Local
-                    </h5>
-                </div>
+            <div class="card mb-4">
+
+                {{-- $dataHeaderCard  --}}
+                @include('layouts.vuexy.header-card', $dataHeaderCard)
+
+                
                 <div class="card-body">
+                    <!-- Mensajes de estado -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible d-flex" role="alert">
+                            <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
+                            <div>
+                                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
+                                <p class="mb-0">{{ session('success') }}</p>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bx bx-error-circle me-2"></i>
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
                     <form action="{{ route('locales.update', $local) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -154,7 +204,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <div class="form-check">
                                 <input 
                                     class="form-check-input" 
@@ -170,23 +220,25 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end gap-2">
+                        <div class="d-flex justify-content-between gap-2">
                             <a href="{{ route('locales.index') }}" class="btn btn-secondary">
-                                <i class="bx bx-x me-1"></i>
+                                <i class="ti ti-x me-1"></i>
                                 Cancelar
                             </a>
+                            @can('locales.edit')
                             <button type="submit" class="btn btn-primary">
-                                <i class="bx bx-save me-1"></i>
+                                <i class="ti ti-check me-1"></i>
                                 Actualizar Local
                             </button>
+                            @endcan
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
+        </div>        
 
         <div class="col-lg-4">
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="bx bx-info-circle me-2"></i>
@@ -219,7 +271,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="bx bx-help-circle me-2"></i>

@@ -2,9 +2,61 @@
 
 @section('title', 'Ver Local')
 
+@php
+    $dataBreadcrumb = [
+        'title' => 'Gestión de Locales',
+        'description' => 'Información completa del local',
+        'icon' => 'ti ti-building-bank',
+        'breadcrumbs' => [
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
+            ['name' => 'Locales', 'url' => route('locales.index')],
+            ['name' => 'Detalle local', 'url' => 'javascript:void(0)'],
+        ],
+        'actions' => [
+            [
+                'name' => 'Regresar',
+                'url' => route('locales.index'),
+                'typeButton' => 'btn-label-dark',
+                'icon' => 'ti ti-arrow-left',
+                'permission' => 'locales.view'
+            ],
+
+        ],
+    ];
+
+    $dataHeaderCard = [
+        'title' => 'Información del local ',
+        'description' => ($local->descripcion ?? ''),
+        'textColor' => 'text-info',
+        'icon' => 'ti ti-list-search',
+        'iconColor' => 'bg-label-info',
+        'actions' => [
+            [
+                'typeAction' => 'btnInfo',
+                'name' => $local->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
+                'url' => '#',
+                'icon' => $local->estado == 1 ? 'ti ti-check' : 'ti ti-x',
+                'permission' => null,
+                'typeButton' => $local->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
+            ],
+            [
+                'typeAction' => 'btnLink',
+                'name' => 'Editar',
+                'url' => route('locales.edit', $local),
+                'icon' => 'ti ti-edit',
+                'permission' => 'locales.edit'
+            ],
+        ],
+    ];
+
+@endphp
+
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <!-- Breadcrumb Component -->
+        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Local: {{ $local->descripcion }}</h4>
@@ -17,103 +69,30 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="card-title mb-0">
-                            <h5 class="mb-1">Earning Reports</h5>
-                            <p class="card-subtitle">Weekly Earnings Overview</p>
-                        </div>
-                        <div class="dropdown">
-                            <button
-                                class="btn btn-text-secondary btn-icon rounded-pill text-body-secondary border-0 me-n1 waves-effect"
-                                type="button" id="earningReports" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="icon-base ti tabler-dots-vertical icon-22px text-body-secondary"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReports">
-                                <a class="dropdown-item waves-effect" href="javascript:void(0);">Download</a>
-                                <a class="dropdown-item waves-effect" href="javascript:void(0);">Refresh</a>
-                                <a class="dropdown-item waves-effect" href="javascript:void(0);">Share</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div class="badge bg-label-secondary text-body p-2 me-4 rounded"><i class="ti ti-building"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Direct Source</h6>
-                                    <small class="text-body">Direct link click</small>
-                                </div>
-                                <div class="d-flex align-content-center flex-wrap gap-3 mb-4 mb-md-0">
-                                    <div class="d-flex gap-3">
-                                        <a href="javascript:void(0);"
-                                            class="btn btn-label-{{ $local->estado ? 'success' : 'warning' }} waves-effect">
-                                            <i class="ti ti-{{ $local->estado ? 'check' : 'x' }} me-2"></i>
-                                            {{ $local->estado ? 'ACTIVO' : 'SUSPENDIDO' }}
-                                        </a>
-                                        @can('locales.edit')
-                                            <a href="{{ route('locales.edit', $local->id) }}"
-                                                class="btn btn-primary btn-sm waves-effect">
-                                                <i class="ti ti-edit me-2"></i>
-                                                Editar Local
-                                            </a>
-                                        @endcan
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-header">
-                        <div
-                            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="card mb-4">
+                    {{-- header card --}}
+                    @include('layouts.vuexy.header-card', $dataHeaderCard)
 
-                            <h5 class="card-title mb-0">
-                                <div class="badge bg-label-secondary text-body p-2 me-4 rounded">
-                                    <i class="ti ti-building"></i>
-                                </div>
-
-                                <h6 class="mb-0">Información del Local</h6>
-                                <small class="text-body">Direct link click</small>
-                            </h5>
-                            <div class="d-flex align-content-center flex-wrap gap-3 mb-4 mb-md-0">
-                                <div class="d-flex gap-3">
-                                    <a href="#"
-                                        class="btn btn-label-{{ $local->estado ? 'success' : 'warning' }} waves-effect">
-                                        <i class="ti ti-{{ $local->estado ? 'check' : 'x' }} me-2"></i>
-                                        {{ $local->estado ? 'ACTIVO' : 'SUSPENDIDO' }}
-                                    </a>
-                                    @can('locales.edit')
-                                        <a href="{{ route('locales.edit', $local->id) }}" class="btn btn-primary waves-effect">
-                                            <i class="ti ti-edit me-2"></i>
-                                            Editar Local
-                                        </a>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table class="table table-borderless">
+                                <table class="table table-hover table-bordered">
                                     <tr>
-                                        <td class="fw-bold" width="30%">Descripción:</td>
+                                        <td class="fw-bold bg-light" width="30%">Local:</td>
                                         <td>{{ $local->descripcion }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Código:</td>
+                                        <td class="fw-bold bg-light">Código:</td>
                                         <td>
                                             <span class="badge bg-light text-dark fs-6">{{ $local->codigo }}</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Sede:</td>
+                                        <td class="fw-bold bg-light">Sede:</td>
                                         <td>
                                             {{ $local->sede->nombre ?? 'Sin sede asignada' }}
                                             @if ($local->sede)
@@ -122,7 +101,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Dirección:</td>
+                                        <td class="fw-bold bg-light">Dirección:</td>
                                         <td>
                                             @if ($local->direccion)
                                                 {{ $local->direccion }}
@@ -134,9 +113,9 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <table class="table table-borderless">
+                                <table class="table table-hover table-bordered">
                                     <tr>
-                                        <td class="fw-bold" width="30%">Correo:</td>
+                                        <td class="fw-bold bg-light" width="30%">Correo:</td>
                                         <td>
                                             @if ($local->correo)
                                                 <a href="mailto:{{ $local->correo }}">{{ $local->correo }}</a>
@@ -146,7 +125,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Teléfono:</td>
+                                        <td class="fw-bold bg-light">Teléfono:</td>
                                         <td>
                                             @if ($local->telefono)
                                                 <a href="tel:{{ $local->telefono }}">{{ $local->telefono }}</a>
@@ -156,7 +135,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">WhatsApp:</td>
+                                        <td class="fw-bold bg-light">WhatsApp:</td>
                                         <td>
                                             @if ($local->whatsapp)
                                                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $local->whatsapp) }}"
@@ -170,7 +149,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Estado:</td>
+                                        <td class="fw-bold bg-light">Estado:</td>
                                         <td>
                                             <span class="badge bg-{{ $local->estado ? 'success' : 'secondary' }}">
                                                 <i class="bx bx-{{ $local->estado ? 'check' : 'x' }} me-1"></i>
@@ -182,6 +161,36 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Acciones --}}
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            {{-- <a href="{{ route('sedes.index') }}" class="btn btn-outline-secondary">
+                                <i class="ti ti-arrow-left me-1"></i>
+                                Volver a la lista
+                            </a> --}}
+                            <div>
+                                @can('locales.delete')
+                                <button type="button" class="btn btn-danger"
+                                    onclick="confirmDelete({{ $local->id }}, '{{ $local->descripcion }}')">
+                                    <i class="ti ti-trash me-1"></i>
+                                    Eliminar Local
+                                </button>
+                                @endcan
+                            </div>
+                            <div class="d-flex gap-2">
+                                @can('locales.edit')
+                                    <button type="button" class="btn btn-{{ $local->estado ? 'warning' : 'success' }}"
+                                    onclick="toggleStatus({{ $local->id }}, {{ $local->estado ? 'false' : 'true' }})">
+                                    <i class="ti ti-{{ $local->estado ? 'x' : 'check' }} me-1"></i>
+                                    {{ $local->estado ? 'Desactivar' : 'Activar' }}
+                                </button>
+                                @endcan
+                                
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 @if ($local->sede && $local->sede->empresa)
@@ -195,25 +204,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <table class="table table-borderless table-sm">
-                                        <tr>
-                                            <td class="fw-bold" width="30%">Empresa:</td>
-                                            <td>{{ $local->sede->empresa->nombre }}</td>
+                                    <table class="table table-bordered table-hover table-sm">
+                                        <tr class="">
+                                            <td class="fw-bold bg-light" width="30%">Empresa:</td>
+                                            <td>{{ $local->sede->empresa->razon_social }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold">Código:</td>
-                                            <td>{{ $local->sede->empresa->codigo }}</td>
+                                            <td class="fw-bold bg-light">RUC:</td>
+                                            <td>{{ $local->sede->empresa->numerodocumento }}</td>
                                         </tr>
                                     </table>
                                 </div>
                                 <div class="col-md-6">
-                                    <table class="table table-borderless table-sm">
-                                        <tr>
-                                            <td class="fw-bold" width="30%">Sede:</td>
+                                    <table class="table table-bordered table-hover table-sm">
+                                        <tr class="">
+                                            <td class="fw-bold bg-light" width="30%">Sede:</td>
                                             <td>{{ $local->sede->nombre }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold">Código Sede:</td>
+                                            <td class="fw-bold bg-light">Código:</td>
                                             <td>{{ $local->sede->codigo }}</td>
                                         </tr>
                                     </table>
@@ -253,37 +262,6 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                </div>
-
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="bx bx-cog me-2"></i>
-                            Acciones
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('locales.edit', $local->id) }}" class="btn btn-primary">
-                                <i class="bx bx-edit me-1"></i>
-                                Editar Local
-                            </a>
-
-                            <button type="button" class="btn btn-{{ $local->estado ? 'warning' : 'success' }}"
-                                onclick="toggleStatus({{ $local->id }}, {{ $local->estado ? 'false' : 'true' }})">
-                                <i class="bx bx-{{ $local->estado ? 'x' : 'check' }} me-1"></i>
-                                {{ $local->estado ? 'Desactivar' : 'Activar' }}
-                            </button>
-
-                            <hr>
-
-                            <button type="button" class="btn btn-danger"
-                                onclick="confirmDelete({{ $local->id }}, '{{ $local->descripcion }}')">
-                                <i class="bx bx-trash me-1"></i>
-                                Eliminar Local
-                            </button>
-                        </div>
                     </div>
                 </div>
 
@@ -347,9 +325,11 @@
             </div>
         </div>
     </div>
-@endsection
 
-@section('page-script')
+{{-- @endsection
+
+@section('page-script') --}}
+
     <script>
         function confirmDelete(localId, localName) {
             document.getElementById('localToDelete').textContent = localName;
