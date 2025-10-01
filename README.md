@@ -151,14 +151,6 @@ erp-multisoft/
    php artisan serve
    ```
 
-### 🔐 **Usuarios por Defecto**
-
-| Tipo | Email | Contraseña | Descripción |
-|------|-------|------------|-------------|
-| **SuperAdmin** | `superadmin@admin.com` | `SuperAdmin123!!` | Acceso completo al sistema |
-| **Admin** | `admin@admin.com` | `Admin123!!` | Usuario administrador normal |
-
----
 
 ## ⚙️ Configuración
 
@@ -424,7 +416,7 @@ npm run format
 - [x] Documentación completa
 
 ### 🚧 **En Desarrollo**
-- [ ] Módulo de inventarios
+- [-] Módulo de inventarios
 - [ ] Sistema de facturación
 - [ ] Reportes avanzados
 - [ ] API REST completa
