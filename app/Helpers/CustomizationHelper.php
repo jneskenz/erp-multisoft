@@ -1,13 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 if (!function_exists('getUserCustomization')) {
     /**
      * Obtener las configuraciones de personalización del usuario autenticado
      */
     function getUserCustomization()
     {
-        if (auth()->check()) {
-            return auth()->user()->getCustomization();
+        
+        if (Auth::check()) {
+            return Auth::user()->getCustomization();
         }
         
         // Valores por defecto si no hay usuario autenticado

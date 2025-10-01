@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserCustomization;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CustomizationController extends Controller
 {
@@ -53,13 +54,13 @@ class CustomizationController extends Controller
             'iconColor' => 'bg-label-primary',
             'actions' => [
                 [
-                    'typeAction' => 'btnIdEvent',
+                    'typeAction' => 'btnOnClick', // btnOnClick
                     'name' => 'Restablecer',
-                    'url' => '#',
+                    'url' => null,
                     'icon' => 'ti ti-refresh',
-                    'permission' => null,
+                    'permission' => route('customization.reset'),
                     'typeButton' => 'btn-label-warning',
-                    'id' => 'reset-header-btn',
+                    'onClickFunction' => 'resetCustomization()',
                 ],
             ],
         ];
@@ -72,31 +73,67 @@ class CustomizationController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'theme_mode' => 'required|in:light,dark,system',
-            'theme_color' => 'required|in:default,cyan,purple,orange,red,green,dark,custom',
-            'custom_color' => 'nullable|string|regex:/^#[0-9A-Fa-f]{6}$/',
-            'font_family' => 'required|in:inter,roboto,poppins,open_sans,lato',
-            'font_size' => 'required|in:small,medium,large',
-            'layout_type' => 'required|in:vertical,horizontal',
-            'layout_container' => 'required|in:fluid,boxed,detached',
-            'navbar_type' => 'required|in:fixed,static,hidden',
-            'navbar_blur' => 'boolean',
-            'sidebar_type' => 'required|in:fixed,static,hidden',
-            'sidebar_collapsed' => 'boolean',
-            'rtl_mode' => 'boolean',
-        ]);
+        try {
+            Log::info('Customization update started', $request->all());
+            
+          
 
-        $user = Auth::user();
-        $customization = $user->getCustomization();
+            $request->validate([
+                'theme_mode' => 'required|in:light,dark,system',
+                'theme_color' => 'required|in:default,cyan,purple,orange,red,green,dark,custom',
+                'font_family' => 'required|in:inter,roboto,poppins,open_sans,lato',
+                'font_size' => 'required|in:small,medium,large',
+                'layout_type' => 'required|in:vertical,horizontal',
+                'layout_container' => 'required|in:fluid,boxed,detached',
+                'navbar_type' => 'required|in:fixed,static,hidden',
+                'navbar_blur' => 'nullable|in:0,1',
+                'sidebar_collapsed' => 'nullable|in:0,1',
+                // 'navbar_blur' => 'nullable|in:0,1',
+                // 'sidebar_type' => 'nullable|in:default,compact',
+            ]);
 
-        $customization->update($request->all());
+            $user = Auth::user();
+            $customization = $user->getCustomization();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Configuración actualizada correctamente',
-            'data' => $customization
-        ]);
+            // Preparar datos para actualizar, convirtiendo strings a boolean donde sea necesario
+            $data = $request->all();
+            
+            // Convertir valores checkbox a boolean
+            if (isset($data['navbar_blur'])) {
+                $data['navbar_blur'] = $data['navbar_blur'] == '1';
+            }
+            if (isset($data['sidebar_collapsed'])) {
+                $data['sidebar_collapsed'] = $data['sidebar_collapsed'] == '1';
+            }
+
+            $customization->update($data);
+
+            Log::info('Customization updated successfully');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Configuración actualizada correctamente',
+                'data' => $customization
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation error in customization update', ['errors' => $e->errors()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+            
+        } catch (\Exception $e) {
+            Log::error('Error in customization update', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

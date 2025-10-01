@@ -28,6 +28,11 @@
                                     {{ $action['name'] }}
                                 </button>
                             @endcan
+                        @elseif($action['typeAction'] == 'btnOnClick')
+                            <button type="button" class="btn {{ $action['typeButton'] ?? 'btn-primary' }} waves-effect" onclick="{{ $action['onClickFunction'] ?? '' }}">
+                                <i class="{{ $action['icon'] }} me-2"></i>
+                                {{ $action['name'] }}
+                            </button>
                         @else
                             @can($action['permission'])
                                 <a href="{{ $action['url'] ?? 'javascript:void(0)' }}"

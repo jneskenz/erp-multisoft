@@ -1,19 +1,64 @@
 <!DOCTYPE html>
 
 @php
-    $customization = getUserCustomization();
-    $apariencia = $customization->layout_type ?? 'vertical';
-    dd($customization->layout_typ);
+    // Función auxiliar para obtener personalización del usuario
+    function getCustomizationSafe() {
+        try {
+            if (Auth::check()) {
+                $user = Auth::user();
+                if ($user && method_exists($user, 'getCustomization')) {
+                    return $user->getCustomization();
+                }
+            }
+        } catch (Exception $e) {
+            \Log::error('Error getting user customization: ' . $e->getMessage());
+        }
+        
+        // Retornar valores por defecto
+        return (object) \App\Models\UserCustomization::getDefaults();
+    }
+    
+    // Función auxiliar para obtener clases de tema
+    function getThemeClassSafe($customization) {
+        if ($customization->theme_mode === 'dark') {
+            return 'dark-style';
+        } elseif ($customization->theme_mode === 'light') {
+            return 'light-style';
+        } else { // system - por defecto usar light
+            return 'light-style';
+        }
+    }
+    
+    // Función auxiliar para convertir hex a rgb
+    function hexToRgbSafe($hex) {
+        $hex = ltrim($hex, '#');
+        if (strlen($hex) == 6) {
+            $r = hexdec(substr($hex, 0, 2));
+            $g = hexdec(substr($hex, 2, 2));
+            $b = hexdec(substr($hex, 4, 2));
+            return "$r, $g, $b";
+        }
+        return '105, 108, 255'; // default
+    }
+    
+    $customization = getCustomizationSafe();
+
+    // function para optener thema de del sistema windows, linux, mac
+    // $systemTheme = (new \Jenssegers\Agent\Agent())->isDarkMode() ? 'dark' : 'light';
+    // if ($customization->theme_mode === 'system') {
+    //     $customization->theme_mode = $systemTheme;
+    // }   
+    
 @endphp
 
 <html
   lang="{{ str_replace('_', '-', app()->getLocale()) }}"
-  class="{{ getThemeClass($customization) }} {{ getLayoutClasses($customization) }}"
+  class="{{ getThemeClassSafe($customization) }} layout-navbar-fixed layout-menu-fixed"
   dir="{{ $customization->rtl_mode ? 'rtl' : 'ltr' }}"
-  data-theme="{{ getThemeDataAttribute($customization) }}"
+  data-theme="{{ $customization->theme_mode === 'dark' ? 'theme-dark' : ($customization->theme_mode === 'light' ? 'theme-default' : 'theme-default') }}"
   data-assets-path="{{  asset('vuexy').'/' }}"
-  data-template="{{ getTemplateDataAttribute($customization) }}" 
-  style="{{ getCustomStyles($customization) }}"
+  data-template="{{ $customization->layout_type }}-menu-template"
+  data-style="{{ $customization->theme_mode }}"
 >
 
 <head>
@@ -67,19 +112,30 @@
         :root {
             @if($customization->theme_color === 'custom' && $customization->custom_color)
                 --bs-primary: {{ $customization->custom_color }};
-                --bs-primary-rgb: {{ hexToRgb($customization->custom_color) }};
+                --bs-primary-rgb: {{ hexToRgbSafe($customization->custom_color) }};
             @elseif($customization->theme_color !== 'default')
                 @php
                     $themeColors = \App\Models\UserCustomization::getThemeColors();
                     $selectedColor = $themeColors[$customization->theme_color] ?? '#696cff';
                 @endphp
                 --bs-primary: {{ $selectedColor }};
-                --bs-primary-rgb: {{ hexToRgb($selectedColor) }};
+                --bs-primary-rgb: {{ hexToRgbSafe($selectedColor) }};
             @endif
         }
         
+        @php
+            $fontFamilies = [
+                'inter' => 'Inter, sans-serif',
+                'roboto' => 'Roboto, sans-serif',
+                'poppins' => 'Poppins, sans-serif',
+                'open_sans' => 'Open Sans, sans-serif',
+                'lato' => 'Lato, sans-serif'
+            ];
+            $selectedFont = $fontFamilies[$customization->font_family ?? 'inter'] ?? 'Inter, sans-serif';
+        @endphp
+        
         body {
-            font-family: {{ getFontFamily($customization) }} !important;
+            font-family: {{ $selectedFont }} !important;
         }
         
         @if($customization->font_size === 'small')
@@ -101,7 +157,7 @@
     </style>
 
     <!-- Helpers -->
-     <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>.  
+    <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>
 
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
     <!-- <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>.  -->
@@ -118,7 +174,7 @@
 <body>
 
 
-    @if($apariencia == 'vertical')
+    @if($customization->layout_type == 'vertical')
 
     <!-- Layout wrapper | vertical -->
 

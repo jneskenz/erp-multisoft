@@ -14,20 +14,10 @@
 
                 <div class="card-body">
                     <!-- Mensajes de estado -->
-                    <div id="message-container" class="mb-3" style="display: none;">
-                        <div class="alert alert-success alert-dismissible d-flex" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
-                            <div>
-                                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
-                                <p class="mb-0" id="message-text"></p>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
+                    <div id="customization-alerts" class="mb-3"></div>
 
-                    <form id="customization-form">
+                    <form id="customization-form" method="POST" action="{{ route('customization.update') }}">
                         @csrf
-                        
                         <div class="row">
                             <!-- Configuración de Tema -->
                             <div class="col-lg-6 mb-4">
@@ -46,10 +36,10 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="theme_light">
-                                                            <input name="theme_mode" class="form-check-input" type="radio" value="light" id="theme_light" {{ $customization->theme_mode == 'light' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-sun"></i>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="theme_mode" class="form-check-input" type="radio" value="light" id="theme_light" {{ $customization->theme_mode == 'light' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Claro</span>
+                                                                <i class="ti ti-sun fs-2"></i>
                                                             </span>
                                                         </label>
                                                     </div>
@@ -57,10 +47,10 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="theme_dark">
-                                                            <input name="theme_mode" class="form-check-input" type="radio" value="dark" id="theme_dark" {{ $customization->theme_mode == 'dark' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-moon"></i>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="theme_mode" class="form-check-input" type="radio" value="dark" id="theme_dark" {{ $customization->theme_mode == 'dark' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Oscuro</span>
+                                                                <i class="ti ti-moon-stars fs-2"></i>
                                                             </span>
                                                         </label>
                                                     </div>
@@ -68,10 +58,10 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="theme_system">
-                                                            <input name="theme_mode" class="form-check-input" type="radio" value="system" id="theme_system" {{ $customization->theme_mode == 'system' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-device-desktop"></i>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="theme_mode" class="form-check-input" type="radio" value="system" id="theme_system" {{ $customization->theme_mode == 'system' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Sistema</span>
+                                                                <i class="ti ti-device-desktop fs-2"></i>
                                                             </span>
                                                         </label>
                                                     </div>
@@ -84,32 +74,20 @@
                                             <label class="form-label">Color del Tema</label>
                                             <div class="row">
                                                 @foreach(\App\Models\UserCustomization::getThemeColors() as $color => $hex)
-                                                <div class="col-3 mb-2">
+                                                <div class="col-4 mb-2">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="color_{{ $color }}">
-                                                            <input name="theme_color" class="form-check-input" type="radio" value="{{ $color }}" id="color_{{ $color }}" {{ $customization->theme_color == $color ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <span class="badge" style="background-color: {{ $hex }}; width: 20px; height: 20px;"></span>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="theme_color" class="form-check-input" type="radio" value="{{ $color }}" id="color_{{ $color }}" {{ $customization->theme_color == $color ? 'checked' : '' }}>
                                                                 <span class="fw-medium">{{ ucfirst($color) }}</span>
+                                                                <span class="btn waves-effect text-white px-2" style="background-color: {{ $hex }};">
+                                                                    <i class="ti ti-palette"></i>
+                                                                </span>
                                                             </span>
                                                         </label>
                                                     </div>
                                                 </div>
                                                 @endforeach
-                                                <div class="col-3 mb-2">
-                                                    <div class="form-check custom-option custom-option-basic">
-                                                        <label class="form-check-label custom-option-content" for="color_custom">
-                                                            <input name="theme_color" class="form-check-input" type="radio" value="custom" id="color_custom" {{ $customization->theme_color == 'custom' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-palette"></i>
-                                                                <span class="fw-medium">Personalizado</span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mt-2" id="custom-color-container" style="display: {{ $customization->theme_color == 'custom' ? 'block' : 'none' }}">
-                                                <input type="color" class="form-control form-control-color" name="custom_color" value="{{ $customization->custom_color ?? '#696cff' }}" title="Elegir color personalizado">
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +124,7 @@
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="font_small">
                                                             <input name="font_size" class="form-check-input" type="radio" value="small" id="font_small" {{ $customization->font_size == 'small' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-1">
                                                                 <span class="fw-medium" style="font-size: 12px;">Pequeña</span>
                                                             </span>
                                                         </label>
@@ -156,7 +134,7 @@
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="font_medium">
                                                             <input name="font_size" class="form-check-input" type="radio" value="medium" id="font_medium" {{ $customization->font_size == 'medium' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-1">
                                                                 <span class="fw-medium" style="font-size: 14px;">Mediana</span>
                                                             </span>
                                                         </label>
@@ -166,7 +144,7 @@
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="font_large">
                                                             <input name="font_size" class="form-check-input" type="radio" value="large" id="font_large" {{ $customization->font_size == 'large' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-1">
                                                                 <span class="fw-medium" style="font-size: 16px;">Grande</span>
                                                             </span>
                                                         </label>
@@ -190,15 +168,15 @@
                                     <div class="card-body">
                                         <!-- Tipo de layout -->
                                         <div class="mb-3">
-                                            <label class="form-label">Tipo de Layout</label>
+                                            <label class="form-label">Tipo de Navegación</label>
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="layout_vertical">
-                                                            <input name="layout_type" class="form-check-input" type="radio" value="vertical" id="layout_vertical" {{ $customization->layout_type == 'vertical' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-layout-sidebar-left"></i>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="layout_type" class="form-check-input" type="radio" value="vertical" id="layout_vertical" {{ $customization->layout_type == 'vertical' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Vertical</span>
+                                                                <i class="ti ti-layout-sidebar fs-2"></i>
                                                             </span>
                                                         </label>
                                                     </div>
@@ -206,10 +184,10 @@
                                                 <div class="col-6">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="layout_horizontal">
-                                                            <input name="layout_type" class="form-check-input" type="radio" value="horizontal" id="layout_horizontal" {{ $customization->layout_type == 'horizontal' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
-                                                                <i class="ti ti-layout-navbar"></i>
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="layout_type" class="form-check-input" type="radio" value="horizontal" id="layout_horizontal" {{ $customization->layout_type == 'horizontal' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Horizontal</span>
+                                                                <i class="ti ti-layout-navbar fs-2"></i>
                                                             </span>
                                                         </label>
                                                     </div>
@@ -224,8 +202,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="container_fluid">
-                                                            <input name="layout_container" class="form-check-input" type="radio" value="fluid" id="container_fluid" {{ $customization->layout_container == 'fluid' ? 'checked' : '' }}>
                                                             <span class="custom-option-header">
+                                                                <input name="layout_container" class="form-check-input" type="radio" value="fluid" id="container_fluid" {{ $customization->layout_container == 'fluid' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Fluido</span>
                                                             </span>
                                                         </label>
@@ -234,8 +212,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="container_boxed">
-                                                            <input name="layout_container" class="form-check-input" type="radio" value="boxed" id="container_boxed" {{ $customization->layout_container == 'boxed' ? 'checked' : '' }}>
                                                             <span class="custom-option-header">
+                                                                <input name="layout_container" class="form-check-input" type="radio" value="boxed" id="container_boxed" {{ $customization->layout_container == 'boxed' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Caja</span>
                                                             </span>
                                                         </label>
@@ -244,8 +222,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="container_detached">
-                                                            <input name="layout_container" class="form-check-input" type="radio" value="detached" id="container_detached" {{ $customization->layout_container == 'detached' ? 'checked' : '' }}>
                                                             <span class="custom-option-header">
+                                                                <input name="layout_container" class="form-check-input" type="radio" value="detached" id="container_detached" {{ $customization->layout_container == 'detached' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Separado</span>
                                                             </span>
                                                         </label>
@@ -274,8 +252,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="navbar_fixed">
-                                                            <input name="navbar_type" class="form-check-input" type="radio" value="fixed" id="navbar_fixed" {{ $customization->navbar_type == 'fixed' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="navbar_type" class="form-check-input" type="radio" value="fixed" id="navbar_fixed" {{ $customization->navbar_type == 'fixed' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Fijo</span>
                                                             </span>
                                                         </label>
@@ -284,8 +262,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="navbar_static">
-                                                            <input name="navbar_type" class="form-check-input" type="radio" value="static" id="navbar_static" {{ $customization->navbar_type == 'static' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="navbar_type" class="form-check-input" type="radio" value="static" id="navbar_static" {{ $customization->navbar_type == 'static' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Estático</span>
                                                             </span>
                                                         </label>
@@ -294,8 +272,8 @@
                                                 <div class="col-4">
                                                     <div class="form-check custom-option custom-option-basic">
                                                         <label class="form-check-label custom-option-content" for="navbar_hidden">
-                                                            <input name="navbar_type" class="form-check-input" type="radio" value="hidden" id="navbar_hidden" {{ $customization->navbar_type == 'hidden' ? 'checked' : '' }}>
-                                                            <span class="custom-option-header">
+                                                            <span class="custom-option-header pb-0">
+                                                                <input name="navbar_type" class="form-check-input" type="radio" value="hidden" id="navbar_hidden" {{ $customization->navbar_type == 'hidden' ? 'checked' : '' }}>
                                                                 <span class="fw-medium">Oculto</span>
                                                             </span>
                                                         </label>
@@ -333,7 +311,7 @@
                                 <i class="ti ti-check me-1"></i>
                                 Guardar Configuración
                             </button>
-                            <button type="button" class="btn btn-label-warning" onclick="resetToDefaults()">
+                            <button type="button" class="btn btn-label-warning" onclick="resetCustomization()">
                                 <i class="ti ti-refresh me-1"></i>
                                 Restablecer
                             </button>
@@ -348,224 +326,167 @@
 
 @push('scripts')
 <script>
-$(document).ready(function() {
-    const form = document.getElementById('customization-form');
-    const resetBtn = document.getElementById('reset-btn');
-    const resetHeaderBtn = document.getElementById('reset-header-btn');
+    $(document).ready(function() {
+        const form = document.getElementById('customization-form');
 
-    // Función para mostrar alertas
-    function showAlert(type, message) {
-        const alertsContainer = document.getElementById('customization-alerts');
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible d-flex" role="alert">
-                <span class="alert-icon rounded">
-                    <i class="ti ti-${type === 'success' ? 'check' : 'x'}"></i>
-                </span>
-                <div>
-                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">
-                        ${type === 'success' ? '¡Éxito!' : 'Error'}
-                    </h6>
-                    <p class="mb-0">${message}</p>
+        // Función para mostrar alertas
+        function showAlert(type, message) {
+            const alertsContainer = document.getElementById('customization-alerts');
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible d-flex" role="alert">
+                    <span class="alert-icon rounded">
+                        <i class="ti ti-${type === 'success' ? 'check' : 'x'}"></i>
+                    </span>
+                    <div>
+                        <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">
+                            ${type === 'success' ? '¡Éxito!' : 'Error'}
+                        </h6>
+                        <p class="mb-0">${message}</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        alertsContainer.innerHTML = alertHtml;
-        
-        // Auto-dismiss después de 5 segundos
-        setTimeout(() => {
-            const alert = alertsContainer.querySelector('.alert');
-            if (alert) {
-                const bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            }
-        }, 5000);
-    }
-
-    // Función para aplicar cambios en tiempo real
-    function applyRealtimeChanges() {
-        const formData = new FormData(form);
-        
-        // Aplicar modo de tema
-        const themeMode = formData.get('theme_mode');
-        const html = document.documentElement;
-        
-        // Remover clases anteriores de tema
-        html.classList.remove('light-style', 'dark-style');
-        
-        if (themeMode === 'dark') {
-            html.classList.add('dark-style');
-            html.setAttribute('data-theme', 'theme-dark');
-        } else if (themeMode === 'light') {
-            html.classList.add('light-style');
-            html.setAttribute('data-theme', 'theme-default');
-        } else { // system
-            // Detectar preferencia del sistema
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-                html.classList.add('dark-style');
-                html.setAttribute('data-theme', 'theme-dark');
-            } else {
-                html.classList.add('light-style');
-                html.setAttribute('data-theme', 'theme-default');
-            }
-        }
-
-        // Aplicar color de tema
-        const themeColor = formData.get('theme_color');
-        const customColor = formData.get('custom_color');
-        
-        let primaryColor = '#696cff'; // Default
-        
-        if (themeColor === 'custom' && customColor) {
-            primaryColor = customColor;
-        } else {
-            const themeColors = {
-                'default': '#696cff',
-                'cyan': '#00bcd4',
-                'purple': '#9c27b0',
-                'orange': '#ff9800',
-                'red': '#f44336',
-                'green': '#4caf50',
-                'dark': '#424242'
-            };
-            primaryColor = themeColors[themeColor] || '#696cff';
-        }
-
-        // Aplicar color personalizado con CSS custom properties
-        document.documentElement.style.setProperty('--bs-primary', primaryColor);
-        document.documentElement.style.setProperty('--bs-primary-rgb', hexToRgb(primaryColor));
-
-        // Aplicar fuente
-        const fontFamily = formData.get('font_family');
-        const fontFamilies = {
-            'inter': 'Inter, sans-serif',
-            'roboto': 'Roboto, sans-serif',
-            'poppins': 'Poppins, sans-serif',
-            'open_sans': 'Open Sans, sans-serif',
-            'lato': 'Lato, sans-serif'
-        };
-        
-        if (fontFamilies[fontFamily]) {
-            document.body.style.fontFamily = fontFamilies[fontFamily];
-        }
-
-        // Aplicar tamaño de fuente
-        const fontSize = formData.get('font_size');
-        const fontSizes = {
-            'small': '0.85rem',
-            'medium': '0.9375rem',
-            'large': '1rem'
-        };
-        
-        if (fontSizes[fontSize]) {
-            document.documentElement.style.fontSize = fontSizes[fontSize];
-        }
-
-        // Aplicar navbar blur
-        const navbarBlur = formData.get('navbar_blur');
-        const navbar = document.querySelector('.layout-navbar');
-        if (navbar) {
-            if (navbarBlur) {
-                navbar.style.backdropFilter = 'blur(10px)';
-                navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
-                if (html.classList.contains('dark-style')) {
-                    navbar.style.backgroundColor = 'rgba(33, 33, 33, 0.85)';
+            `;
+            alertsContainer.innerHTML = alertHtml;
+            
+            // Auto-dismiss después de 5 segundos
+            setTimeout(() => {
+                const alert = alertsContainer.querySelector('.alert');
+                if (alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
                 }
-            } else {
-                navbar.style.backdropFilter = '';
-                navbar.style.backgroundColor = '';
+            }, 5000);
+        }
+
+        // Función para convertir hex a rgb (solo para uso interno)
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) : '105, 108, 255';
+        }
+
+        // Event listeners para mostrar/ocultar secciones
+        form.addEventListener('change', function(e) {
+            // Mostrar/ocultar sección de color personalizado
+            if (e.target.name === 'theme_color') {
+                const customColorContainer = document.getElementById('custom-color-container');
+                if (customColorContainer) {
+                    customColorContainer.style.display = e.target.value === 'custom' ? 'block' : 'none';
+                }
             }
-        }
-    }
-
-    // Función para convertir hex a rgb
-    function hexToRgb(hex) {
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? 
-            parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) : '105, 108, 255';
-    }
-
-    // Event listeners para cambios en tiempo real
-    form.addEventListener('change', function(e) {
-        applyRealtimeChanges();
-        
-        // Mostrar/ocultar sección de color personalizado
-        if (e.target.name === 'theme_color') {
-            const customColorSection = document.getElementById('custom-color-section');
-            customColorSection.style.display = e.target.value === 'custom' ? 'block' : 'none';
-        }
-        
-        // Mostrar/ocultar configuraciones de sidebar
-        if (e.target.name === 'layout_type') {
-            const sidebarSettings = document.getElementById('sidebar-settings');
-            sidebarSettings.style.display = e.target.value === 'vertical' ? 'block' : 'none';
-        }
-    });
-
-    // Event listener para color personalizado
-    document.getElementById('custom_color').addEventListener('input', function() {
-        if (document.querySelector('input[name="theme_color"]:checked').value === 'custom') {
-            applyRealtimeChanges();
-        }
-    });
-
-    // Función para guardar configuración
-    function saveCustomization() {
-        const formData = new FormData(form);
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        // Mostrar loading
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Guardando...';
-        submitBtn.disabled = true;
-        
-        fetch('{{ route("customization.update") }}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            
+            // Mostrar/ocultar configuraciones de sidebar
+            if (e.target.name === 'layout_type') {
+                const sidebarOptions = document.getElementById('sidebar-options');
+                if (sidebarOptions) {
+                    sidebarOptions.style.display = e.target.value === 'vertical' ? 'block' : 'none';
+                }
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showAlert('success', data.message);
-                // Si hay cambios de layout, recargar página
-                setTimeout(() => {
-                    const layoutType = formData.get('layout_type');
-                    const currentTemplate = document.documentElement.getAttribute('data-template');
-                    const needsReload = (layoutType === 'horizontal' && currentTemplate.includes('vertical')) ||
-                                       (layoutType === 'vertical' && currentTemplate.includes('horizontal'));
-                    
-                    if (needsReload) {
-                        window.location.reload();
-                    }
-                }, 1000);
-            } else {
-                showAlert('danger', data.message || 'Error al guardar la configuración');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('danger', 'Error de conexión al guardar la configuración');
-        })
-        .finally(() => {
-            // Restaurar botón
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
         });
-    }
 
-    // Función para resetear configuración
+        // Función para guardar configuración
+        function saveCustomization() {
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Manejar checkboxes para convertir a boolean correcto
+            const navbarBlur = document.getElementById('navbar_blur');
+            const sidebarCollapsed = document.getElementById('sidebar_collapsed');
+            
+            // Para checkboxes no marcados, FormData no los incluye, así que los agregamos manualmente
+            formData.set('navbar_blur', navbarBlur && navbarBlur.checked ? '1' : '0');
+            formData.set('sidebar_collapsed', sidebarCollapsed && sidebarCollapsed.checked ? '1' : '0');
+            
+            console.log('Datos del formulario:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+            
+            // Mostrar loading
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Guardando...';
+            submitBtn.disabled = true;
+            
+            fetch('{{ route("customization.update") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response type:', response.type);
+                
+                // Obtener el texto de la respuesta para debuggear
+                return response.text().then(text => {
+                    console.log('Response text:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        console.log('Response was not JSON:', text.substring(0, 500));
+                        throw new Error('Response was not JSON: ' + text.substring(0, 100));
+                    }
+                });
+            })
+            .then(data => {
+                if (data.success) {
+                    
+                    showAlert('success', data.message);
+                    // Recargar página para aplicar cambios
+                    setTimeout(() => { window.location.reload(); }, 1500);
+
+                } else {
+                    showAlert('danger', data.message || 'Error al guardar la configuración');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('danger', 'Error de conexión al guardar la configuración');
+                // Solo restaurar botón si hay error
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Envío del formulario
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveCustomization();
+        });
+
+        // Inicializar visibilidad de secciones
+        const themeColorChecked = document.querySelector('input[name="theme_color"]:checked');
+        if (themeColorChecked) {
+            const customColorContainer = document.getElementById('custom-color-container');
+            if (customColorContainer) {
+                customColorContainer.style.display = themeColorChecked.value === 'custom' ? 'block' : 'none';
+            }
+        }
+        
+        const layoutTypeChecked = document.querySelector('input[name="layout_type"]:checked');
+        if (layoutTypeChecked) {
+            const sidebarOptions = document.getElementById('sidebar-options');
+            if (sidebarOptions) {
+                sidebarOptions.style.display = layoutTypeChecked.value === 'vertical' ? 'block' : 'none';
+            }
+        }
+    });
+
+    // Función global para resetear configuración
     function resetCustomization() {
         if (confirm('¿Estás seguro de restablecer todas las configuraciones a los valores por defecto?')) {
-            const buttons = [resetBtn, resetHeaderBtn].filter(btn => btn !== null);
+            // Buscar todos los botones de reset en la página
+            const resetButtons = document.querySelectorAll('button[onclick*="resetCustomization"]');
             
-            buttons.forEach(btn => {
+            resetButtons.forEach(btn => {
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Restableciendo...';
                 btn.disabled = true;
+                
+                // Guardar texto original para restaurar después
+                btn.dataset.originalText = originalText;
             });
             
             fetch('{{ route("customization.reset") }}', {
@@ -578,44 +499,48 @@ $(document).ready(function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showAlert('success', data.message);
+                    // Mostrar alerta de éxito
+                    const alertsContainer = document.getElementById('customization-alerts');
+                    const alertHtml = `
+                        <div class="alert alert-success alert-dismissible d-flex" role="alert">
+                            <span class="alert-icon rounded">
+                                <i class="ti ti-check"></i>
+                            </span>
+                            <div>
+                                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">
+                                    ¡Éxito!
+                                </h6>
+                                <p class="mb-0">${data.message}</p>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    alertsContainer.innerHTML = alertHtml;
+                    
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
                 } else {
-                    showAlert('danger', data.message || 'Error al restablecer la configuración');
+                    alert('Error al restablecer la configuración: ' + (data.message || 'Error desconocido'));
+                    // Restaurar botones solo si hay error
+                    const resetButtons = document.querySelectorAll('button[onclick*="resetCustomization"]');
+                    resetButtons.forEach(btn => {
+                        btn.innerHTML = btn.dataset.originalText || '<i class="ti ti-refresh me-1"></i>Restablecer';
+                        btn.disabled = false;
+                    });
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showAlert('danger', 'Error de conexión al restablecer la configuración');
-            })
-            .finally(() => {
-                buttons.forEach(btn => {
-                    btn.innerHTML = btn.id === 'reset-btn' ? '<i class="ti ti-refresh me-1"></i>Restablecer por Defecto' : '<i class="ti ti-refresh me-1"></i>Restablecer';
+                alert('Error de conexión al restablecer la configuración');
+                // Restaurar botones en caso de error
+                const resetButtons = document.querySelectorAll('button[onclick*="resetCustomization"]');
+                resetButtons.forEach(btn => {
+                    btn.innerHTML = btn.dataset.originalText || '<i class="ti ti-refresh me-1"></i>Restablecer';
                     btn.disabled = false;
                 });
             });
         }
     }
-
-    // Envío del formulario
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveCustomization();
-    });
-
-    // Event listeners para botones de reset
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetCustomization);
-    }
-    
-    if (resetHeaderBtn) {
-        resetHeaderBtn.addEventListener('click', resetCustomization);
-    }
-
-    // Aplicar configuración inicial
-    applyRealtimeChanges();
-});
 </script>
 @endpush

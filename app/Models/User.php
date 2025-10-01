@@ -121,6 +121,7 @@ class User extends Authenticatable
      */
     public function getCustomization()
     {
+
         if (!$this->customization) {
             $this->customization()->create(UserCustomization::getDefaults());
             $this->load('customization');

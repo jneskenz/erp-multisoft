@@ -40,8 +40,8 @@
         'iconColor' => 'bg-label-primary',
         'actions' => [
             [
-                'typeAction' => 'btnLink',
                 'typeAction' => 'btnLink', // btnIdEvent, btnLink, btnToggle, btnInfo
+                'typeButton' => 'btn-primary', 
                 'name' => 'Crear Empresa',
                 'url' => route('empresas.create'),
                 'icon' => 'ti ti-plus',
@@ -226,7 +226,7 @@
                                                             @can('empresas.view')
                                                                 <li>
                                                                     <a class="dropdown-item" href="{{ route('empresas.show', $empresa) }}">
-                                                                        <i class="ti ti-list-search me-2"></i>Ver detalles
+                                                                        <i class="ti ti-list me-2"></i>Ver detalles
                                                                     </a>
                                                                 </li>
                                                             @endcan
