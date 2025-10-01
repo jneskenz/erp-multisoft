@@ -15,6 +15,7 @@ class GrupoEmpresarial extends Model
     protected $table = 'grupo_empresarials';
 
     protected $fillable = [
+        'user_uuid',
         'nombre',
         'descripcion',
         'codigo',

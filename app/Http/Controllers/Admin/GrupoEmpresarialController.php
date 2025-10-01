@@ -19,7 +19,7 @@ class GrupoEmpresarialController extends Controller
         $this->middleware('can:grupo_empresarial.create')->only(['create', 'store']);
         $this->middleware('can:grupo_empresarial.edit')->only(['edit', 'update']);
         $this->middleware('can:grupo_empresarial.delete')->only(['destroy', 'toggleStatus']);
-        
+
     }
 
     /**
@@ -27,6 +27,7 @@ class GrupoEmpresarialController extends Controller
      */
     public function index()
     {
+
         $grupos = GrupoEmpresarial::withCount('empresas')->orderBy('nombre')->get();
         return view('admin.grupo-empresarial.index', compact('grupos'));
     }
@@ -58,6 +59,7 @@ class GrupoEmpresarialController extends Controller
 
         try {
             $grupo = GrupoEmpresarial::create([
+                'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
                 'codigo' => strtoupper($request->codigo),

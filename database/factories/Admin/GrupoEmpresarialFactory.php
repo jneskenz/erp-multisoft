@@ -19,6 +19,7 @@ class GrupoEmpresarialFactory extends Factory
 
         return [
             'nombre' => $this->faker->company(),
+            'user_uuid' => $this->faker->unique()->uuid(),
             'descripcion' => $this->faker->optional()->paragraph(),
             'codigo' => strtoupper($this->faker->unique()->bothify('???###')),
             'pais_origen' => $this->faker->optional()->country(),

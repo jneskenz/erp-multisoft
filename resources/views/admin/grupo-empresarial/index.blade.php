@@ -58,17 +58,21 @@
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>País Origen</th>
-                                <th>Empresas</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>UUID</th>
+                                <th>CÓDIGO</th>
+                                <th>GRUPO EMPRESARIAL</th>
+                                <th>PAÍS ORIGEN</th>
+                                <th>EMPRESAS</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($grupos as $grupo)
                                 <tr>
+                                    <td>
+                                        <span class="badge bg-label-success">{{ Str::limit($grupo->user_uuid, 10) }}</span>
+                                    </td>
                                     <td>
                                         <span class="badge bg-label-info">{{ $grupo->codigo }}</span>
                                     </td>

@@ -63,7 +63,7 @@
                                 <label for="codigo" class="form-label">Código <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('codigo') is-invalid @enderror" 
                                        id="codigo" name="codigo" value="{{ old('codigo', $grupoEmpresarial->codigo) }}" required
-                                       style="text-transform: uppercase" maxlength="20">
+                                       style="text-transform: uppercase" maxlength="20" readonly="true">
                                 @error('codigo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

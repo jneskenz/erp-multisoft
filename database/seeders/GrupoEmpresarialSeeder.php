@@ -15,6 +15,7 @@ class GrupoEmpresarialSeeder extends Seeder
     {
         $grupos = [
             [
+                'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
                 'nombre' => 'Grupo Multisoft',
                 'descripcion' => 'Grupo empresarial líder en soluciones tecnológicas y software empresarial',
                 'codigo' => 'GMS001',
@@ -26,6 +27,7 @@ class GrupoEmpresarialSeeder extends Seeder
                 'estado' => true
             ],
             [
+                'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
                 'nombre' => 'Corporación Innovación',
                 'descripcion' => 'Corporación especializada en innovación tecnológica y transformación digital',
                 'codigo' => 'CORP001',
@@ -37,6 +39,7 @@ class GrupoEmpresarialSeeder extends Seeder
                 'estado' => true
             ],
             [
+                'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
                 'nombre' => 'Holding Empresarial SA',
                 'descripcion' => 'Holding empresarial con inversiones en múltiples sectores económicos',
                 'codigo' => 'HOLD001',
