@@ -32,6 +32,9 @@
     28 => 'Termwind\\Laravel\\TermwindServiceProvider',
     29 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
     30 => 'App\\Providers\\AppServiceProvider',
+    31 => 'App\\Providers\\CustomizationServiceProvider',
+    32 => 'App\\Providers\\SuperAdminServiceProvider',
+    33 => 'App\\Providers\\VoltServiceProvider',
   ),
   'eager' => 
   array (
@@ -51,6 +54,9 @@
     13 => 'Termwind\\Laravel\\TermwindServiceProvider',
     14 => 'Phiki\\Adapters\\Laravel\\PhikiServiceProvider',
     15 => 'App\\Providers\\AppServiceProvider',
+    16 => 'App\\Providers\\CustomizationServiceProvider',
+    17 => 'App\\Providers\\SuperAdminServiceProvider',
+    18 => 'App\\Providers\\VoltServiceProvider',
   ),
   'deferred' => 
   array (
