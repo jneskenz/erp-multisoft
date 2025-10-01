@@ -25,7 +25,8 @@ class Empresa extends Model
         'avatar',
         'estado',
         'pais_id',
-        'representante_legal'
+        'representante_legal',
+        'grupo_empresarial_id'
     ];
 
     public function pais()
@@ -36,6 +37,11 @@ class Empresa extends Model
     public function sedes()
     {
         return $this->hasMany(Sede::class, 'empresa_id');
+    }
+
+    public function grupoEmpresarial()
+    {
+        return $this->belongsTo(\App\Models\Admin\GrupoEmpresarial::class, 'grupo_empresarial_id');
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -50,7 +56,8 @@ class Empresa extends Model
                 'correo',
                 'estado',
                 'pais_id',
-                'representante_legal'
+                'representante_legal',
+                'grupo_empresarial_id'
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();

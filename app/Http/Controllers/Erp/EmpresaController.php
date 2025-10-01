@@ -62,7 +62,8 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        return view('erp.empresas.create');
+        $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
+        return view('erp.empresas.create', compact('gruposEmpresariales'));
     }
 
     /**
@@ -128,7 +129,8 @@ class EmpresaController extends Controller
      */
     public function edit(Empresa $empresa)
     {
-        return view('erp.empresas.edit', compact('empresa'));
+        $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
+        return view('erp.empresas.edit', compact('empresa', 'gruposEmpresariales'));
     }
 
     /**

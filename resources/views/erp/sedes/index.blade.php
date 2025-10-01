@@ -76,7 +76,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item mb-2 mb-md-0 me-0 me-md-3">
-                                    <a class="nav-link border" href="pages-account-settings-billing.html">
+                                    <a class="nav-link border" href="{{ route('locales.index') }}">
                                         <i class="ti-xs ti ti-building-store me-1"></i>
                                         Locales
                                     </a>

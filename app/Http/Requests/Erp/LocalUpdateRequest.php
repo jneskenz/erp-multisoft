@@ -36,6 +36,7 @@ class LocalUpdateRequest extends FormRequest
                     ->whereNull('deleted_at')
                     ->ignore($localId)
             ],
+            'tipo_local_id' => ['nullable', 'integer', 'exists:tipo_locales,id'],
             'direccion' => ['nullable', 'string', 'max:500'],
             'correo' => ['nullable', 'email', 'max:255'],
             'telefono' => ['nullable', 'string', 'max:20'],

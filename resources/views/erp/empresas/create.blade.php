@@ -169,7 +169,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="representante_legal" class="form-label">Representante Legal</label>
                                 <input type="text"
                                     class="form-control @error('representante_legal') is-invalid @enderror"
@@ -181,7 +181,23 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="grupo_empresarial_id" class="form-label">Grupo Empresarial</label>
+                                <select class="form-select @error('grupo_empresarial_id') is-invalid @enderror"
+                                    id="grupo_empresarial_id" name="grupo_empresarial_id">
+                                    <option value="">Seleccionar grupo empresarial...</option>
+                                    @foreach($gruposEmpresariales as $id => $nombre)
+                                        <option value="{{ $id }}" {{ old('grupo_empresarial_id') == $id ? 'selected' : '' }}>
+                                            {{ $nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('grupo_empresarial_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
                                 <div class="form-check form-switch mt-4">
                                     <input class="form-check-input"
                                         type="checkbox"

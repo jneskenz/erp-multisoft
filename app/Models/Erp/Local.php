@@ -18,6 +18,7 @@ class Local extends Model
     protected $fillable = [
         'descripcion',
         'codigo',
+        'tipo_local_id',
         'direccion',
         'correo',
         'telefono',
@@ -39,6 +40,14 @@ class Local extends Model
     public function sede()
     {
         return $this->belongsTo(Sede::class, 'sede_id');
+    }
+
+    /*
+    * Relacion: Local pertenece a un Tipo de Local
+    */
+    public function tipoLocal()
+    {
+        return $this->belongsTo(TipoLocal::class, 'tipo_local_id');
     }
 
     /**

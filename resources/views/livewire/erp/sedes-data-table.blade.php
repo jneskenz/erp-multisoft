@@ -227,7 +227,7 @@
         <div class="col-sm-12 col-md-6">
             @if ($sedes->hasPages())
                 <div class="d-flex justify-content-end">
-                    {{ $sedes->links('custom-pagination') }}
+                    {{ $sedes->links('components.table-pagination-custom') }}
                 </div>
             @endif
         </div>

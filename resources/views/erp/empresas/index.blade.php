@@ -303,7 +303,7 @@
                                             </small>
                                         </div>
                                         <div>
-                                            {{ $empresas->links('pagination.vuexy') }}
+                                            {{ $empresas->links('components.table-pagination-custom') }}
                                         </div>
                                     </div>
                                 </div>

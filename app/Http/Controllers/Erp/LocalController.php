@@ -7,6 +7,7 @@ use App\Http\Requests\Erp\LocalStoreRequest;
 use App\Http\Requests\Erp\LocalUpdateRequest;
 use App\Models\Erp\Local;
 use App\Models\Erp\Sede;
+use App\Models\Erp\TipoLocal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,7 +43,11 @@ class LocalController extends Controller
             ->orderBy('nombre')
             ->get();
 
-        return view('erp.locales.create', compact('sedes'));
+        $tipoLocales = TipoLocal::where('estado', true)
+            ->orderBy('nombre')
+            ->get();
+
+        return view('erp.locales.create', compact('sedes', 'tipoLocales'));
     }
 
     /**
@@ -95,7 +100,11 @@ class LocalController extends Controller
             ->orderBy('nombre')
             ->get();
 
-        return view('erp.locales.edit', compact('local', 'sedes'));
+        $tipoLocales = TipoLocal::where('estado', true)
+            ->orderBy('nombre')
+            ->get();
+
+        return view('erp.locales.edit', compact('local', 'sedes', 'tipoLocales'));
     }
 
     /**

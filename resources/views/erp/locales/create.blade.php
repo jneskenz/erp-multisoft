@@ -86,6 +86,28 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="tipo_local_id" class="form-label">Tipo de Local</label>
+                                <div class="input-group">
+                                    <select class="form-select @error('tipo_local_id') is-invalid @enderror" 
+                                            id="tipo_local_id" name="tipo_local_id">
+                                        <option value="">Seleccionar tipo de local...</option>
+                                        @foreach($tipoLocales as $tipo)
+                                            <option value="{{ $tipo->id }}" 
+                                                {{ old('tipo_local_id') == $tipo->id ? 'selected' : '' }}>
+                                                {{ $tipo->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="btn btn-outline-primary" id="btnManageTipoLocal">
+                                        <i class="ti ti-settings"></i>
+                                    </button>
+                                </div>
+                                @error('tipo_local_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="sede_id" class="form-label">Sede <span class="text-danger">*</span></label>
                                 <select class="form-select @error('sede_id') is-invalid @enderror" id="sede_id"
                                     name="sede_id" required>
@@ -206,6 +228,52 @@
     </div>
 @endsection
 
+<!-- Modal para gestionar tipos de locales -->
+<div class="modal fade" id="modalTipoLocal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTipoLocalTitle">Gestionar Tipo de Local</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formTipoLocal">
+                <div class="modal-body">
+                    <input type="hidden" id="tipoLocalId" name="id">
+                    
+                    <div class="mb-3">
+                        <label for="nombreTipoLocal" class="form-label">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nombreTipoLocal" name="nombre" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descripcionTipoLocal" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionTipoLocal" name="descripcion" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="estadoTipoLocal" name="estado" checked>
+                            <label class="form-check-label" for="estadoTipoLocal">
+                                Activo
+                            </label>
+                        </div>
+                        <div class="alert alert-warning mt-2 d-none" id="alertEstadoDesactivado">
+                            <i class="ti ti-alert-triangle me-1"></i>
+                            <strong>Atención:</strong> Al desmarcar esta opción, el tipo de local no estará disponible para nuevos registros.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="btnSubmitText">Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section('page-script')
     <script>
         // Auto-generar código basado en descripción
@@ -234,5 +302,159 @@
         document.getElementById('codigo').addEventListener('input', function() {
             this.value = this.value.toUpperCase();
         });
+
+        // Gestión del modal de tipos de locales
+        const modalTipoLocal = new bootstrap.Modal(document.getElementById('modalTipoLocal'));
+        const formTipoLocal = document.getElementById('formTipoLocal');
+        const selectTipoLocal = document.getElementById('tipo_local_id');
+        const estadoCheckbox = document.getElementById('estadoTipoLocal');
+        const alertEstado = document.getElementById('alertEstadoDesactivado');
+        let editingTipoLocalId = null;
+
+        // Mostrar/ocultar alerta según el estado del checkbox
+        estadoCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                alertEstado.classList.add('d-none');
+            } else {
+                alertEstado.classList.remove('d-none');
+            }
+        });
+
+        // Abrir modal para crear o editar
+        document.getElementById('btnManageTipoLocal').addEventListener('click', function() {
+            const selectedValue = selectTipoLocal.value;
+            
+            if (selectedValue) {
+                // Editar tipo existente
+                editingTipoLocalId = selectedValue;
+                loadTipoLocal(selectedValue);
+                document.getElementById('modalTipoLocalTitle').textContent = 'Editar Tipo de Local';
+                document.getElementById('btnSubmitText').textContent = 'Actualizar';
+            } else {
+                // Crear nuevo tipo
+                editingTipoLocalId = null;
+                formTipoLocal.reset();
+                document.getElementById('estadoTipoLocal').checked = true;
+                alertEstado.classList.add('d-none'); // Ocultar alerta al crear nuevo
+                document.getElementById('modalTipoLocalTitle').textContent = 'Nuevo Tipo de Local';
+                document.getElementById('btnSubmitText').textContent = 'Guardar';
+            }
+            
+            modalTipoLocal.show();
+        });
+
+        // Cargar datos del tipo de local para edición
+        function loadTipoLocal(id) {
+            fetch(`/api/tipo-locales/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('tipoLocalId').value = data.id;
+                    document.getElementById('nombreTipoLocal').value = data.nombre;
+                    document.getElementById('descripcionTipoLocal').value = data.descripcion || '';
+                    document.getElementById('estadoTipoLocal').checked = data.estado;
+                    
+                    // Mostrar/ocultar alerta según el estado cargado
+                    if (data.estado) {
+                        alertEstado.classList.add('d-none');
+                    } else {
+                        alertEstado.classList.remove('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al cargar los datos del tipo de local');
+                });
+        }
+
+        // Manejar envío del formulario
+        formTipoLocal.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(formTipoLocal);
+            const data = {
+                nombre: formData.get('nombre'),
+                descripcion: formData.get('descripcion'),
+                estado: formData.get('estado') ? true : false
+            };
+            
+            // Verificar si el estado está desmarcado y requiere confirmación
+            if (!data.estado) {
+                const confirmMessage = `⚠️ ADVERTENCIA: Está a punto de crear el tipo de local "${data.nombre}" en estado DESACTIVADO.\n\n` +
+                                     `Al crear este tipo de local desactivado:\n` +
+                                     `• No aparecerá en la lista de selección para nuevos locales\n` +
+                                     `• Tendrá que activarlo posteriormente si desea usarlo\n\n` +
+                                     `¿Está seguro de que desea continuar?`;
+                
+                if (!confirm(confirmMessage)) {
+                    return; // Cancelar la operación
+                }
+                
+                // Segunda confirmación más específica
+                const finalConfirmMessage = `🔴 CONFIRMACIÓN FINAL\n\n` +
+                                          `¿Confirma que desea crear el tipo de local "${data.nombre}" DESACTIVADO?\n\n` +
+                                          `Puede activarlo posteriormente desde el listado de tipos.`;
+                
+                if (!confirm(finalConfirmMessage)) {
+                    return; // Cancelar la operación
+                }
+            }
+            
+            const url = editingTipoLocalId ? `/api/tipo-locales/${editingTipoLocalId}` : '/api/tipo-locales';
+            const method = editingTipoLocalId ? 'PUT' : 'POST';
+            
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    modalTipoLocal.hide();
+                    refreshTipoLocalSelect();
+                    
+                    // Mensaje específico si se creó desactivado
+                    if (!data.estado) {
+                        alert(`✅ ${result.message}\n\n⚠️ El tipo de local "${data.nombre}" fue creado DESACTIVADO y no aparecerá en la lista de selección hasta que lo active.`);
+                    } else {
+                        alert(result.message);
+                    }
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al procesar la solicitud');
+            });
+        });
+
+        // Refrescar el select de tipos de locales
+        function refreshTipoLocalSelect() {
+            fetch('/api/tipo-locales')
+                .then(response => response.json())
+                .then(data => {
+                    const currentValue = selectTipoLocal.value;
+                    selectTipoLocal.innerHTML = '<option value="">Seleccionar tipo de local...</option>';
+                    
+                    data.forEach(tipo => {
+                        if (tipo.estado) {
+                            const option = new Option(tipo.nombre, tipo.id);
+                            selectTipoLocal.add(option);
+                        }
+                    });
+                    
+                    // Restaurar selección si existía
+                    if (currentValue) {
+                        selectTipoLocal.value = currentValue;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     </script>
 @endsection

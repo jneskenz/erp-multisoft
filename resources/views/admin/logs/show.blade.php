@@ -532,7 +532,9 @@
 
 @section('page-script')
 
-    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script> --}}
+    <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.3.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
     <script>
         // Función para copiar al portapapeles
         function copyToClipboard(elementId) {

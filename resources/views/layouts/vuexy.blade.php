@@ -167,6 +167,8 @@
     <script src="{{ asset('vuexy/js/config.js') }}"></script>
 
     @livewireStyles
+
+    @yield('page-style')
     
 
 </head>
@@ -323,6 +325,10 @@
             </script>
         @endif
     @endauth
+
+
+    @yield('page-script')
+
 </body>
 
 </html>

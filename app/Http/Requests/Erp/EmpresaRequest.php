@@ -25,6 +25,7 @@ class EmpresaRequest extends FormRequest
 
         
         $empresaId = $this->route('empresa') ? $this->route('empresa')->id : null;
+        
         Log::info('Validando datos de empresa');
 
         return [
@@ -73,6 +74,10 @@ class EmpresaRequest extends FormRequest
                 'nullable',
                 'exists:paises,id',
             ],
+            'grupo_empresarial_id' => [
+                'nullable',
+                'exists:grupo_empresarials,id',
+            ],
         ];
         
     }
@@ -106,6 +111,7 @@ class EmpresaRequest extends FormRequest
             'estado.required' => 'El estado es obligatorio.',
             'estado.boolean' => 'El estado debe ser verdadero o falso.',
             'pais_id.exists' => 'El país seleccionado no es válido.',
+            'grupo_empresarial_id.exists' => 'El grupo empresarial seleccionado no es válido.',
         ];
     }
 

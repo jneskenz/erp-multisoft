@@ -51,8 +51,8 @@
     @endif
 
     <!-- Tabla de usuarios estilo Vuexy -->
-    <table class="datatables-users table border-top">
-        <thead>
+    <table class="datatables-users table table-bordered border-top">
+        <thead class="table-dark">
             <tr>
                 <th class="text-center">ID</th>
                 <th><i class="ti ti-user me-2"></i>USUARIO</th>
@@ -214,7 +214,8 @@
         <div>
             @if($users->hasPages())
                 <nav aria-label="Paginación de usuarios">
-                    {{ $users->links('pagination::bootstrap-4') }}
+                    {{ $users->links('components.table-pagination-custom') }}
+                    {{-- {{ $users->links('pagination::bootstrap-4') }} --}}
                 </nav>
             @endif
         </div>

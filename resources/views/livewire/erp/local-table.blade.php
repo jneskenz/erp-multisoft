@@ -61,7 +61,7 @@
                                     @endif
                                 </th>
                                 <th wire:click="sortBy('descripcion')" style="cursor: pointer;">
-                                    Descripción
+                                    Local
                                     @if ($sortField === 'descripcion')
                                         <i class="bx bx-{{ $sortDirection === 'asc' ? 'up' : 'down' }}-arrow-alt"></i>
                                     @endif
@@ -154,8 +154,7 @@
                         </small>
                     </div>
                     <div>
-                        {{-- {{ $locales->links() }} --}}
-                        {{ $locales->links('custom-pagination') }}
+                        {{ $locales->links('components.table-pagination-custom') }}
                     </div>
                 </div>
             @else

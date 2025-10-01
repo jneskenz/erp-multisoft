@@ -49,13 +49,13 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             @if ($dataBreadcrumb['actions'] ?? false)
                 @foreach ($dataBreadcrumb['actions'] as $action)
-                    @can($action['permission'])
+                    {{-- @can($action['permission']) --}}
                         {{-- agrega en la etiqueta a una clase para cuando es responsive --}}
                         <a href="{{ $action['url'] }}" class="btn {{ $action['typeButton'] ?? 'btn-primary' }} waves-effect">
                             <i class="{{ $action['icon'] }} me-2"></i>
                             {{ $action['name'] }}
                         </a>
-                    @endcan
+                    {{-- @endcan --}}
                 @endforeach
             @endif
 

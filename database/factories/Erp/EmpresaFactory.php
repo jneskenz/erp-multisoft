@@ -27,6 +27,7 @@ class EmpresaFactory extends Factory
             'estado' => $this->faker->randomElement(['1', '0']),
             'pais_id' => \App\Models\Erp\Pais::factory(),
             'representante_legal' => $this->faker->name(),
+            'grupo_empresarial_id' => \App\Models\Admin\GrupoEmpresarial::factory(),
         ];
     }
 }

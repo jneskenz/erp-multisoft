@@ -32,6 +32,7 @@ class LocalStoreRequest extends FormRequest
                 'regex:/^[A-Za-z0-9_-]+$/',
                 Rule::unique('locales', 'codigo')->whereNull('deleted_at')
             ],
+            'tipo_local_id' => ['nullable', 'integer', 'exists:tipo_locales,id'],
             'direccion' => ['nullable', 'string', 'max:500'],
             'correo' => ['nullable', 'email', 'max:255'],
             'telefono' => ['nullable', 'string', 'max:20'],
