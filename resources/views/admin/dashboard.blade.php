@@ -1,4 +1,4 @@
-@extends('layouts.app-erp')
+@extends('layouts.adm')
 
 @section('title', 'Dashboard - ERP Multisoft')
 

@@ -72,24 +72,7 @@
                     </a>
                 </li>
 
-                @superadmin
-                    <li class="menu-item {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
-                        <a href="{{ route('admin.logs.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ti ti-bug"></i>
-                            <div data-i18n="Analytics">Logs System</div>
-                            <div class="badge text-bg-danger rounded-pill ms-auto" id="errorCount" style="display: none;">
-                                0
-                            </div>
-                        </a>
-                    </li>
-
-                    <li class="menu-item {{ request()->routeIs('admin.grupo-empresarial.*') ? 'active' : '' }}">
-                        <a href="{{ route('admin.grupo-empresarial.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ti ti-building-bank"></i>
-                            <div data-i18n="Analytics">Grupos Empresariales</div>
-                        </a>
-                    </li>
-                @endsuperadmin
+                
 
             </ul>
         </li>
@@ -174,7 +157,8 @@
                 
             </ul>
         </li>
-        
+
+
 
         <!-- Módulos del ERP -->
         <li class="menu-header small text-uppercase">
@@ -217,6 +201,11 @@
                 <li class="menu-item">
                     <a href="#" class="menu-link">
                         <div data-i18n="Container">Stock</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Container">Kardex</div>
                     </a>
                 </li>
             </ul>
@@ -295,6 +284,16 @@
                     </a>
                 </li>
             </ul>
+        </li>
+
+        <!-- Módulos del CRM -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Módulos CRM</span>
+        </li>
+
+        <!-- Recursos Humanos -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Módulo RR.HH.</span>
         </li>
 
         <!-- Reportes -->

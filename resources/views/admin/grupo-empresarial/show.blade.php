@@ -1,4 +1,4 @@
-@extends('layouts.vuexy')
+@extends('layouts.adm')
 
 @section('title', 'Detalle del Grupo Empresarial')
 

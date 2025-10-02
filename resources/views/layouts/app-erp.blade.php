@@ -113,7 +113,7 @@
     @stack('styles')
     
     <!-- Custom User Styles -->
-    @include('layouts.vuexy.custom-template', ['customization' => $customization])
+    @include('layouts.partials.custom-template', ['customization' => $customization])
 
     <!-- Helpers -->
     <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>
@@ -146,13 +146,13 @@
         <div class="layout-container">
 
             <!-- Menu principal -->
-            @include('layouts.vuexy.sidebar')
+            @include('layouts.partials.erp.sidebar')
             <!-- / Menu principal -->
 
             <div class="layout-page">
 
                 <!-- Navbar -->
-                @include('layouts.vuexy.navbar')
+                @include('layouts.partials.erp.navbar')
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
@@ -163,7 +163,7 @@
                     <!-- / Content -->
 
                     <!-- Footer -->
-                    @include('layouts.vuexy.footer')
+                    @include('layouts.partials.erp.footer')
                     <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>
@@ -186,7 +186,7 @@
         <div class="layout-container">
 
             <!-- Menu principal -->
-            @include('layouts.vuexy.headerbar')
+            @include('layouts.partials.erp.headerbar')
             <!-- / Menu principal -->
 
             <div class="layout-page">
@@ -195,7 +195,7 @@
                 <div class="content-wrapper">
 
                     <!-- Menu -->
-                    @include('layouts.vuexy.menu')
+                    @include('layouts.partials.erp.menu')
                     <!-- / Menu -->
 
                     <!-- Content -->
@@ -205,7 +205,7 @@
                     <!-- / Content -->
 
                     <!-- Footer -->
-                    @include('layouts.vuexy.footer')
+                    @include('layouts.partials.erp.footer')
                     <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>

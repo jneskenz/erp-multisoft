@@ -1,4 +1,4 @@
-@extends('layouts.vuexy')
+@extends('layouts.app-erp')
 
 @section('title', 'Personalización del Sistema')
 
