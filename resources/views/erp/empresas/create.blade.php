@@ -4,23 +4,14 @@
 
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Empresas',
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Empresas', 'url' => route('empresas.index')],
             ['name' => 'Crear empresa', 'url' => '', 'active' => true]
-        ],
-        'actions' => [
-            [
-                'name' => 'Regresar',
-                'url' => route('empresas.index'),
-                'typeButton' => 'btn-label-dark',
-                'icon' => 'ti ti-arrow-left',
-                'permission' => 'empresas.view'
-            ],
         ],
     ];
 
@@ -40,13 +31,29 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:extra>
+            @can('empresas.view')
+            <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+        </x-slot:extra>
+    </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
 
-                @include('layouts.vuexy.header-card', $dataHeaderCard)
+                <x-erp.card-header 
+                    title="Formulario de registro" 
+                    description=""
+                    textColor="text-plus"
+                    icon="ti ti-building"
+                    iconColor="bg-label-info"
+                >
+                </x-erp.card-header>
 
                 <div class="card-body">
                     {{-- Mensajes de alerta --}}

@@ -3,53 +3,77 @@
 @section('title', 'Gestión de Roles - ERP Multisoft')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Roles y Permisos',
         'description' => 'Gestiona y controla los roles y permisos',
         'icon' => 'ti ti-shield',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Roles y permisos', 'url' => route('roles.index'), 'active' => true]
-        ],
-        'actions' => [
-            // ['name' => 'Crear Rol', 'url' => route('roles.create'), 'icon' => 'ti ti-plus', 'permission' => 'roles.create'],
-        ],
-        'stats' => [
-            ['name' => 'Total Roles', 'value' => Spatie\Permission\Models\Role::count(), 'icon' => 'ti ti-building', 'color' => 'bg-label-primary'],
-            ['name' => 'Total Permisos Asignados', 'value' => $roles->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success'],
-        ]
-    ];
-
-    $dataHeaderCard = [
-        'title' => 'Lista de Roles y Permisos',
-        'description' => 'Gestiona y controla roles y asigna permisos',
-        'textColor' => 'text-primary',
-        'icon' => 'ti ti-shield',
-        'iconColor' => 'alert-primary',
-        'actions' => [
-            [
-                'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
-                'name' => 'Crear Rol',
-                'icon' => 'ti ti-plus',
-                'permission' => 'roles.create',
-                'typeButton' => 'btn-primary',
-                'idModal' => 'createRoleModal' // necesario si es btnToggle
-            ],
+            ['name' => 'Roles y Permisos', 'url' => route('roles.index')]
         ],
     ];
-
 @endphp
+
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+
+        <x-slot:extra>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-primary me-2">
+                    <i class="ti ti-building"></i>
+                </span>
+                <span class="text-muted">Total Roles: {{ $roles->count() }}</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-success me-2">
+                    <i class="ti ti-circle-check"></i>
+                </span>
+                <span class="text-muted">Total Roles Activos: {{ $roles->where('estado', true)->count() }}</span>
+            </div>
+        </x-slot:extra>
+        {{-- <x-slot:acciones>
+            @can('users.create')
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ route('users.create') }}" class="btn btn-label-primary waves-effect">
+                        <i class="ti ti-upload me-2"></i>
+                        Importar Usuarios
+                    </a>
+                </div>
+            @endcan
+            @can('users.create')
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ route('users.create') }}" class="btn btn-primary waves-effect">
+                        <i class="ti ti-plus me-2"></i>
+                        Crear Usuario
+                    </a>
+                </div>
+            @endcan            
+        </x-slot:acciones> --}}
+
+    </x-erp.breadcrumbs>
+
+    {{-- @include('layouts.vuexy.breadcrumb', $dataBreadcrumb) --}}
 
     <div class="row">
         <div class="col-12">
             <div class="card">
 
-                @include('layouts.vuexy.header-card', $dataHeaderCard)
+                <x-erp.card-header 
+                        title="Lista de Roles y Permisos" 
+                        description="Gestiona y controla roles y asigna permisos"
+                        textColor="text-primary"
+                        icon="ti ti-shield"
+                        iconColor="alert-primary"
+                    >
+                    <button type="button" class="btn btn-primary waves-effect" data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                        <i class="ti ti-plus me-2"></i>
+                        Crear Rol
+                    </button>
+                </x-erp.card-header>
+
 
                 <div class="card-header">
                     <h6 class="mb-0">

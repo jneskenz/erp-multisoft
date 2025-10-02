@@ -56,20 +56,45 @@
     <div class="position-relative">
         {{-- Loading overlay solo para operaciones que requieren tiempo --}}
         {{-- <div wire:loading.delay.long wire:target="search,empresaFilter,estadoFilter,perPage,clearFilters"
-                 class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75 rounded" 
-                 style="z-index: 10; min-height: 400px;">
-                <div class="d-flex align-items-center">
-                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                    <span class="text-muted">Cargando datos...</span>
+                class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75 rounded" 
+                style="z-index: 10; min-height: 400px;">
+            <div class="d-flex align-items-center">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                    <span class="visually-hidden">Cargando...</span>
                 </div>
-            </div> --}}
+                <span class="text-muted">Cargando datos...</span>
+            </div>
+        </div> --}}
+
+        <!-- Mensajes de estado -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible d-flex" role="alert">
+                <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
+                <div>
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">¡Éxito!</h6>
+                    <p class="mb-0">{{ session('success') }}</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible d-flex" role="alert">
+                <span class="alert-icon rounded"><i class="ti ti-x"></i></span>
+                <div>
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Error</h6>
+                    <p class="mb-0">{{ session('error') }}</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            </div>
+        @endif
 
         {{-- Tabla --}}
         <div class="table-responsive">
             <table class="table table-hover table-bordered">
-                <thead class="table-dark text-center align-middle">
+                <thead class="table-light text-center align-middle">
                     <tr>
                         <th wire:click="sortBy('nombre')" style="cursor: pointer;">
                             NOMBRE SEDE
@@ -227,7 +252,7 @@
         <div class="col-sm-12 col-md-6">
             @if ($sedes->hasPages())
                 <div class="d-flex justify-content-end">
-                    {{ $sedes->links('components.table-pagination-custom') }}
+                    {{ $sedes->links('components.erp.table-pagination-custom') }}
                 </div>
             @endif
         </div>

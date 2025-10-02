@@ -4,11 +4,11 @@
 
 @php
 
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Locales',
         'description' => 'Administra los locales del sistema',
         'icon' => 'ti ti-building',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => route('locales.index')],
             ['name' => 'Crear local', 'url' => 'javascript:void(0);'],
@@ -39,13 +39,29 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
 
-        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:extra>
+            @can('locales.view')
+            <a href="{{ route('locales.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+        </x-slot:extra>
+    </x-erp.breadcrumbs>
 
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
                     
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    <x-erp.card-header 
+                        title="Formulario de registro" 
+                        description=""
+                        textColor="text-plus"
+                        icon="ti ti-building"
+                        iconColor="bg-label-info"
+                    >
+                    </x-erp.card-header>
 
                     <div class="card-body">
 

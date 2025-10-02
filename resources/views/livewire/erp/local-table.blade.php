@@ -154,7 +154,7 @@
                         </small>
                     </div>
                     <div>
-                        {{ $locales->links('components.table-pagination-custom') }}
+                        {{ $locales->links('components.erp.table-pagination-custom') }}
                     </div>
                 </div>
             @else

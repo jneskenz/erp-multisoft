@@ -10,6 +10,7 @@ use App\Http\Controllers\Erp\EmpresaController;
 use App\Http\Controllers\Erp\SedeController;
 use App\Http\Controllers\Erp\LocalController;
 use App\Http\Controllers\Erp\TipoLocalController;
+use App\Http\Controllers\Erp\ArticuloController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\GrupoEmpresarialController;
 
@@ -42,6 +43,10 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de locales
     Route::resource('locales', LocalController::class);
     Route::post('locales/{locale}/toggle-status', [LocalController::class, 'toggleStatus'])->name('locales.toggle-status');
+
+    // Rutas de artículos
+    Route::resource('articulos', ArticuloController::class);
+    Route::post('articulos/{articulo}/toggle-status', [ArticuloController::class, 'toggleStatus'])->name('articulos.toggle-status');
 
     // Rutas de tipos de locales (API para modales)
     Route::prefix('api/tipo-locales')->name('tipo-locales.')->group(function () {

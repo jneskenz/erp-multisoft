@@ -3,11 +3,11 @@
 @section('title', 'Crear Grupo Empresarial')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Crear Grupo Empresarial',
         'description' => 'Formulario para crear un nuevo grupo empresarial',
         'icon' => 'ti ti-building-bank',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Configuración del Sistema', 'url' => 'javascript:void(0)'],
             ['name' => 'Grupos Empresariales', 'url' => route('admin.grupo-empresarial.index')],
             ['name' => 'Crear', 'url' => 'javascript:void(0)', 'active' => true],
@@ -25,7 +25,16 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:extra>
+            @can('grupo_empresarial.view')
+            <a href="{{ route('admin.grupo-empresarial.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+        </x-slot:extra>
+    </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-lg-8">

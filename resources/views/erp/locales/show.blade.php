@@ -3,49 +3,14 @@
 @section('title', 'Ver Local')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Locales',
         'description' => 'Información completa del local',
         'icon' => 'ti ti-building-bank',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => route('locales.index')],
             ['name' => 'Detalle local', 'url' => 'javascript:void(0)'],
-        ],
-        'actions' => [
-            [
-                'name' => 'Regresar',
-                'url' => route('locales.index'),
-                'typeButton' => 'btn-label-dark',
-                'icon' => 'ti ti-arrow-left',
-                'permission' => 'locales.view'
-            ],
-
-        ],
-    ];
-
-    $dataHeaderCard = [
-        'title' => 'Información del local ',
-        'description' => ($local->descripcion ?? ''),
-        'textColor' => 'text-info',
-        'icon' => 'ti ti-list-search',
-        'iconColor' => 'bg-label-info',
-        'actions' => [
-            [
-                'typeAction' => 'btnInfo',
-                'name' => $local->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
-                'url' => '#',
-                'icon' => $local->estado == 1 ? 'ti ti-check' : 'ti ti-x',
-                'permission' => null,
-                'typeButton' => $local->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
-            ],
-            [
-                'typeAction' => 'btnLink',
-                'name' => 'Editar',
-                'url' => route('locales.edit', $local),
-                'icon' => 'ti ti-edit',
-                'permission' => 'locales.edit'
-            ],
         ],
     ];
 
@@ -54,28 +19,38 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Breadcrumb Component -->
-        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+        <x-erp.breadcrumbs :items="$breadcrumbs">
 
-        {{-- <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Local: {{ $local->descripcion }}</h4>
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('locales.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('locales.index') }}">Locales</a></li>
-                            <li class="breadcrumb-item active">Ver</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
+            <x-slot:extra>
+                @can('locales.view')
+                <a href="{{ route('locales.index') }}" class="btn btn-label-dark waves-effect">
+                    <i class="ti ti-arrow-left me-2"></i>
+                    Regresar
+                </a>
+                @endcan
+            </x-slot:extra>
+
+        </x-erp.breadcrumbs>
 
         <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-4">
                     {{-- header card --}}
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    <x-erp.card-header 
+                        title="Información del local" 
+                        description="{{ $local->descripcion ?? '' }}"
+                        textColor="text-info"
+                        icon="ti ti-list-search"
+                        iconColor="bg-label-info"
+                        estado="{{ $local->estado }}"
+                    >                        
+                        @can('locales.edit')
+                            <a href="{{ route('locales.edit', $local) }}" class="btn btn-primary waves-effect">
+                                <i class="ti ti-edit me-2"></i>
+                                Editar Local
+                            </a>                        
+                        @endcan
+                    </x-erp.card-header>
 
                     <div class="card-body">
                         <div class="row">

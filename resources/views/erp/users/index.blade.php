@@ -3,47 +3,13 @@
 @section('title', 'Gestión de Usuarios - ERP Multisoft')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Usuarios',
         'description' => 'Administra los usuarios del sistema ERP Multisoft.',
         'icon' => 'ti ti-users',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Usuarios', 'url' => route('users.index'), 'active' => true]
-        ],
-        'actions' => [
-            // ['name' => 'Crear Usuario', 'url' => route('users.create'), 'icon' => 'ti ti-plus', 'permission' => 'users.create'],
-            // ['name' => 'Importar Usuarios', 'url' => route('users.create'), 'icon' => 'ti ti-upload', 'permission' => 'users.create']
-        ],
-        'stats' => [
-            ['name' => 'Total Usuarios', 'value' => $users->count(), 'icon' => 'ti ti-users', 'color' => 'bg-label-primary'],
-            ['name' => 'Usuarios Activos', 'value' => $users->where('estado', true)->count(), 'icon' => 'ti ti-circle-check', 'color' => 'bg-label-success']
-        ]
-    ];
-
-    $dataHeaderCard = [
-        'title' => 'Lista de Usuarios',
-        'description' => 'Gestiona usuarios y asigna roles',
-        'textColor' => 'text-primary',
-        'icon' => 'ti ti-users',
-        'iconColor' => 'alert-primary',
-        'actions' => [
-            // [
-            //     'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
-            //     'name' => 'Crear Usuario',
-            //     'url' => route('users.create'),
-            //     'icon' => 'ti ti-plus',
-            //     'permission' => 'users.create',
-            //     'typeButton' => 'btn-primary' // btn-primary, btn-info, btn-success, btn-danger, btn-warning, btn-secondary
-            // ],
-            [
-                'typeAction' => 'btnToggle', // btnIdEvent, btnLink, btnToggle, btnInfo
-                'name' => 'Crear Usuario',
-                'icon' => 'ti ti-plus',
-                'permission' => 'users.create',
-                'typeButton' => 'btn-primary',
-                'idModal' => 'createUserModal' // necesario si es btnToggle
-            ],
         ],
     ];
 
@@ -53,13 +19,63 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-     @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+     {{-- @include('layouts.vuexy.breadcrumb', $dataBreadcrumb) --}}
+
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+
+        <x-slot:extra>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-primary me-2">
+                    <i class="ti ti-users"></i>
+                </span>
+                <span class="text-muted">Total Usuarios: {{ $users->count() }}</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-success me-2">
+                    <i class="ti ti-circle-check"></i>
+                </span>
+                <span class="text-muted">Total Usuarios Activos: {{ $users->where('estado', true)->count() }}</span>
+            </div>
+        </x-slot:extra>
+        {{-- botones de accion --}}
+        <x-slot:acciones>
+            @can('users.create')
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ route('users.create') }}" class="btn btn-label-primary waves-effect">
+                        <i class="ti ti-upload me-2"></i>
+                        Importar Usuarios
+                    </a>
+                </div>
+            @endcan
+            {{-- @can('users.create')
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ route('users.create') }}" class="btn btn-primary waves-effect">
+                        <i class="ti ti-plus me-2"></i>
+                        Crear Usuario
+                    </a>
+                </div>
+            @endcan             --}}
+        </x-slot:acciones>
+
+    </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
 
-                @include('layouts.vuexy.header-card', $dataHeaderCard)
+                {{-- Header Card con slot --}}
+                <x-erp.card-header 
+                    title="Lista de Usuarios" 
+                    description="Gestiona usuarios y asigna roles" 
+                    textColor="text-primary" 
+                    icon="ti ti-users" 
+                    iconColor="alert-primary"
+                >
+                    <button type="button" class="btn btn-primary waves-effect" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                        <i class="ti ti-plus me-2"></i>
+                        Crear Usuario
+                    </button>
+                </x-erp.card-header>
 
                 <div class="card-body">
                     <!-- Componente Livewire con estilo Vuexy -->

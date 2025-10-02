@@ -174,10 +174,6 @@
                 
             </ul>
         </li>
-
-
-        {{-- Config. administrativa --}}
-
         
 
         <!-- Módulos del ERP -->
@@ -193,6 +189,21 @@
             </a>
 
             <ul class="menu-sub">
+                
+                @can('articulos.view')
+                    <li class="menu-item {{ request()->routeIs('articulos.*') ? 'active' : '' }}">
+                        <a href="{{ route('articulos.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-package"></i>
+                            <div data-i18n="Basic">Artículos</div>
+                            @if (App\Models\Erp\Articulo::count() > 0)
+                                <div class="badge text-bg-primary rounded-pill ms-auto">
+                                    {{ App\Models\Erp\Articulo::count() }}
+                                </div>
+                            @endif
+                        </a>
+                    </li>
+                @endcan
+
                 <li class="menu-item">
                     <a href="#" class="menu-link">
                         <div data-i18n="Without menu">Productos</div>

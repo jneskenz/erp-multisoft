@@ -3,53 +3,15 @@
 @section('title', 'Gestión de Empresas - ERP Multisoft')
 
 @php
-
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Empresas',
         'description' => '',
         'icon' => 'ti ti-building',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Empresas', 'url' => route('empresas.index'), 'active' => true],
-        ],
-        //   'actions' => [
-        //      ['name' => 'Nueva Empresa', 'url' => route('empresas.create'), 'icon' => 'ti ti-plus', 'permission' => 'empresas.create'],
-        //      ['name' => 'Importar Empresas', 'url' => route('empresas.create'), 'icon' => 'ti ti-upload', 'permission' => 'empresas.create']
-        //   ],
-        'stats' => [
-            [
-                'name' => 'Total Empresas',
-                'value' => $totalEmpresas,
-                'icon' => 'ti ti-building',
-                'color' => 'bg-label-primary',
-            ],
-            [
-                'name' => 'Empresas Activas',
-                'value' => $empresasActivas,
-                'icon' => 'ti ti-circle-check',
-                'color' => 'bg-label-success',
-            ],
+            ['name' => 'Empresas', 'url' => route('empresas.index')],
         ],
     ];
-
-    $dataHeaderCard = [
-        'title' => 'Lista de Empresas',
-        'description' => '',
-        'textColor' => 'text-primary',
-        'icon' => 'ti ti-building',
-        'iconColor' => 'bg-label-primary',
-        'actions' => [
-            [
-                'typeAction' => 'btnLink', // btnIdEvent, btnLink, btnToggle, btnInfo
-                'typeButton' => 'btn-primary', 
-                'name' => 'Crear Empresa',
-                'url' => route('empresas.create'),
-                'icon' => 'ti ti-plus',
-                'permission' => 'empresas.create',
-            ],
-        ],
-    ];
-
 @endphp
 
 
@@ -57,7 +19,24 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
 
-        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+        <x-erp.breadcrumbs :items="$breadcrumbs">
+
+            <x-slot:extra>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-primary me-2">
+                        <i class="ti ti-building"></i>
+                    </span>
+                    <span class="text-muted">Total Roles: {{ $totalEmpresas }}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-success me-2">
+                        <i class="ti ti-circle-check"></i>
+                    </span>
+                    <span class="text-muted">Roles Activas: {{ $empresasActivas }}</span>
+                </div>
+            </x-slot:extra>
+
+        </x-erp.breadcrumbs>
 
         <div class="row">
             <div class="col-12">
@@ -87,8 +66,21 @@
                             </ul>
                         </div>
                     </div>
-
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    
+                    <x-erp.card-header 
+                        title="Lista de Empresas" 
+                        description=""
+                        textColor="text-primary"
+                        icon="ti ti-building"
+                        iconColor="bg-label-primary"
+                    >
+                        @can('empresas.create')
+                            <a href="{{ route('empresas.create') }}" class="btn btn-primary waves-effect">
+                                <i class="ti ti-plus me-2"></i>
+                                Crear Empresa
+                            </a>
+                        @endcan
+                    </x-erp.card-header>
 
                     <div class="card-body">
                         <!-- Filtros de búsqueda -->
@@ -157,8 +149,8 @@
 
                         <!-- Tabla de empresas -->
                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-hover table-bordered table-sm">
+                                <thead class="table-light text-center">
                                     <tr>
                                         <th>ID</th>
                                         <th>Empresa</th>
@@ -208,7 +200,7 @@
                                                         Activa
                                                     </span>
                                                 @else
-                                                    <span class="badge bg-label-secondary">
+                                                    <span class="badge bg-label-warning">
                                                         <i class="ti ti-circle-x me-1"></i>
                                                         Inactiva
                                                     </span>
@@ -226,20 +218,27 @@
                                                             @can('empresas.view')
                                                                 <li>
                                                                     <a class="dropdown-item" href="{{ route('empresas.show', $empresa) }}">
-                                                                        <i class="ti ti-list me-2"></i>Ver detalles
+                                                                        <i class="ti ti-list-search me-2"></i> Ver detalles
                                                                     </a>
                                                                 </li>
                                                             @endcan
                                                             @can('empresas.edit')
                                                                 <li>
                                                                     <a class="dropdown-item" href="{{ route('empresas.edit', $empresa) }}">
-                                                                        <i class="ti ti-edit me-2"></i>Editar
+                                                                        <i class="ti ti-edit me-2"></i> Editar
                                                                     </a>
                                                                 </li>
                                                             @endcan
                                                             <li>
                                                                 <hr class="dropdown-divider" />
                                                             </li>
+                                                            @can('empresas.delete')
+                                                                <li>
+                                                                    <a class="dropdown-item text-warning" href="{{ route('empresas.update', $empresa) }}">
+                                                                        <i class="ti ti-alert-square-rounded"></i> Desactivar
+                                                                    </a>
+                                                                </li>
+                                                            @endcan
                                                             @can('empresas.delete')
                                                                 <li>
                                                                     <form action="{{ route('empresas.destroy', $empresa) }}"
@@ -303,7 +302,7 @@
                                             </small>
                                         </div>
                                         <div>
-                                            {{ $empresas->links('components.table-pagination-custom') }}
+                                            {{ $empresas->links('components.erp.table-pagination-custom') }}
                                         </div>
                                     </div>
                                 </div>
@@ -353,6 +352,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('scripts')

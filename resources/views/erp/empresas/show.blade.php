@@ -3,49 +3,14 @@
 @section('title', 'Detalle de Empresa')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Empresas',
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Empresas', 'url' => route('empresas.index')],
             ['name' => 'Detalle empresa', 'url' => '', 'active' => true]
-        ],
-        'actions' => [
-            [
-                'name' => 'Regresar',
-                'url' => route('empresas.index'),
-                'typeButton' => 'btn-label-dark',
-                'icon' => 'ti ti-arrow-left',
-                'permission' => 'empresas.view'
-            ],
-
-        ],
-    ];
-
-    $dataHeaderCard = [
-        'title' => 'Información de la empresa ',
-        'description' => ($empresa->nombre_comercial ?? $empresa->razon_social),
-        'textColor' => 'text-info',
-        'icon' => 'ti ti-list-search',
-        'iconColor' => 'bg-label-info',
-        'actions' => [
-            [
-                'typeAction' => 'btnInfo',
-                'name' => $empresa->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
-                'url' => '#',
-                'icon' => $empresa->estado == 1 ? 'ti ti-check' : 'ti ti-x',
-                'permission' => null,
-                'typeButton' => $empresa->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
-            ],
-            [
-                'typeAction' => 'btnLink',
-                'name' => 'Editar',
-                'url' => route('empresas.edit', $empresa),
-                'icon' => 'ti ti-edit',
-                'permission' => 'empresas.edit'
-            ],
         ],
     ];
 
@@ -54,25 +19,39 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+
+        <x-slot:extra>
+            @can('empresas.view')
+            <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+        </x-slot:extra>
+
+    </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-
-                @include('layouts.vuexy.header-card', $dataHeaderCard)
-
-                {{-- <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="mt-1">
-                        <h4 class="card-title mb-0">{{ $empresa->nombre_comercial ?? $empresa->razon_social }}</h4>
-
-                    </div>
-                    <div>
-                        <span class="btn btn-{{ $empresa->estado == 1 ? 'success' : 'danger' }}">
-                            {{ $empresa->estado == 1 ? 'Activo' : 'Inactivo' }}
-                        </span>
-                    </div>
-                </div> --}}
+                
+                <x-erp.card-header 
+                    title="Información de la empresa" 
+                    description="{{ $empresa->nombre_comercial ?? $empresa->razon_social }}"
+                    textColor="text-info"
+                    icon="ti ti-list-search"
+                    iconColor="bg-label-info"
+                    estado="{{ $empresa->estado }}"
+                >
+                    
+                    @can('empresas.edit')
+                        <a href="{{ route('empresas.edit', $empresa) }}" class="btn btn-primary waves-effect">
+                            <i class="ti ti-edit me-2"></i>
+                            Editar Empresa
+                        </a>                        
+                    @endcan
+                </x-erp.card-header>
 
                 <div class="card-body">
                     <div class="row">

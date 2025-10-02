@@ -1,9 +1,9 @@
-<div class="card-datatable table-responsive">
+<div class="">
     <!-- Filtros superiores con estilo Vuexy -->
-    <div class="card-header flex-column flex-md-row border-bottom">
-        <div class="head-label text-center">
-            {{-- <h5 class="card-title mb-0"> <i class="ti ti-users me-2"></i> Gestión de Usuarios </h5> --}}
-        </div>
+    <div class="card-header px-0 pt-0">
+        {{-- <div class="head-label text-center">
+            <h5 class="card-title mb-0"> <i class="ti ti-users me-2"></i> Gestión de Usuarios </h5>
+        </div> --}}
         <div class="dt-action-buttons text-end pt-3 pt-md-0">
             <div class="dt-buttons row g-2">
                 <div class="col-sm-12 col-md-6">
@@ -214,7 +214,7 @@
         <div>
             @if($users->hasPages())
                 <nav aria-label="Paginación de usuarios">
-                    {{ $users->links('components.table-pagination-custom') }}
+                    {{ $users->links('components.erp.table-pagination-custom') }}
                     {{-- {{ $users->links('pagination::bootstrap-4') }} --}}
                 </nav>
             @endif

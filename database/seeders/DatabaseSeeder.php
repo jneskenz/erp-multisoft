@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TipoLocalSeeder::class,
             LocalSeeder::class,
             GrupoEmpresarialSeeder::class,
+            ArticuloSeeder::class,
 
             // permisos
             RolePermissionSeeder::class,
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             EmpresaPermissionsSeeder::class,
             SedesPermissionsSeeder::class,
             LocalPermissionsSeeder::class,
+            ArticuloPermissionsSeeder::class,   
 
             SuperAdminSeeder::class, // Agregar al final para que tenga todos los roles disponibles
         ]);

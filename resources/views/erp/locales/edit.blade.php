@@ -4,11 +4,11 @@
 
 @php
 
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Locales',
         'description' => '',
         'icon' => 'ti ti-building-store',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => route('locales.index')],
             ['name' => 'Editar local', 'url' => 'javascript:void(0)', 'active' => true],
@@ -25,46 +25,42 @@
         ],
     ];
 
-    $dataHeaderCard = [
-        'title' => 'Editando el local',
-        'description' => $local->descripcion,
-        'textColor' => 'text-warning',
-        'icon' => 'ti ti-edit',
-        'iconColor' => 'bg-label-warning',        
-        'actions' => [
-            [
-                'typeAction' => 'btnInfo',
-                'name' => $local->estado == 1 ? 'ACTIVO' : 'SUSPENDIDO',
-                'url' => '#',
-                'icon' => $local->estado == 1 ? 'ti ti-check' : 'ti ti-x',
-                'permission' => null,
-                'typeButton' => $local->estado == 1 ? 'btn-label-success' : 'btn-label-danger',
-            ],
-            [
-                'typeAction' => 'btnLink',
-                'name' => 'Ver detalle',
-                'url' => route('locales.show', $local),
-                'typeButton' => 'btn-info',
-                'icon' => 'ti ti-list-search',
-                'permission' => 'locales.view'
-            ],
-            
-        ],
-    ];
-
 @endphp
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Breadcrumb Component -->
-        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+        <x-erp.breadcrumbs :items="$breadcrumbs">
+            <x-slot:extra>
+                @can('empresas.view')
+                <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+                    <i class="ti ti-arrow-left me-2"></i>
+                    Regresar
+                </a>
+                @endcan
+            </x-slot:extra>
+        </x-erp.breadcrumbs>
 
         <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-4">
 
                     {{-- $dataHeaderCard  --}}
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    <x-erp.card-header 
+                        title="Editando el local" 
+                        description="{{ $local->nombre_comercial ?? $local->razon_social }}"
+                        textColor="text-warning"
+                        icon="ti ti-edit"
+                        iconColor="bg-warning"
+                        estado="{{ $local->estado }}"
+                    >
+                        @can('locales.view')
+                            <a href="{{ route('locales.show', $local) }}" class="btn btn-info waves-effect">
+                                <i class="ti ti-list-search me-2"></i>
+                                Ver detalle
+                            </a>                        
+                        @endcan
+                    </x-erp.card-header>
 
                     
                     <div class="card-body">

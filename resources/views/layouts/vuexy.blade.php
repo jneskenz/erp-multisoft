@@ -104,71 +104,31 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('vuexy/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
-    <!-- Page CSS -->
+    @yield('ui-vendor-styles')
+
+    @yield('ui-page-styles')
+
+    @yield('page-style')
+
     @stack('styles')
     
     <!-- Custom User Styles -->
-    <style>
-        :root {
-            @if($customization->theme_color === 'custom' && $customization->custom_color)
-                --bs-primary: {{ $customization->custom_color }};
-                --bs-primary-rgb: {{ hexToRgbSafe($customization->custom_color) }};
-            @elseif($customization->theme_color !== 'default')
-                @php
-                    $themeColors = \App\Models\UserCustomization::getThemeColors();
-                    $selectedColor = $themeColors[$customization->theme_color] ?? '#696cff';
-                @endphp
-                --bs-primary: {{ $selectedColor }};
-                --bs-primary-rgb: {{ hexToRgbSafe($selectedColor) }};
-            @endif
-        }
-        
-        @php
-            $fontFamilies = [
-                'inter' => 'Inter, sans-serif',
-                'roboto' => 'Roboto, sans-serif',
-                'poppins' => 'Poppins, sans-serif',
-                'open_sans' => 'Open Sans, sans-serif',
-                'lato' => 'Lato, sans-serif'
-            ];
-            $selectedFont = $fontFamilies[$customization->font_family ?? 'inter'] ?? 'Inter, sans-serif';
-        @endphp
-        
-        body {
-            font-family: {{ $selectedFont }} !important;
-        }
-        
-        @if($customization->font_size === 'small')
-            html { font-size: 0.85rem; }
-        @elseif($customization->font_size === 'large')
-            html { font-size: 1rem; }
-        @endif
-        
-        @if($customization->navbar_blur)
-            .layout-navbar {
-                backdrop-filter: blur(10px);
-                background-color: rgba(255, 255, 255, 0.85) !important;
-            }
-            
-            [data-theme="theme-dark"] .layout-navbar {
-                background-color: rgba(33, 33, 33, 0.85) !important;
-            }
-        @endif
-    </style>
+    @include('layouts.vuexy.custom-template', ['customization' => $customization])
 
     <!-- Helpers -->
     <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>
 
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <!-- <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>.  -->
+    <!-- <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>  -->    
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file to customize your theme -->
     <script src="{{ asset('vuexy/js/config.js') }}"></script>
 
+
     @livewireStyles
 
-    @yield('page-style')
+    
     
     <!-- Scripts -->
     <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
@@ -286,16 +246,25 @@
     <script src="{{ asset('vuexy/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
 
-    <!-- Vendors JS -->
-    @stack('vendor-scripts')
+    <!-- Vendors JS | UI -->
+    @yield('ui-vendor-scripts')
 
     <!-- Main JS -->
     <script src="{{ asset('vuexy/js/main.js') }}"></script>
 
-    <!-- Page JS -->
-    @stack('scripts')
+    <!-- Vendors JS | UI -->
+    @yield('ui-page-scripts')
+
 
     @livewireScripts
+    
+
+    <!-- All Page JS | CUSTOM -->
+    @stack('scripts')
+
+    <!-- Single Page JS | CUSTOM -->
+    @yield('page-script')
+
 
     <!-- Error Counter for SuperAdmin -->
     @auth
@@ -327,9 +296,6 @@
             </script>
         @endif
     @endauth
-
-
-    @yield('page-script')
 
 </body>
 

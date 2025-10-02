@@ -4,27 +4,13 @@
 
 @php
 
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Locales',
         'description' => 'Administra los locales del sistema',
         'icon' => 'ti ti-building-store',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => 'javascript:void(0);', 'active' => true],
-        ],
-        'stats' => [
-            [
-                'name' => 'Total Locales',
-                'value' => $locales->count(),
-                'icon' => 'ti ti-building-store',
-                'color' => 'bg-label-primary',
-            ],
-            [
-                'name' => 'Locales Activos',
-                'value' => $locales->where('estado', true)->count(),
-                'icon' => 'ti ti-circle-check',
-                'color' => 'bg-label-success',
-            ],
         ],
     ];
 
@@ -52,7 +38,22 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:extra>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-primary me-2">
+                    <i class="ti ti-building-store"></i>
+                </span>
+                <span class="text-muted">Total Roles: {{ $locales->count() }}</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-label-success me-2">
+                    <i class="ti ti-circle-check"></i>
+                </span>
+                <span class="text-muted">Roles Activas: {{ $locales->where('estado', true)->count() }}</span>
+            </div>
+        </x-slot:extra>
+    </x-erp.breadcrumbs>
 
     <div class="row">
             <div class="col-12">
@@ -83,7 +84,20 @@
                         </div>
                     </div>
 
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    <x-erp.card-header 
+                        title="Lista de Locales" 
+                        description=""
+                        textColor="text-primary"
+                        icon="ti ti-building-store"
+                        iconColor="bg-label-primary"
+                    >
+                        @can('locales.create')
+                            <a href="{{ route('locales.create') }}" class="btn btn-primary waves-effect">
+                                <i class="ti ti-plus me-2"></i>
+                                Crear Local
+                            </a>
+                        @endcan
+                    </x-erp.card-header>
 
                     <div class="card-body">
                         @if(session('success'))

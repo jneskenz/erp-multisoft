@@ -4,27 +4,13 @@
 
 @php
 
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Gestión de Sede',
         'description' => 'Administra las sedes del sistema',
         'icon' => 'ti ti-building-bank',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Sedes', 'url' => route('sedes.index'), 'active' => true],
-        ],
-        'stats' => [
-            [
-                'name' => 'Total Sedes',
-                'value' => $sedes->count(),
-                'icon' => 'ti ti-building',
-                'color' => 'bg-label-primary',
-            ],
-            [
-                'name' => 'Sedes Activas',
-                'value' => $sedes->where('estado', true)->count(),
-                'icon' => 'ti ti-circle-check',
-                'color' => 'bg-label-success',
-            ],
+            ['name' => 'Sedes', 'url' => route('sedes.index')],
         ],
     ];
 
@@ -53,8 +39,26 @@
 @section('content')
 
     <div class="container-xxl flex-grow-1 container-p-y">
+        
+        <x-erp.breadcrumbs :items="$breadcrumbs">
 
-        @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+            <x-slot:extra>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-primary me-2">
+                        <i class="ti ti-building-bank"></i>
+                    </span>
+                    <span class="text-muted">Total Sedes: {{ $sedes->count() }}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-success me-2">
+                        <i class="ti ti-circle-check"></i>
+                    </span>
+                    <span class="text-muted">Sedes Activas: {{ $sedes->where('estado', true)->count() }}</span>
+                </div>
+            </x-slot:extra>
+
+        </x-erp.breadcrumbs>
+
 
         <div class="row">
             <div class="col-12">
@@ -85,7 +89,20 @@
                         </div>
                     </div>
 
-                    @include('layouts.vuexy.header-card', $dataHeaderCard)
+                    <x-erp.card-header 
+                        title="Lista de Sedes" 
+                        description=""
+                        textColor="text-primary"
+                        icon="ti ti-building-bank"
+                        iconColor="bg-label-primary"
+                    >
+                        @can('sedes.create')
+                            <a href="{{ route('sedes.create') }}" class="btn btn-primary waves-effect">
+                                <i class="ti ti-plus me-2"></i>
+                                Crear Sede
+                            </a>
+                        @endcan
+                    </x-erp.card-header>
 
                     <div class="card-body">
                         <!-- Componente Livewire con estilo Vuexy -->

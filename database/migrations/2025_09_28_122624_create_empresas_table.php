@@ -25,7 +25,11 @@ return new class extends Migration
             
             $table->unsignedBigInteger('pais_id')->nullable();
             $table->foreign('pais_id')->references('id')->on('paises')->onDelete('set null');
-            
+            $table->softDeletes();
+
+            // $table->unsignedBigInteger('grupo_empresarial_id')->nullable();
+            // $table->foreign('grupo_empresarial_id')->references('id')->on('grupo_empresarials')->onDelete('set null');
+
             $table->timestamps();
         });
     }
@@ -37,6 +41,7 @@ return new class extends Migration
     {
         Schema::table('empresas', function (Blueprint $table) {
             $table->dropForeign(['pais_id']);
+            // $table->dropForeign(['grupo_empresarial_id']);
         });
         Schema::dropIfExists('empresas');
     }

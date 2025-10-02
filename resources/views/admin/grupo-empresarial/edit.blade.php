@@ -3,13 +3,14 @@
 @section('title', 'Editar Grupo Empresarial')
 
 @php
-    $dataBreadcrumb = [
+    $breadcrumbs = [
         'title' => 'Editar Grupo Empresarial',
         'description' => 'Modificar información del grupo empresarial',
         'icon' => 'ti ti-building-bank',
-        'breadcrumbs' => [
+        'items' => [
             ['name' => 'Configuración del Sistema', 'url' => 'javascript:void(0)'],
             ['name' => 'Grupos Empresariales', 'url' => route('admin.grupo-empresarial.index')],
+            ['name' => $grupoEmpresarial->nombre, 'url' => route('admin.grupo-empresarial.show', $grupoEmpresarial)],
             ['name' => 'Editar', 'url' => 'javascript:void(0)', 'active' => true],
         ],
         'actions' => [
@@ -25,7 +26,22 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:acciones>
+            @can('grupo-empresarial.view')
+            <a href="{{ route('admin.grupo-empresarial.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+            @can('grupo-empresarial.show')
+            <a href="{{ route('admin.grupo-empresarial.show', $grupoEmpresarial) }}" class="btn btn-info waves-effect">
+                <i class="ti ti-list-search me-2"></i>
+                Ver detalles
+            </a>
+            @endcan
+        </x-slot:acciones>
+    </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-lg-8">

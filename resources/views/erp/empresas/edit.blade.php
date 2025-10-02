@@ -1,69 +1,60 @@
 @extends('layouts.vuexy')
 
-@section('title', 'Editar Empresa - ERP Multisoft'@php
-    $dataBreadcrumb = [
+@section('title', 'Editar Empresa - ERP Multisoft')
+
+@php
+    $breadcrumbs = [
         'title' => 'Gestión de Empresas',
         'description' => 'Administra las empresas del sistema',
         'icon' => 'ti ti-building',
-        'breadcrumbs' => [
-       ['name' => 'Config. Administrativa',ema', 'url' => route('home            ['name' => 'Empresas', 'url' => route('empresas.index')],
-')],
-            ['nameEdita empresaEmpresa', 'url' => '', 'active' => true]
+        'items' => [
+            ['name' => 'Config. Administrativa', 'url' => route('home')],
+            ['name' => 'Empresas', 'url' => route('empresas.index')],
+            ['name' => 'Editar empresa', 'url' => '', 'active' => true]
         ],
-        'action   ],
-s' => [
-            ['name' => 'Regresar',ame' => 'Volver',
-                'url' => route('empresas.index'),typeButton           'typebtn' => 'btn-label-dark',
-                'icon' => 'ti ti-arrow-left',
-                'permission' => 'empresas.mpresas.edit'
-   
-    $dataHeaderCard = [
-        'title' =>'Editando: la empresa',
-        'description' =>$empresa->nombre_comercial ?? $empresa->razon_social'
-       'textColor' => 'text-warning', ,
-        'icon' =ti ti-editing',
-      icon'bgColor' =bgwarninginflse,
-        'actions           ],
-               'typeAction' => 'btnLink', [),
-             typeButtonebtn' => 'bel-in
-                'name' => 'Ver detalle',
-                'url' => route('empresas.show', $empresa),fo',
-                'icon' =ti ti-list-searcheye',
-                'permission' => 'empresas.view'
-            ],it'
-            ] ,
-        ],
-    ];          ],
-  
-      ],
     ];
+
 @endphp
-)
 
 @section('content')
-<div class="containe
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)  r-xxl flex-grow-1 container-p-y">
-    <div class="r ow">
-        <di{{-- v class="col-12">
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+        <x-slot:extra>
+            @can('empresas.view')
+            <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+                <i class="ti ti-arrow-left me-2"></i>
+                Regresar
+            </a>
+            @endcan
+        </x-slot:extra>
+    </x-erp.breadcrumbs>
+
+    <div class="row">
+        <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-betw<div class="alert alert-warning d-flex mb-4" role="alert">
-                        <span class="alert-icon rounded"><i class="ti ti-edit"></i></span>
-                        <div>
-                            <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Editando: {{ $empresa->nombre_comercial ?? $empresa->razon_social }}</h6>
-                            <p class="mb-0">Modifique los campos necesarios y guarde los cambios. Todos los cambios serán registrados en el historial.</p>
-                        </div>
-                    </div>"></i> Editar Empres/i> Vol --}}
-                @include('layouts.vuexy.header-card', $dataHeaderCard) ver
-                        </a>
-                    </div>
-                </div>
+
+                <x-erp.card-header 
+                    title="Editando la empresa" 
+                    description="{{ $empresa->nombre_comercial ?? $empresa->razon_social }}"
+                    textColor="text-warning"
+                    icon="ti ti-edit"
+                    iconColor="bg-warning"
+                    estado="{{ $local->estado }}"
+                >
+                    @can('empresas.view')
+                        <a href="{{ route('empresas.show', $empresa) }}" class="btn btn-info waves-effect">
+                            <i class="ti ti-list-search me-2"></i>
+                            Ver detalle
+                        </a>                        
+                    @endcan
+                </x-erp.card-header>
 
                 <div class="card-body">
                     {{-- Mensajes de alerta --}}
                     @if (session('success'))
-                        <div class="ale 
-                           <span class="alert-icon rounded"><i class="ti ti-check"></i></span>  <i class="ti ti-check"></i>
-                            </span>
+                        <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+                            <span class="alert-icon rounded"><i class="ti ti-check"></i></span>
                             <div>
                                 <h6 class="alert-heading fw-bold mb-1">¡Éxito!</h6>
                                 <p class="mb-0">{{ session('success') }}</p>
@@ -73,9 +64,8 @@ s' => [
                     @endif
 
                     @if (session('error'))
-                        
-                           <span class="alert-icon rounded"><i class="ti ti-x"></i></span>                    <i class="ti ti-x"></i>
-                            </span>
+                        <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                            <span class="alert-icon rounded"><i class="ti ti-x"></i></span>
                             <div>
                                 <h6 class="alert-heading fw-bold mb-1">¡Error!</h6>
                                 <p class="mb-0">{{ session('error') }}</p>
@@ -85,9 +75,8 @@ s' => [
                     @endif
 
                     @if ($errors->any())
-           
-                           <spanti ti-alert-square-roundedrt-icon rounded"><i class="ti ti-alert"></i></span> n>                   <i class="ti ti-alert-triangle"></i>
-                            </span>
+                        <div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
+                            <span class="alert-icon rounded"><i class="ti ti-alert-square-rounded"></i></span>
                             <div class="flex-grow-1">
                                 <h6 class="alert-heading fw-bold mb-1">¡Atención!</h6>
                                 <p class="mb-2">Se encontraron los siguientes errores:</p>
@@ -97,9 +86,9 @@ s' => [
                                     @endforeach
                                 </ul>
                             </div>
-                            <button type="button" class="btn-close ms-auto" datos. Todos los cambios serán registrados en el historial.</p>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
+                    @endif
 
                     <form action="{{ route('empresas.update', $empresa) }}" method="POST" class="needs-validation" novalidate>
                         @csrf
@@ -108,10 +97,9 @@ s' => [
                         <!-- Información Básica -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="fw-bold">
+                                <h6 class="fw-bold mb-0">
                                     <i class="ti ti-building me-2"></i> Información Básica
                                 </h6>
-                                <hr>
                             </div>
                         </div>
 
@@ -128,13 +116,13 @@ s' => [
                                     maxlength="11"
                                     required>
                                 @error('numerodocumento')
-                                    <div class="invalid-feedback">{{
-                        </div>
-
-                        <div class="row mb-3"> $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div class="form-text">Ingrese el RUC de 11 dígitos</div>
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
 
                             <div class="col-md-6">
                                 <label for="razon_social" class="form-label">
@@ -146,12 +134,11 @@ s' => [
                                     value="{{ old('razon_social', $empresa->razon_social) }}"
                                     placeholder="Ingrese la razón social"
                                     required>
-                   class="invalid-feedback">{{ $message }}</div>
+                                @error('razon_social')
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="nombre_comercial" class="form-label">
                                     Nombre Comercial
@@ -161,10 +148,11 @@ s' => [
                                     id="nombre_comercial" name="nombre_comercial"
                                     value="{{ old('nombre_comercial', $empresa->nombre_comercial) }}"
                                     placeholder="Ingrese el nombre comercial">
-      -c</div> heck-label" for="estado">Empresa Activa</label>
-                                </div>
-                                <div class="form-text">La empresa estará disponible para operaciones</div>
+                                @error('nombre_comercial')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
+
                         </div>
 
                         <div class="row mb-3">
@@ -176,14 +164,20 @@ s' => [
                                     id="direccion" name="direccion"
                                     rows="3"
                                     placeholder="Ingrese la dirección completa de la empresa"
-                                    required>{{ old('direccion', $empresa->direccion) }}</textare
+                                    required>{{ old('direccion', $empresa->direccion) }}</textarea>
+                                @error('direccion')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="representante_legal" class="form-label">Representante Legal</label>
                                 <input type="text"
                                     class="form-control @error('representante_legal') is-invalid @enderror"
                                     id="representante_legal" name="representante_legal"
-                                {{ old('direccion', $empresa->direccion) }}_legal') }}"
+                                    value="{{ old('direccion', $empresa->direccion) }}"
                                     placeholder="Nombre del representante legal">
                                 @error('representante_legal')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -197,24 +191,20 @@ s' => [
                                         id="estado" name="estado"
                                         value="1"
                                         {{ old('estado', true) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="estado">Emp                                                                       <div class="form-text" title="No puede inactivar o suspender la empresa por este formulario">
-                                    Esta opción solo está permitido para activar la empresa
-                                .</div>para operaciones</div>
-                            </div>
-                        </div> a>
-                                @error('direccion')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                    <label class="form-check-label" for="estado">Empresa Activa</label>
+                                </div>
+                                <div class="form-text" title="No puede inactivar o suspender la empresa por este formulario">
+                                    Esta opción solo está permitido para activar la empresa.
+                                </div>
                             </div>
                         </div>
 
                         <!-- Información de Contacto -->
                         <div class="row mb-4 mt-4">
                             <div class="col-12">
-                                <h6 class="fw-bold">
+                                <h6 class="fw-bold mb-0">
                                     <i class="ti ti-phone me-2"></i> Información de Contacto
                                 </h6>
-                                <hr>
                             </div>
                         </div>
 
