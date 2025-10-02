@@ -62,12 +62,12 @@ class User extends Authenticatable
         if (!in_array($this->email, $allowedEmails)) {
             // Log de intento de acceso no autorizado
             if ($this->is_super_admin === true) {
-                Log::warning('Intento de acceso superadmin no autorizado', [
-                    'user_id' => $this->id,
-                    'email' => $this->email,
-                    'ip' => request()->ip(),
-                    'user_agent' => request()->userAgent(),
-                ]);
+                // Log::warning('Intento de acceso superadmin no autorizado', [
+                //     'user_id' => $this->id,
+                //     'email' => $this->email,
+                //     'ip' => request()->ip(),
+                //     'user_agent' => request()->userAgent(),
+                // ]);
             }
             return false;
         }
@@ -84,7 +84,7 @@ class User extends Authenticatable
 
         // 4. Log de acceso exitoso de superadmin
         if (config('superadmin.log_superadmin_access', true)) {
-            Log::info('Acceso de superadministrador', [
+            Log::error('Acceso de superadministrador', [
                 'user_id' => $this->id,
                 'email' => $this->email,
                 'ip' => request()->ip(),

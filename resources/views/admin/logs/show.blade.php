@@ -1,4 +1,4 @@
-@extends('layouts.app-erp')
+@extends('layouts.adm')
 
 @section('title', 'Visor de Log: ' . $fileInfo['name'])
 

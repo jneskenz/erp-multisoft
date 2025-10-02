@@ -1,4 +1,4 @@
-@extends('layouts.app-erp')
+@extends('layouts.adm')
 
 @section('title', 'Gestión de Logs del Sistema')
 
@@ -6,6 +6,8 @@
 
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.3.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .log-level-badge {
@@ -58,6 +60,10 @@
 
 @section('page-script')
 
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.3.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.min.js"></script>
+
     <script>        
 
         // Inicializar DataTable
@@ -78,8 +84,56 @@
             }
 
             // Auto-refresh cada 30 segundos
-            setInterval(refreshStats, 30000);
+            setInterval(refreshStats, 300000);
         });
+
+        // Función para confirmar eliminación de archivo
+        function confirmDelete(filename) {
+            Swal.fire({
+                title: '¿Eliminar archivo de log?',
+                text: `Se eliminará permanentemente el archivo: ${filename}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Configurar el formulario oculto
+                    const form = document.getElementById('deleteForm');
+                    form.action = `/admin/logs/${filename}`;
+                    form.submit();
+                }
+            });
+        }
+
+        // Función para refrescar estadísticas
+        function refreshStats() {
+            location.reload();
+        }
+
+        // Función de prueba
+        function testButton() {
+            fetch('{{ route("admin.logs.stats") }}')
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: 'Test de Conexión',
+                        text: 'Conexión exitosa con el servidor',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error de Conexión',
+                        text: 'No se pudo conectar con el servidor',
+                        icon: 'error'
+                    });
+                });
+        }
 
     </script>
 
@@ -88,14 +142,31 @@
 @section('content')
 
     <div class="container-xxl flex-grow-1 container-p-y">
+        
         @if (session('success'))
             <script>
-                alert('✓ {{ session('success') }}');
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '{{ session('success') }}',
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                });
             </script>
         @endif
+        
         @if (session('error'))
             <script>
-                alert('✗ {{ session('error') }}');
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: 'Error',
+                        text: '{{ session('error') }}',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                });
             </script>
         @endif
 
