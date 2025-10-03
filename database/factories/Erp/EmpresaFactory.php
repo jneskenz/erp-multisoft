@@ -28,6 +28,7 @@ class EmpresaFactory extends Factory
             'pais_id' => \App\Models\Erp\Pais::factory(),
             'representante_legal' => $this->faker->name(),
             'grupo_empresarial_id' => \App\Models\Admin\GrupoEmpresarial::factory(),
+            'codigo' => strtoupper($this->faker->unique()->bothify('???-###')),
         ];
     }
 }
