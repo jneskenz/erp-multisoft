@@ -13,7 +13,7 @@ use App\Http\Controllers\Erp\TipoLocalController;
 use App\Http\Controllers\Erp\ArticuloController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\GrupoEmpresarialController;
-
+use App\Http\Controllers\Admin\LeadClienteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,12 +28,7 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     
-    // Ruta de prueba
-    Route::get('/test', function () {
-        return view('test');
-    })->name('test');
-    
-    // Rutas de usuarios
+   // Rutas de usuarios
     Route::resource('users', UserController::class);
     
     // Rutas de roles
@@ -92,6 +87,18 @@ Route::middleware(['auth'])->group(function () {
             'destroy' => 'grupo-empresarial.destroy',
         ]);
         Route::post('grupo-empresarial/{grupoEmpresarial}/toggle-status', [GrupoEmpresarialController::class, 'toggleStatus'])->name('grupo-empresarial.toggle-status');
+
+        Route::resource('lead-cliente', LeadClienteController::class)->names([
+            'index' => 'lead-cliente.index',
+            'create' => 'lead-cliente.create',
+            'store' => 'lead-cliente.store',
+            'show' => 'lead-cliente.show',
+            'edit' => 'lead-cliente.edit',
+            'update' => 'lead-cliente.update',
+            'destroy' => 'lead-cliente.destroy',
+        ]);
+        Route::post('lead-cliente/{leadCliente}/dar-de-alta', [LeadClienteController::class, 'darDeAlta'])->name('lead-cliente.dar-de-alta');
+
     });
 
 });

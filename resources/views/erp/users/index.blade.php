@@ -223,10 +223,6 @@
 
 @endsection
 
-@push('vendor-scripts')
-<script src="{{ asset('vuexy/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-@endpush
-
 @push('scripts')
 <script>
 $(document).ready(function() {

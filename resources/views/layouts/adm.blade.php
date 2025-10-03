@@ -94,9 +94,8 @@
     @endif
 
     <!-- Icons -->
-    {{-- <link rel="stylesheet" href="{{ asset('vuexy/vendor/fonts/tabler-icons.css') }}" /> --}}
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.35.0/tabler-icons.min.css" /> --}}  
     <link rel="stylesheet" href="{{ asset('assets/shared/css/tabler_icon/tabler-icons.min.css') }}" />
+    
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('vuexy/vendor/css/core.css') }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('vuexy/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
@@ -120,7 +119,7 @@
     <script src="{{ asset('vuexy/vendor/js/helpers.js') }}"></script>
 
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <!-- <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>  -->    
+    <script src="{{ asset('vuexy/vendor/js/template-customizer.js') }}"></script>   
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file to customize your theme -->

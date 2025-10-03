@@ -11,17 +11,8 @@
         'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => route('locales.index')],
-            ['name' => 'Editar local', 'url' => 'javascript:void(0)', 'active' => true],
-        ],
-        'actions' => [
-            [
-                'name' => 'Regresar',
-                'url' => route('locales.index'),
-                'typeButton' => 'btn-label-dark',
-                'icon' => 'ti ti-arrow-left',
-                'permission' => 'locales.view'
-            ],
-
+            ['name' => Str::limit($local->descripcion, 10), 'url' => 'javascript:void(0)', 'active' => true],
+            ['name' => 'Editar', 'url' => 'javascript:void(0)', 'active' => true],
         ],
     ];
 
@@ -48,7 +39,7 @@
                     {{-- $dataHeaderCard  --}}
                     <x-erp.card-header 
                         title="Editando el local" 
-                        description="{{ $local->nombre_comercial ?? $local->razon_social }}"
+                        description="{{ $local->descripcion ?? '' }}"
                         textColor="text-warning"
                         icon="ti ti-edit"
                         iconColor="bg-warning"

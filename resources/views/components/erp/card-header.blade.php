@@ -37,13 +37,13 @@ if(isset($estado)){
             </div>
         </div>
         <div class="d-flex align-content-center flex-wrap gap-3 my-1 my-md-0">
+            @if(isset($estado))
+                <a href="javascript:void(0)" class="btn {{ $btnColorMatch }} waves-effect">
+                    <i class="{{ $btnIconMatch }} me-2"></i>
+                    {{ $btnTextMatch }}
+                </a>
+            @endif
             <div class="d-flex gap-3">
-                @if(isset($estado))
-                    <a href="javascript:void(0)" class="btn {{ $btnColorMatch }} waves-effect">
-                        <i class="{{ $btnIconMatch }} me-2"></i>
-                        {{ $btnTextMatch }}
-                    </a>
-                @endif
 
                 {{ $slot ?? '' }}
                 

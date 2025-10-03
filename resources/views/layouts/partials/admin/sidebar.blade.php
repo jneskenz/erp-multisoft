@@ -35,6 +35,22 @@
         @endcanany
 
         @superadmin
+
+        {{-- CRM --}}
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-users"></i>
+                <div data-i18n="CRM">CRM</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('admin.lead-cliente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.lead-cliente.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ti ti-building-bank"></i>
+                        <div data-i18n="Analytics">Leads</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         {{-- Config. del sistema --}}
             <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -46,7 +62,19 @@
                     <li class="menu-item {{ request()->routeIs('admin.grupo-empresarial.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.grupo-empresarial.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ti ti-building-bank"></i>
-                            <div data-i18n="Analytics">Empresas/Tenants</div>
+                            <div data-i18n="Analytics">Leads</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.grupo-empresarial.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.grupo-empresarial.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-building-bank"></i>
+                            <div data-i18n="Analytics">Leads</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.grupo-empresarial.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.grupo-empresarial.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-building-bank"></i>
+                            <div data-i18n="Analytics">Gestión Empresas/Tenants</div>
                         </a>
                     </li>
                     <li class="menu-item">

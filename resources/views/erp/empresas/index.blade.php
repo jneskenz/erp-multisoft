@@ -302,7 +302,7 @@
                                             </small>
                                         </div>
                                         <div>
-                                            {{ $empresas->links('components.erp.table-pagination-custom') }}
+                                            {{ $empresas->links('components.erp.table-pagination') }}
                                         </div>
                                     </div>
                                 </div>

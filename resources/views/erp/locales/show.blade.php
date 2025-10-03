@@ -10,7 +10,7 @@
         'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
             ['name' => 'Locales', 'url' => route('locales.index')],
-            ['name' => 'Detalle local', 'url' => 'javascript:void(0)'],
+            ['name' => Str::limit($local->descripcion, 10), 'url' => 'javascript:void(0)'],
         ],
     ];
 

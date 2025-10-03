@@ -25,10 +25,46 @@ class GrupoEmpresarialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // explica este codigo 
+        $query = GrupoEmpresarial::withCount('empresas');
 
-        $grupos = GrupoEmpresarial::withCount('empresas')->orderBy('nombre')->get();
+        // Búsqueda
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('codigo', 'LIKE', "%{$search}%")
+                  ->orWhere('descripcion', 'LIKE', "%{$search}%")
+                  ->orWhere('pais_origen', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Ordenamiento
+        $sortBy = $request->get('sort', 'nombre');
+        $sortDirection = $request->get('direction', 'asc');
+        
+        $allowedSorts = ['nombre', 'codigo', 'created_at', 'pais_origen'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'nombre';
+        }
+
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 10);
+        if (!in_array($perPage, [5, 10, 15, 25, 50])) {
+            $perPage = 10;
+        }
+
+        $grupos = $query->paginate($perPage)->withQueryString();
+
         return view('admin.grupo-empresarial.index', compact('grupos'));
     }
 

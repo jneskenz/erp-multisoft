@@ -9,19 +9,17 @@
                 title="{{ $items['description'] }}">
                 <span class="alert-icon"><i class="{{ $items['icon'] }}"></i></span>
             </button>
-            {{ $items['title'] }}
+            <span style="padding-top:2px">{{ $items['title'] }}</span>
         </h5>
-        <p class="mb-1">
-            <div class="page-title-right">
-                <ol class="breadcrumb m-0">
-                    @foreach ($items['items'] as $item)
-
-                    <li class="breadcrumb-item {{ $loop->last ? 'active' : '' }}"><a href="{{ $item['url'] }}">{{ $item['name'] }}</a></li>
-
-                    @endforeach
-                </ol>
-            </div>
-        </p>
+        <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+                @foreach ($items['items'] as $item)
+                <li class="breadcrumb-item {{ $loop->last ? 'active' : '' }}">
+                    <a href="{{ $item['url'] }}">{{ $item['name'] }}</a>
+                </li>
+                @endforeach
+            </ol>
+        </div>
         
     </div>
     <div class="d-flex align-content-center flex-wrap gap-4">
