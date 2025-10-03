@@ -102,3 +102,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| Rutas del Sistema ERP Multi-Empresa
+|--------------------------------------------------------------------------
+| 
+| Incluye todas las rutas del ERP que siguen el patrón /{grupo}/{empresa}/{modulo}
+| Fecha de inclusión: 3 de octubre de 2025
+*/
+require __DIR__.'/erp.php';

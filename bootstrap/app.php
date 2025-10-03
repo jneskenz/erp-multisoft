@@ -11,8 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Middlewares personalizados del ERP Multi-Empresa
+        // Fecha de configuración: 3 de octubre de 2025
         $middleware->alias([
+            // Middleware para validar acceso de super administradores
             'superadmin' => \App\Http\Middleware\SuperAdminMiddleware::class,
+            
+            // Middleware para validar acceso a empresas específicas en el ERP
+            // Se aplica a todas las rutas que siguen el patrón /{grupo}/{empresa}/{modulo}
+            'empresa.access' => \App\Http\Middleware\ValidateEmpresaAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
