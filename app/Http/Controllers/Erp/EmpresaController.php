@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class EmpresaController extends Controller
 {
@@ -66,25 +67,41 @@ class EmpresaController extends Controller
         return view('erp.empresas.create', compact('gruposEmpresariales'));
     }
 
+    private function generateUniqueCodigo()
+    {
+        do {
+            $lastEmpresa = Empresa::orderBy('id', 'desc')->first();
+            $nextId = $lastEmpresa ? $lastEmpresa->id + 1 : 1;
+            $codigo = 'EMP' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+        } while (Empresa::where('codigo', $codigo)->exists());
+
+        return $codigo;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(EmpresaRequest $request)
     {
-
-        Log::error('Ingresando al crear empresa: ');
-
         try {
-
             DB::beginTransaction();
+            
+            $validatedData = $request->validated();
+            
+            $slug = Str::slug($validatedData['razon_social']);
+            
+            $validatedData['codigo'] = $this->generateUniqueCodigo();
+            $validatedData['slug'] = $slug;
+            $validatedData['grupo_empresarial_id'] = Auth::user()->grupo_empresarial_id;
 
-            $empresa = Empresa::create($request->validated());
+            Log::info('Creando empresa con código: ' . $validatedData['codigo']);
+            Log::info('Creando empresa con slug: ' . $validatedData['slug']);
 
-            // El activity log se registra automáticamente por el trait LogsActivity en el modelo
+            $empresa = Empresa::create($validatedData);
 
             DB::commit();
 
-            Log::error('Completado al crear empresa: '.$empresa->id);
+            Log::info('Empresa creada exitosamente: ' . $empresa->id);
 
             return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
 
@@ -101,7 +118,7 @@ class EmpresaController extends Controller
             
             return back()
                 ->withInput()
-                ->with('error', 'Error de base de datos al crear la empresa. Verifique los datos e inténtelo nuevamente.');
+                ->with('error', 'Error de base de datos al crear la empresa. Verifique los datos e inténtelo nuevamente.' . $e->getMessage());
                 
         } catch (\Exception $e) {
             DB::rollback();

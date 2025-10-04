@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Workspace;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\UserCustomization;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -19,6 +20,9 @@ class CustomizationController extends Controller
      */
     public function index()
     {
+
+        Log::alert('Customization index accessed by user ID: ' . Auth::id());
+
         $user = Auth::user();
         $customization = $user->getCustomization();
         
@@ -46,26 +50,26 @@ class CustomizationController extends Controller
             ],
         ];
 
-        $dataHeaderCard = [
-            'title' => 'Configuración de Personalización',
-            'description' => 'Ajusta la apariencia del sistema',
-            'textColor' => 'text-primary',
-            'icon' => 'ti ti-palette',
-            'iconColor' => 'bg-label-primary',
-            'actions' => [
-                [
-                    'typeAction' => 'btnOnClick', // btnOnClick
-                    'name' => 'Restablecer',
-                    'url' => null,
-                    'icon' => 'ti ti-refresh',
-                    'permission' => route('customization.reset'),
-                    'typeButton' => 'btn-label-warning',
-                    'onClickFunction' => 'resetCustomization()',
-                ],
-            ],
-        ];
+        // $dataHeaderCard = [
+        //     'title' => 'Configuración de Personalización',
+        //     'description' => 'Ajusta la apariencia del sistema',
+        //     'textColor' => 'text-primary',
+        //     'icon' => 'ti ti-palette',
+        //     'iconColor' => 'bg-label-primary',
+        //     'actions' => [
+        //         [
+        //             'typeAction' => 'btnOnClick', // btnOnClick
+        //             'name' => 'Restablecer',
+        //             'url' => null,
+        //             'icon' => 'ti ti-refresh',
+        //             'permission' => route('workspace.customization.reset'),
+        //             'typeButton' => 'btn-label-warning',
+        //             'onClickFunction' => 'resetCustomization()',
+        //         ],
+        //     ],
+        // ];
 
-        return view('customization.index', compact('customization', 'dataBreadcrumb', 'dataHeaderCard'));
+        return view('apps.workspace.customization.index', compact('customization', 'dataBreadcrumb'));
     }
 
     /**

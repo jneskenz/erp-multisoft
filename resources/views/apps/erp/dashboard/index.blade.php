@@ -135,14 +135,14 @@
                     <h4 class="header-title mb-3">Accesos Rápidos</h4>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <a href="{{ route('erp.ventas.index', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}" 
+                            <a href="{{ route('erp.ventas.index', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}" 
                                class="btn btn-success btn-lg w-100">
                                 <i class="mdi mdi-cash-multiple d-block font-24 mb-2"></i>
                                 Módulo de Ventas
                             </a>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <a href="{{ route('erp.compras.index', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}" 
+                            <a href="{{ route('erp.compras.index', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}" 
                                class="btn btn-primary btn-lg w-100">
                                 <i class="mdi mdi-cart-plus d-block font-24 mb-2"></i>
                                 Módulo de Compras
@@ -175,8 +175,8 @@
                                     <td>{{ $grupoActual->nombre }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-semibold">Código:</td>
-                                    <td>{{ $empresaActual->codigo }}</td>
+                                    <td class="fw-semibold">Slug:</td>
+                                    <td>{{ $empresaActual->slug }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-semibold">Estado:</td>
@@ -214,17 +214,17 @@
                             <h6>Contexto de Empresa:</h6>
                             <ul class="list-unstyled">
                                 <li><strong>URL Actual:</strong> {{ request()->fullUrl() }}</li>
-                                <li><strong>Grupo ID:</strong> {{ $grupoActual->id }} ({{ $grupoActual->codigo }})</li>
-                                <li><strong>Empresa ID:</strong> {{ $empresaActual->id }} ({{ $empresaActual->codigo }})</li>
+                                <li><strong>Grupo ID:</strong> {{ $grupoActual->id }} ({{ $grupoActual->slug }})</li>
+                                <li><strong>Empresa ID:</strong> {{ $empresaActual->id }} ({{ $empresaActual->slug }})</li>
                                 <li><strong>Usuario ID:</strong> {{ auth()->user()->id }}</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <h6>Rutas Disponibles:</h6>
                             <ul class="list-unstyled">
-                                <li><a href="{{ route('erp.dashboard', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}">Dashboard</a></li>
-                                <li><a href="{{ route('erp.ventas.index', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}">Ventas</a></li>
-                                <li><a href="{{ route('erp.compras.index', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}">Compras</a></li>
+                                <li><a href="{{ route('erp.dashboard', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}">Dashboard</a></li>
+                                <li><a href="{{ route('erp.ventas.index', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}">Ventas</a></li>
+                                <li><a href="{{ route('erp.compras.index', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}">Compras</a></li>
                             </ul>
                         </div>
                     </div>

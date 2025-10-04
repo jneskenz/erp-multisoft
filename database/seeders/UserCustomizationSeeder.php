@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\UserCustomization;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserCustomizationSeeder extends Seeder
 {
@@ -26,5 +28,30 @@ class UserCustomizationSeeder extends Seeder
                 ]);
             }
         }
+
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+
+        // Asignar rol de admin al primer usuario (si no lo tiene)
+        
+        $customizationPermissions = [
+            'customization.view',
+            'customization.show',
+            'customization.create',
+            'customization.edit',
+            'customization.delete',
+        ];
+
+        foreach ($customizationPermissions as $perm) {
+            Permission::firstOrCreate(['name' => $perm]);
+        }
+
+        $adminRole->givePermissionTo($customizationPermissions);
+
+        $firstUser = User::first();
+        if ($firstUser && !$firstUser->hasRole('admin')) {
+            $firstUser->assignRole('admin');
+        }
+
+
     }
 }

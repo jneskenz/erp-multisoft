@@ -101,8 +101,8 @@ class VentasController extends BaseErpController
         
         return redirect()
             ->route('erp.ventas.index', [
-                'grupo' => $this->getGrupoCodigo(),
-                'empresa' => $this->getEmpresaCodigo()
+                'grupo' => $this->getGrupoSlug(),
+                'empresa' => $this->getEmpresaSlug()
             ])
             ->with('success', 'Venta creada exitosamente');
     }
@@ -167,8 +167,8 @@ class VentasController extends BaseErpController
         
         return redirect()
             ->route('erp.ventas.index', [
-                'grupo' => $this->getGrupoCodigo(),
-                'empresa' => $this->getEmpresaCodigo()
+                'grupo' => $this->getGrupoSlug(),
+                'empresa' => $this->getEmpresaSlug()
             ])
             ->with('success', 'Venta actualizada exitosamente');
     }
@@ -188,8 +188,8 @@ class VentasController extends BaseErpController
         
         return redirect()
             ->route('erp.ventas.index', [
-                'grupo' => $this->getGrupoCodigo(),
-                'empresa' => $this->getEmpresaCodigo()
+                'grupo' => $this->getGrupoSlug(),
+                'empresa' => $this->getEmpresaSlug()
             ])
             ->with('success', 'Venta eliminada exitosamente');
     }

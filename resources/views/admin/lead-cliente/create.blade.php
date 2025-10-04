@@ -115,24 +115,53 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-3 col-xs-12">
-                                        <label class="form-label" for="nro_personal">Número de Trabajadores</label>
-                                        <input type="number" id="nro_personal" name="nro_personal" class="form-control"
-                                            placeholder="" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="pais_origen">País</label>
-                                        <select class="form-select" id="pais_origen" name="pais_origen">
-                                            <option value="">Seleccionar país</option>
-                                            <option value="Perú">Perú</option>
-                                            <option value="Colombia">Colombia</option>
-                                            <option value="Chile">Chile</option>
-                                            <option value="Argentina">Argentina</option>
-                                            <option value="Brasil">Brasil</option>
-                                            <option value="México">México</option>
-                                            <option value="Ecuador">Ecuador</option>
-                                            <option value="Bolivia">Bolivia</option>
-                                            <option value="Otros">Otros</option>
+                                        <label for="nro_empleados" class="form-label">Número de Empleados</label>
+                                        <select class="form-select @error('nro_empleados') is-invalid @enderror" 
+                                                id="nro_empleados" 
+                                                name="nro_empleados">
+                                            <option value="">Seleccione rango</option>
+                                            <option value="1-5">1-5 empleados</option>
+                                            <option value="6-20">6-20 empleados</option>
+                                            <option value="21-50">21-50 empleados</option>
+                                            <option value="51-100">51-100 empleados</option>
+                                            <option value="101-250">101-250 empleados</option>
+                                            <option value="251-500">251-500 empleados</option>
+                                            <option value="500+">Más de 500 empleados</option>
                                         </select>
+                                        @error('nro_empleados')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="pais" class="form-label">País</label>
+                                        <select class="form-select @error('pais') is-invalid @enderror" 
+                                                id="pais" 
+                                                name="pais">
+                                            <option value="">Seleccione un país</option>
+                                            <option value="Argentina" >Argentina</option>
+                                            <option value="Bolivia">Bolivia</option>
+                                            <option value="Brasil">Brasil</option>
+                                            <option value="Chile">Chile</option>
+                                            <option value="Colombia">Colombia</option>
+                                            <option value="Costa Rica">Costa Rica</option>
+                                            <option value="Cuba">Cuba</option>
+                                            <option value="Ecuador">Ecuador</option>
+                                            <option value="El Salvador">El Salvador</option>
+                                            <option value="España">España</option>
+                                            <option value="Guatemala">Guatemala</option>
+                                            <option value="Honduras">Honduras</option>
+                                            <option value="México">México</option>
+                                            <option value="Nicaragua">Nicaragua</option>
+                                            <option value="Panamá">Panamá</option>
+                                            <option value="Paraguay">Paraguay</option>
+                                            <option value="Perú">Perú</option>
+                                            <option value="República Dominicana">República Dominicana</option>
+                                            <option value="Uruguay">Uruguay</option>
+                                            <option value="Venezuela">Venezuela</option>
+                                        </select>
+                                        @error('pais')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-sm-12">
                                         <label class="form-label" for="wizard_descripcion">Descripción del Negocio</label>

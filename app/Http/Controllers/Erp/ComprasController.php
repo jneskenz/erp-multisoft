@@ -57,8 +57,8 @@ class ComprasController extends BaseErpController
     {
         // TODO: Implementar
         return redirect()->route('erp.compras.index', [
-            'grupo' => $this->getGrupoCodigo(),
-            'empresa' => $this->getEmpresaCodigo()
+            'grupo' => $this->getGrupoSlug(),
+            'empresa' => $this->getEmpresaSlug()
         ]);
     }
 
@@ -91,8 +91,8 @@ class ComprasController extends BaseErpController
     {
         // TODO: Implementar
         return redirect()->route('erp.compras.index', [
-            'grupo' => $this->getGrupoCodigo(),
-            'empresa' => $this->getEmpresaCodigo()
+            'grupo' => $this->getGrupoSlug(),
+            'empresa' => $this->getEmpresaSlug()
         ]);
     }
 
@@ -103,8 +103,8 @@ class ComprasController extends BaseErpController
     {
         // TODO: Implementar
         return redirect()->route('erp.compras.index', [
-            'grupo' => $this->getGrupoCodigo(),
-            'empresa' => $this->getEmpresaCodigo()
+            'grupo' => $this->getGrupoSlug(),
+            'empresa' => $this->getEmpresaSlug()
         ]);
     }
 }

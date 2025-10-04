@@ -65,9 +65,11 @@ class DemoDataSeeder extends Seeder
         $this->command->info('🏢 Creando grupo empresarial...');
         
         $grupo = GrupoEmpresarial::updateOrCreate(
-            ['codigo' => 'demo'],
+            ['slug' => 'demo'],
             [
                 'id' => 269,
+                'slug' => 'demo',
+                'codigo' => 'demo',
                 'user_uuid' => Str::uuid()->toString(),
                 'nombre' => 'Grupo Empresarial Demo',
                 'descripcion' => 'Grupo de demostración para testing',
@@ -84,26 +86,28 @@ class DemoDataSeeder extends Seeder
         $this->command->info('🏪 Creando empresas...');
         
         $empresasData = [
-            ['id' => 169, 'codigo' => 'alpha', 'nombre' => 'Empresa Alpha'],
-            ['id' => 170, 'codigo' => 'beta', 'nombre' => 'Empresa Beta'],
-            ['id' => 171, 'codigo' => 'gamma', 'nombre' => 'Empresa Gamma']
+            ['id' => 169, 'codigo' => 'alpha', 'slug' => 'empresa-alpha', 'nombre' => 'Empresa Alpha'],
+            ['id' => 170, 'codigo' => 'beta', 'slug' => 'empresa-beta', 'nombre' => 'Empresa Beta'],
+            ['id' => 171, 'codigo' => 'gamma', 'slug' => 'empresa-gamma', 'nombre' => 'Empresa Gamma']
         ];
 
         $empresas = [];
         foreach ($empresasData as $data) {
             $empresa = Empresa::updateOrCreate(
-                ['codigo' => $data['codigo'], 'grupo_empresarial_id' => $grupo->id],
+                ['slug' => $data['slug'], 'grupo_empresarial_id' => $grupo->id],
                 [
                     'id' => $data['id'],
                     'razon_social' => $data['nombre'],
                     'nombre_comercial' => $data['nombre'],
                     'numerodocumento' => '900123456-' . $data['id'],
+                    'slug' => $data['slug'],
+                    'codigo' => $data['codigo'],
                     'estado' => true
                 ]
             );
             
             $empresas[] = $empresa;
-            $this->command->line("  - Empresa: {$empresa->razon_social} (/{$grupo->codigo}/{$empresa->codigo})");
+            $this->command->line("  - Empresa: {$empresa->razon_social} (/{$grupo->slug}/{$empresa->slug})");
         }
 
         return $empresas;
@@ -141,9 +145,9 @@ class DemoDataSeeder extends Seeder
     {
         $this->command->info('');
         $this->command->info('🔑 CREDENCIALES DE DEMOSTRACIÓN:');
-        $this->command->info('Email: juan@alpha.com | Password: demo123 | URL: /demo/alpha');
-        $this->command->info('Email: maria@beta.com | Password: demo123 | URL: /demo/beta');
-        $this->command->info('Email: carlos@gamma.com | Password: demo123 | URL: /demo/gamma');
+        $this->command->info('Email: juan@alpha.com | Password: demo123 | URL: /demo/empresa-alpha');
+        $this->command->info('Email: maria@beta.com | Password: demo123 | URL: /demo/empresa-beta');
+        $this->command->info('Email: carlos@gamma.com | Password: demo123 | URL: /demo/empresa-gamma');
         $this->command->info('');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Erp;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\GrupoEmpresarial;
-use App\Models\Erp\Empresa;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -19,12 +18,8 @@ use Illuminate\Support\Facades\Auth;
  * 
  * Todos los controladores del ERP deben extender de esta clase base.
  */
-abstract class BaseErpController extends Controller
+abstract class BaseWorkspaceController extends Controller
 {
-    /**
-     * Empresa actual obtenida del contexto de la URL
-     */
-    protected ?Empresa $empresa = null;
     
     /**
      * Grupo empresarial actual obtenido del contexto de la URL
@@ -36,28 +31,17 @@ abstract class BaseErpController extends Controller
      */
     public function __construct()
     {
-        // Aplicar middleware de validación de empresa a todas las rutas
-        $this->middleware('empresa.access');
+        // Aplicar middleware de validación de grupo empresarial a todas las rutas
+        $this->middleware('grupo.access');
         
         // Middleware que extrae el contexto de empresa después de la validación
         $this->middleware(function ($request, $next) {
             // Obtener empresa y grupo desde los atributos del request
-            // Estos son establecidos por el middleware ValidateEmpresaAccess
-            $this->empresa = $request->attributes->get('empresaActual');
+            // Estos son establecidos por el middleware ValidateGrupoAccess
             $this->grupoEmpresarial = $request->attributes->get('grupoActual');
             
             return $next($request);
         });
-    }
-
-    /**
-     * Obtener la empresa actual desde el contexto
-     * 
-     * @return Empresa|null La empresa actual o null si no está disponible
-     */
-    protected function getEmpresaActual(): ?Empresa
-    {
-        return $this->empresa;
     }
 
     /**
@@ -90,13 +74,4 @@ abstract class BaseErpController extends Controller
         return $this->grupoEmpresarial?->slug;
     }
 
-    /**
-     * Obtener el código de la empresa actual
-     * 
-     * @return string|null El código de la empresa o null si no está disponible
-     */
-    protected function getEmpresaSlug(): ?string
-    {
-        return $this->empresa?->slug;
-    }
 }

@@ -61,7 +61,7 @@
                         
 
                         <form method="GET" action="{{ route('admin.lead-cliente.index') }}" class="row g-3">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <select class="form-select" id="per_page" name="per_page">
                                     <option value="5" {{ request('per_page') == '5' ? 'selected' : '' }}>5</option>
                                     <option value="10" {{ request('per_page', '10') == '10' ? 'selected' : '' }}>10</option>
@@ -70,21 +70,21 @@
                                     <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
                                 </select>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 {{-- <label for="search" class="form-label">Buscar</label> --}}
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="ti ti-search"></i></span>
-                                    <input type="text" class="form-control" id="search" name="search" 
-                                           value="{{ request('search') }}" 
-                                           placeholder="Buscar por nombre, código, descripción...">
+                                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre, código, descripción...">
+                                    <button type="submit" class="input-group-text btn btn-outline-secondary">
+                                        <i class="ti ti-search me-2"></i>
+                                    </button>
                                 </div>
                             </div>
                             
                             <div class="col-2 text-center">
                                 <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-primary">
+                                    {{-- <button type="submit" class="btn btn-primary">
                                         <i class="ti ti-search me-2"></i>Buscar
-                                    </button>
+                                    </button> --}}
                                     <a href="{{ route('admin.lead-cliente.index') }}" class="btn btn-outline-secondary">
                                         <i class="ti ti-refresh me-2"></i>Limpiar
                                     </a>

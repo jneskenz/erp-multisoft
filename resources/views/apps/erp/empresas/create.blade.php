@@ -125,6 +125,19 @@
                                 @enderror
                                 <div class="form-text">Ingrese el RUC de 11 dígitos</div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="codigo" class="form-label">
+                                    Código <span class="text-muted">(Generado automáticamente)</span>
+                                </label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="codigo" name="codigo"
+                                    value="Se generará automáticamente: EMP####"
+                                    placeholder="Ej: EMP0001"
+                                    readonly
+                                    disabled>
+                                <div class="form-text">El código se generará automáticamente al crear la empresa</div>
+                            </div>
                         </div>
 
                         <div class="row mb-3">

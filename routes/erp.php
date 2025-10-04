@@ -36,7 +36,7 @@ use App\Http\Controllers\Erp\ComprasController;
 
 // Grupo de rutas con patrón dinámico de empresa
 Route::group([
-    'prefix' => '{grupo}/{empresa}',
+    'prefix' => 'erp/{grupo}/{empresa}',
     'middleware' => ['auth', 'empresa.access'],
     'where' => [
         'grupo' => '[a-zA-Z0-9\-]+',    // Solo letras, números y guiones

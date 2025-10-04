@@ -1,22 +1,67 @@
-@extends('layouts.app-erp')
+@extends('layouts.app-workspace')
 
 @section('title', 'Personalización del Sistema')
+
+@php
+    $breadcrumbs = [
+        'title' => 'Personalización',
+        'description' => 'Configura la apariencia del sistema según tus preferencias',
+        'icon' => 'ti ti-palette',
+        'items' => [
+            ['name' => 'Config. del sistema', 'url' => 'javascript:void(0);'],
+            ['name' => 'Personalización', 'url' => 'javascript:void(0);'],
+        ],
+    ];
+@endphp
+
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Breadcrumb Component -->
-    @include('layouts.vuexy.breadcrumb', $dataBreadcrumb)
+
+    <x-erp.breadcrumbs :items="$breadcrumbs">
+
+            <x-slot:extra>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-primary me-2">
+                        <i class="ti ti-sun"></i>
+                    </span>
+                    <span class="text-muted">Tema Actual: {{ ucfirst($customization->theme_mode) }}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-label-success me-2">
+                        <i class="ti ti-layout-dashboard"></i>
+                    </span>
+                    <span class="text-muted">Layout: {{ ucfirst($customization->layout_type) }}</span>
+                </div>
+            </x-slot:extra>
+
+        </x-erp.breadcrumbs>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-                @include('layouts.vuexy.header-card', $dataHeaderCard)
+                {{-- @include('layouts.vuexy.header-card', $dataHeaderCard) --}}
+                <x-erp.card-header 
+                        title="Lista de Empresas" 
+                        description=""
+                        textColor="text-primary"
+                        icon="ti ti-building"
+                        iconColor="bg-label-primary"
+                    >
+                        {{-- @can('empresas.create')
+                            <a href="{{ route('empresas.create') }}" class="btn btn-primary waves-effect">
+                                <i class="ti ti-plus me-2"></i>
+                                Crear Empresa
+                            </a>
+                        @endcan --}}
+                    </x-erp.card-header>
 
                 <div class="card-body">
                     <!-- Mensajes de estado -->
                     <div id="customization-alerts" class="mb-3"></div>
 
-                    <form id="customization-form" method="POST" action="{{ route('customization.update') }}">
+                    <form id="customization-form" method="POST" action="{{ route('workspace.customization.update', ['grupoempresa' => $grupoActual->slug]) }}">
                         @csrf
                         <div class="row">
                             <!-- Configuración de Tema -->
@@ -407,7 +452,7 @@
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Guardando...';
             submitBtn.disabled = true;
             
-            fetch('{{ route("customization.update") }}', {
+            fetch('{{ route("workspace.customization.update", ["grupoempresa" => $grupoActual->slug]) }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -488,8 +533,8 @@
                 // Guardar texto original para restaurar después
                 btn.dataset.originalText = originalText;
             });
-            
-            fetch('{{ route("customization.reset") }}', {
+
+            fetch('{{ route("workspace.customization.reset", ["grupoempresa" => $grupoActual->slug]) }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

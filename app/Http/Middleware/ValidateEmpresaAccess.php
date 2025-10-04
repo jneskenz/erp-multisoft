@@ -41,17 +41,17 @@ class ValidateEmpresaAccess
         $user = Auth::user();
         
         // 2. Extraer parámetros de la URL
-        $grupoCodigo = $request->route('grupo');
-        $empresaCodigo = $request->route('empresa');
-        
+        $grupoSlug = $request->route('grupo');
+        $empresaSlug = $request->route('empresa');
+
         // 3. Buscar el grupo empresarial por código
-        $grupoEmpresarial = GrupoEmpresarial::where('codigo', $grupoCodigo)->first();
+        $grupoEmpresarial = GrupoEmpresarial::where('slug', $grupoSlug)->first();
         if (!$grupoEmpresarial) {
             abort(404, 'Grupo empresarial no encontrado');
         }
         
         // 4. Buscar la empresa dentro del grupo
-        $empresa = Empresa::where('codigo', $empresaCodigo)
+        $empresa = Empresa::where('slug', $empresaSlug)
                           ->where('grupo_empresarial_id', $grupoEmpresarial->id)
                           ->first();
         

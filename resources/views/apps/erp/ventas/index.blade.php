@@ -21,7 +21,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('erp.dashboard', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}">Dashboard</a>
+                            <a href="{{ route('erp.dashboard', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item active">Ventas</li>
                     </ol>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="text-md-end">
-                                <a href="{{ route('erp.ventas.create', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}" 
+                                <a href="{{ route('erp.ventas.create', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}" 
                                    class="btn btn-success">
                                     <i class="mdi mdi-plus"></i> Nueva Venta
                                 </a>
@@ -116,11 +116,11 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('erp.ventas.show', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo, 'id' => $venta->id]) }}" 
+                                                    <a href="{{ route('erp.ventas.show', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug, 'id' => $venta->id]) }}" 
                                                        class="btn btn-sm btn-info" title="Ver">
                                                         <i class="mdi mdi-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('erp.ventas.edit', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo, 'id' => $venta->id]) }}" 
+                                                    <a href="{{ route('erp.ventas.edit', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug, 'id' => $venta->id]) }}" 
                                                        class="btn btn-sm btn-warning" title="Editar">
                                                         <i class="mdi mdi-pencil"></i>
                                                     </a>
@@ -140,7 +140,7 @@
                             <p class="text-muted mb-4">
                                 Comience agregando su primera venta para esta empresa.
                             </p>
-                            <a href="{{ route('erp.ventas.create', ['grupo' => $grupoActual->codigo, 'empresa' => $empresaActual->codigo]) }}" 
+                            <a href="{{ route('erp.ventas.create', ['grupo' => $grupoActual->slug, 'empresa' => $empresaActual->slug]) }}" 
                                class="btn btn-success">
                                 <i class="mdi mdi-plus me-1"></i> Crear Primera Venta
                             </a>
@@ -167,7 +167,7 @@
                             <h6>Empresa Actual:</h6>
                             <ul class="list-unstyled">
                                 <li><strong>Razón Social:</strong> {{ $empresaActual->razon_social }}</li>
-                                <li><strong>Código:</strong> {{ $empresaActual->codigo }}</li>
+                                <li><strong>Código:</strong> {{ $empresaActual->slug }}</li>
                                 <li><strong>ID:</strong> {{ $empresaActual->id }}</li>
                                 <li><strong>Estado:</strong> 
                                     @if($empresaActual->estado)
@@ -182,7 +182,7 @@
                             <h6>Grupo Empresarial:</h6>
                             <ul class="list-unstyled">
                                 <li><strong>Nombre:</strong> {{ $grupoActual->nombre }}</li>
-                                <li><strong>Código:</strong> {{ $grupoActual->codigo }}</li>
+                                <li><strong>Slug:</strong> {{ $grupoActual->slug }}</li>
                                 <li><strong>ID:</strong> {{ $grupoActual->id }}</li>
                                 <li><strong>Usuario:</strong> {{ auth()->user()->name }} ({{ auth()->user()->email }})</li>
                             </ul>
@@ -210,7 +210,7 @@
 // Fecha: 3 de octubre de 2025
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Módulo de Ventas cargado para empresa:', '{{ $empresaActual->codigo }}');
+    console.log('Módulo de Ventas cargado para empresa:', '{{ $empresaActual->slug }}');
     
     // TODO: Agregar funcionalidades interactivas como:
     // - Filtros de búsqueda

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\CustomizationController;
 use App\Http\Controllers\Erp\EmpresaController;
 use App\Http\Controllers\Erp\SedeController;
 use App\Http\Controllers\Erp\LocalController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\Erp\ArticuloController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\GrupoEmpresarialController;
 use App\Http\Controllers\Admin\LeadClienteController;
+use App\Http\Controllers\Workspace\AppsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +26,9 @@ Route::get('/admin', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
+
+    // Route::get('workspace', [AppsController::class, 'index'])->name('apps.workspace');    
+    
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     
    // Rutas de usuarios
@@ -57,12 +60,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Rutas de personalización
-    Route::prefix('customization')->name('customization.')->group(function () {
-        Route::get('/', [CustomizationController::class, 'index'])->name('index');
-        Route::post('/update', [CustomizationController::class, 'update'])->name('update');
-        Route::post('/reset', [CustomizationController::class, 'reset'])->name('reset');
-        Route::get('/settings', [CustomizationController::class, 'getSettings'])->name('settings');
-    });
+    // Route::prefix('customization')->name('customization.')->group(function () {
+    //     Route::get('/', [CustomizationController::class, 'index'])->name('index');
+    //     Route::post('/update', [CustomizationController::class, 'update'])->name('update');
+    //     Route::post('/reset', [CustomizationController::class, 'reset'])->name('reset');
+    //     Route::get('/settings', [CustomizationController::class, 'getSettings'])->name('settings');
+    // });
 
     // Rutas de administración de logs (solo para superadmin)
     Route::prefix('admin')->name('admin.')->middleware('superadmin')->group(function () {
@@ -111,4 +114,6 @@ Route::middleware(['auth'])->group(function () {
 | Incluye todas las rutas del ERP que siguen el patrón /{grupo}/{empresa}/{modulo}
 | Fecha de inclusión: 3 de octubre de 2025
 */
+require __DIR__.'/workspace.php';
+
 require __DIR__.'/erp.php';

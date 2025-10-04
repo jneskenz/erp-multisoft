@@ -62,12 +62,12 @@ class User extends Authenticatable
         if (!in_array($this->email, $allowedEmails)) {
             // Log de intento de acceso no autorizado
             if ($this->is_super_admin === true) {
-                // Log::warning('Intento de acceso superadmin no autorizado', [
-                //     'user_id' => $this->id,
-                //     'email' => $this->email,
-                //     'ip' => request()->ip(),
-                //     'user_agent' => request()->userAgent(),
-                // ]);
+                Log::warning('Intento de acceso superadmin no autorizado', [
+                    'user_id' => $this->id,
+                    'email' => $this->email,
+                    'ip' => request()->ip(),
+                    'user_agent' => request()->userAgent(),
+                ]);
             }
             return false;
         }
@@ -114,6 +114,29 @@ class User extends Authenticatable
     public function customization()
     {
         return $this->hasOne(UserCustomization::class);
+    }
+
+    /**
+     * Relación con los grupos empresariales
+     */
+    public function gruposEmpresariales()
+    {
+        return $this->hasMany(\App\Models\Admin\GrupoEmpresarial::class, 'user_uuid');
+    }
+
+    /**
+     * Obtener empresas asociadas al usuario a través de los grupos empresariales
+     */
+    public function empresas()
+    {
+        return $this->hasManyThrough(
+            \App\Models\Erp\Empresa::class,
+            \App\Models\Admin\GrupoEmpresarial::class,
+            'user_uuid', // Foreign key en grupo_empresarials
+            'grupo_empresarial_id', // Foreign key en empresas
+            'id', // Local key en users
+            'id' // Local key en grupo_empresarials
+        );
     }
 
     /**

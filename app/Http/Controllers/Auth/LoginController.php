@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -37,4 +38,24 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->estado == 0) {
+            $this->auth()->logout(); // <- 
+            return redirect('/login')->withErrors(['email' => 'Su cuenta está desactivada. Por favor, contacte al administrador.']);
+        }
+
+        if($user->isSuperAdmin()) {
+            return redirect('/admin');
+        }
+
+        if($user->is_owner == 1 && $user->hasRole('admin')) {
+            return redirect('/workspace/index');
+        } else {
+            return redirect('/home');
+        }
+
+    }
+
 }

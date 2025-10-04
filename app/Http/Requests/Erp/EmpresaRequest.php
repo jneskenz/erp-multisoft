@@ -35,6 +35,12 @@ class EmpresaRequest extends FormRequest
                 'max:20',
                 'unique:empresas,numerodocumento,' . $empresaId,
             ],
+            'codigo' => [
+                'nullable',
+                'string',
+                'max:20',
+                'unique:empresas,codigo,' . $empresaId,
+            ],
             'razon_social' => [
                 'required',
                 'string',
@@ -94,6 +100,10 @@ class EmpresaRequest extends FormRequest
             'numerodocumento.string' => 'El número de documento debe ser una cadena de texto.',
             'numerodocumento.max' => 'El número de documento no debe exceder :max caracteres.',
             'numerodocumento.unique' => 'El número de documento ya está en uso.',
+            'codigo.required' => 'El código es obligatorio.',
+            'codigo.string' => 'El código debe ser una cadena de texto.',
+            'codigo.max' => 'El código no debe exceder :max caracteres.',
+            'codigo.unique' => 'El código ya está en uso.',
             'razon_social.required' => 'La razón social es obligatoria.',
             'razon_social.string' => 'La razón social debe ser una cadena de texto.',
             'razon_social.max' => 'La razón social no debe exceder :max caracteres.',

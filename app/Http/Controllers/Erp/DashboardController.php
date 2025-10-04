@@ -35,7 +35,7 @@ class DashboardController extends BaseErpController
             'productos_stock_bajo' => 0,
         ];
         
-        return view('erp.dashboard.index', compact(
+        return view('apps.erp.dashboard.index', compact(
             'empresaActual',
             'grupoActual',
             'metricas'

@@ -57,6 +57,8 @@ class Empresa extends Model
                 'telefono',
                 'correo',
                 'estado',
+                'codigo',
+                'slug',
                 'pais_id',
                 'representante_legal',
                 'grupo_empresarial_id'
