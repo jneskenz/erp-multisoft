@@ -28,6 +28,7 @@ class Empresa extends Model
         'representante_legal',
         'grupo_empresarial_id',
         'codigo',
+        'slug'
     ];
 
     public function pais()

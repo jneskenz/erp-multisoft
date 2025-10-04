@@ -19,6 +19,7 @@ class GrupoEmpresarial extends Model
         'nombre',
         'descripcion',
         'codigo',
+        'slug',
         'pais_origen',
         'telefono',
         'email',

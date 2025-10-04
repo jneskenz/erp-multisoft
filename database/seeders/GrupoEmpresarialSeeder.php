@@ -24,7 +24,8 @@ class GrupoEmpresarialSeeder extends Seeder
                 'email' => 'contacto@grupomultisoft.com',
                 'sitio_web' => 'https://www.grupomultisoft.com',
                 'direccion_matriz' => 'Av. Javier Prado Este 1234, San Isidro, Lima, Perú',
-                'estado' => true
+                'estado' => true,
+                'slug' => 'grupo-multisoft'
             ],
             [
                 'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
@@ -36,7 +37,8 @@ class GrupoEmpresarialSeeder extends Seeder
                 'email' => 'info@corporacioninnovacion.com',
                 'sitio_web' => 'https://www.corporacioninnovacion.com',
                 'direccion_matriz' => 'Carrera 15 #93-47, Bogotá, Colombia',
-                'estado' => true
+                'estado' => true,
+                'slug' => 'corporacion-innovacion'
             ],
             [
                 'user_uuid' => \Illuminate\Support\Str::uuid()->toString(),
@@ -48,7 +50,8 @@ class GrupoEmpresarialSeeder extends Seeder
                 'email' => 'contacto@holdingempresarial.cl',
                 'sitio_web' => 'https://www.holdingempresarial.cl',
                 'direccion_matriz' => 'Av. Providencia 1234, Providencia, Santiago, Chile',
-                'estado' => true
+                'estado' => true,
+                'slug' => 'holding-empresarial'
             ]
         ];
 

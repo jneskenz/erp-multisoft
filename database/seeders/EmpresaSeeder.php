@@ -22,7 +22,8 @@ class EmpresaSeeder extends Seeder
                 'correo' => 'contacto@ejemplo.com',
                 'avatar' => 'https://www.ejemplo.com',
                 'estado' => '1',
-                'codigo' => 'EJEMPLO'
+                'codigo' => 'EJEMPLO',
+                'slug' => 'empresa-ejemplo'
             ],
             [
                 'nombre_comercial' => 'Comercial Lima E.I.R.L.',
@@ -33,7 +34,8 @@ class EmpresaSeeder extends Seeder
                 'correo' => 'ventas@comerciallima.com',
                 'avatar' => 'https://www.comerciallima.com',
                 'estado' => '1',
-                'codigo' => 'COMLIMA'
+                'codigo' => 'COMLIMA',
+                'slug' => 'comercial-lima'
             ],
             [
                 'nombre_comercial' => 'Servicios Generales S.R.L.',
@@ -44,7 +46,8 @@ class EmpresaSeeder extends Seeder
                 'correo' => 'info@servicios.com',
                 'avatar' => null,
                 'estado' => '0',
-                'codigo' => 'SGSRL'
+                'codigo' => 'SGSRL',
+                'slug' => 'servicios-generales'
             ],
         ];
 

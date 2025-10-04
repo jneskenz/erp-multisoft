@@ -20,6 +20,7 @@ class GrupoEmpresarialFactory extends Factory
         return [
             'nombre' => $this->faker->company(),
             'user_uuid' => $this->faker->unique()->uuid(),
+            'slug' => $this->faker->unique()->slug(),
             'descripcion' => $this->faker->optional()->paragraph(),
             'codigo' => strtoupper($this->faker->unique()->bothify('???###')),
             'pais_origen' => $this->faker->optional()->country(),
@@ -28,7 +29,6 @@ class GrupoEmpresarialFactory extends Factory
             'sitio_web' => $this->faker->optional()->url(),
             'direccion_matriz' => $this->faker->optional()->address(),
             'estado' => $this->faker->boolean(80), // 80% de probabilidad de ser true 
-
         ];
     }
 }
