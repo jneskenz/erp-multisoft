@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Erp;
+namespace App\Http\Controllers\Workspace;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Erp\EmpresaRequest;
-use App\Models\Erp\Empresa;
+use App\Http\Requests\Workspace\EmpresaRequest;
+use App\Models\Workspace\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -53,8 +53,9 @@ class EmpresaController extends Controller
         // Obtener estadísticas generales (sin filtros)
         $totalEmpresas = Empresa::count();
         $empresasActivas = Empresa::where('estado', true)->count();
+        $grupoActual = $this->getGrupoActual();
 
-        return view('erp.empresas.index', compact('empresas', 'totalEmpresas', 'empresasActivas'));
+        return view('apps.workspace.empresas.index', compact('empresas', 'totalEmpresas', 'empresasActivas', 'grupoActual'));
 
     }
 
@@ -64,7 +65,8 @@ class EmpresaController extends Controller
     public function create()
     {
         $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
-        return view('erp.empresas.create', compact('gruposEmpresariales'));
+        $grupoActual = $this->getGrupoActual();
+        return view('apps.workspace.empresas.create', compact('gruposEmpresariales', 'grupoActual'));
     }
 
     private function generateUniqueCodigo()
@@ -76,6 +78,15 @@ class EmpresaController extends Controller
         } while (Empresa::where('codigo', $codigo)->exists());
 
         return $codigo;
+    }
+
+    /**
+     * Obtener el grupo empresarial actual del usuario
+     */
+    private function getGrupoActual()
+    {
+        $user = Auth::user();
+        return $user->gruposEmpresariales()->first();
     }
 
     /**
@@ -103,7 +114,9 @@ class EmpresaController extends Controller
 
             Log::info('Empresa creada exitosamente: ' . $empresa->id);
 
-            return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
+            $grupoActual = $this->getGrupoActual();
+
+            return redirect()->route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug])->with('success', 'Empresa creada exitosamente.');
 
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollback();
@@ -137,8 +150,9 @@ class EmpresaController extends Controller
     {
         // Obtener las actividades relacionadas a esta empresa
         $activities = $empresa->activities()->latest()->get();
+        $grupoActual = $this->getGrupoActual();
         
-        return view('erp.empresas.show', compact('empresa', 'activities'));
+        return view('apps.workspace.empresas.show', compact('empresa', 'activities', 'grupoActual'));
     }
 
     /**
@@ -147,7 +161,8 @@ class EmpresaController extends Controller
     public function edit(Empresa $empresa)
     {
         $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
-        return view('erp.empresas.edit', compact('empresa', 'gruposEmpresariales'));
+        $grupoActual = $this->getGrupoActual();
+        return view('apps.workspace.empresas.edit', compact('empresa', 'gruposEmpresariales', 'grupoActual'));
     }
 
     /**
@@ -164,8 +179,10 @@ class EmpresaController extends Controller
 
             DB::commit();
 
+            $grupoActual = $this->getGrupoActual();
+
             return redirect()
-                ->route('empresas.index')
+                ->route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug])
                 ->with('success', 'Empresa actualizada exitosamente.');
 
         } catch (\Illuminate\Database\QueryException $e) {
@@ -209,8 +226,10 @@ class EmpresaController extends Controller
 
             DB::commit();
 
+            $grupoActual = $this->getGrupoActual();
+
             return redirect()
-                ->route('empresas.index')
+                ->route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug])
                 ->with('success', 'Empresa eliminada exitosamente.');
 
         } catch (\Illuminate\Database\QueryException $e) {

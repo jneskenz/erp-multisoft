@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Erp;
+namespace App\Models\Workspace;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +28,8 @@ class Empresa extends Model
         'representante_legal',
         'grupo_empresarial_id',
         'codigo',
-        'slug'
+        'slug',
+        'avatar',
     ];
 
     public function pais()

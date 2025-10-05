@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Erp;
 
-use App\Models\Erp\Local;
-use App\Models\Erp\Sede;
+use App\Models\Workspace\Local;
+use App\Models\Workspace\Sede;
 use Livewire\Component;
 use Livewire\WithPagination;
 

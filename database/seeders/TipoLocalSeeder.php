@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Erp\TipoLocal;
+use App\Models\Workspace\TipoLocal;
 
 class TipoLocalSeeder extends Seeder
 {

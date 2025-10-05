@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Models\Admin\GrupoEmpresarial;
-use App\Models\Erp\Empresa;
+use App\Models\Workspace\Empresa;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

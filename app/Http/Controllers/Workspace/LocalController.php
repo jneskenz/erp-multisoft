@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Erp;
+namespace App\Http\Controllers\Workspace;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Erp\LocalStoreRequest;
-use App\Http\Requests\Erp\LocalUpdateRequest;
-use App\Models\Erp\Local;
-use App\Models\Erp\Sede;
-use App\Models\Erp\TipoLocal;
+use App\Http\Requests\Workspace\LocalStoreRequest;
+use App\Http\Requests\Workspace\LocalUpdateRequest;
+use App\Models\Workspace\Local;
+use App\Models\Workspace\Sede;
+use App\Models\Workspace\TipoLocal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

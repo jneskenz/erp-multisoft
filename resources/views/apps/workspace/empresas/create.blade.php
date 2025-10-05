@@ -1,6 +1,7 @@
 @extends('layouts.app-erp')
 
-@section('title', 'Editar Empresa - ERP Multisoft')
+@section('title', 'Nueva Empresa - ERP Multisoft')
+
 
 @php
     $breadcrumbs = [
@@ -9,12 +10,23 @@
         'icon' => 'ti ti-building',
         'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Empresas', 'url' => route('empresas.index')],
-            ['name' => 'Editar empresa', 'url' => '', 'active' => true]
+            ['name' => 'Empresas', 'url' => route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')])],
+            ['name' => 'Crear empresa', 'url' => '', 'active' => true]
         ],
     ];
 
+    $dataHeaderCard = [
+        'title' => 'Formulario de registro',
+        'description' => '',
+        'textColor' => '',
+        'icon' => 'ti ti-plus',
+        'iconColor' => 'bg-label-info',
+        'actions' => [],
+    ];
+
+
 @endphp
+
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -22,7 +34,7 @@
     <x-erp.breadcrumbs :items="$breadcrumbs">
         <x-slot:extra>
             @can('empresas.view')
-            <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+            <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-label-dark waves-effect">
                 <i class="ti ti-arrow-left me-2"></i>
                 Regresar
             </a>
@@ -35,19 +47,12 @@
             <div class="card">
 
                 <x-erp.card-header 
-                    title="Editando la empresa" 
-                    description="{{ $empresa->nombre_comercial ?? $empresa->razon_social }}"
-                    textColor="text-warning"
-                    icon="ti ti-edit"
-                    iconColor="bg-warning"
-                    estado="{{ $local->estado }}"
+                    title="Formulario de registro" 
+                    description=""
+                    textColor="text-plus"
+                    icon="ti ti-building"
+                    iconColor="bg-label-info"
                 >
-                    @can('empresas.view')
-                        <a href="{{ route('empresas.show', $empresa) }}" class="btn btn-info waves-effect">
-                            <i class="ti ti-list-search me-2"></i>
-                            Ver detalle
-                        </a>                        
-                    @endcan
                 </x-erp.card-header>
 
                 <div class="card-body">
@@ -76,7 +81,7 @@
 
                     @if ($errors->any())
                         <div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
-                            <span class="alert-icon rounded"><i class="ti ti-alert-square-rounded"></i></span>
+                            <span class="alert-icon rounded"><i class="ti ti-alert-triangle"></i></span>
                             <div class="flex-grow-1">
                                 <h6 class="alert-heading fw-bold mb-1">¡Atención!</h6>
                                 <p class="mb-2">Se encontraron los siguientes errores:</p>
@@ -90,16 +95,16 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('empresas.update', $empresa) }}" method="POST" class="needs-validation" novalidate>
+                    <form action="{{ route('workspace.empresas.store', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" method="POST" class="needs-validation" novalidate>
                         @csrf
-                        @method('PUT')
 
                         <!-- Información Básica -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="fw-bold mb-0">
-                                    <i class="ti ti-building me-2"></i> Información Básica
+                                <h6 class="fw-bold">
+                                    <i class="ti ti-building me-2"></i> Información principal
                                 </h6>
+                                <hr>
                             </div>
                         </div>
 
@@ -111,7 +116,7 @@
                                 <input type="text"
                                     class="form-control @error('numerodocumento') is-invalid @enderror"
                                     id="numerodocumento" name="numerodocumento"
-                                    value="{{ old('numerodocumento', $empresa->numerodocumento) }}"
+                                    value="{{ old('numerodocumento') }}"
                                     placeholder="20123456789"
                                     maxlength="11"
                                     required>
@@ -120,19 +125,31 @@
                                 @enderror
                                 <div class="form-text">Ingrese el RUC de 11 dígitos</div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="codigo" class="form-label">
+                                    Código <span class="text-muted">(Generado automáticamente)</span>
+                                </label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="codigo" name="codigo"
+                                    value="Se generará automáticamente: EMP####"
+                                    placeholder="Ej: EMP0001"
+                                    readonly
+                                    disabled>
+                                <div class="form-text">El código se generará automáticamente al crear la empresa</div>
+                            </div>
                         </div>
 
                         <div class="row mb-3">
-
                             <div class="col-md-6">
-                                <label for="razon_social" class="form-label">
-                                    Razón Social <span class="text-danger">*</span>
+                                <label for="nombre" class="form-label">
+                                    Razo Social <span class="text-danger">*</span>
                                 </label>
                                 <input type="text"
                                     class="form-control @error('razon_social') is-invalid @enderror"
                                     id="razon_social" name="razon_social"
-                                    value="{{ old('razon_social', $empresa->razon_social) }}"
-                                    placeholder="Ingrese la razón social"
+                                    value="{{ old('razon_social') }}"
+                                    placeholder="Ingrese el nombre de la empresa"
                                     required>
                                 @error('razon_social')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -140,19 +157,19 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="nombre_comercial" class="form-label">
-                                    Nombre Comercial
+                                <label for="nombre" class="form-label">
+                                    Nombre Comercial <span class="text-danger">*</span>
                                 </label>
                                 <input type="text"
                                     class="form-control @error('nombre_comercial') is-invalid @enderror"
                                     id="nombre_comercial" name="nombre_comercial"
-                                    value="{{ old('nombre_comercial', $empresa->nombre_comercial) }}"
-                                    placeholder="Ingrese el nombre comercial">
+                                    value="{{ old('nombre_comercial') }}"
+                                    placeholder="Ingrese el nombre de la empresa"
+                                    required>
                                 @error('nombre_comercial')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                         </div>
 
                         <div class="row mb-3">
@@ -164,7 +181,7 @@
                                     id="direccion" name="direccion"
                                     rows="3"
                                     placeholder="Ingrese la dirección completa de la empresa"
-                                    required>{{ old('direccion', $empresa->direccion) }}</textarea>
+                                    required>{{ old('direccion') }}</textarea>
                                 @error('direccion')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -172,19 +189,35 @@
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="representante_legal" class="form-label">Representante Legal</label>
                                 <input type="text"
                                     class="form-control @error('representante_legal') is-invalid @enderror"
                                     id="representante_legal" name="representante_legal"
-                                    value="{{ old('direccion', $empresa->direccion) }}"
+                                    value="{{ old('representante_legal') }}"
                                     placeholder="Nombre del representante legal">
                                 @error('representante_legal')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="grupo_empresarial_id" class="form-label">Grupo Empresarial</label>
+                                <select class="form-select @error('grupo_empresarial_id') is-invalid @enderror"
+                                    id="grupo_empresarial_id" name="grupo_empresarial_id">
+                                    <option value="">Seleccionar grupo empresarial...</option>
+                                    @foreach($gruposEmpresariales as $id => $nombre)
+                                        <option value="{{ $id }}" {{ old('grupo_empresarial_id') == $id ? 'selected' : '' }}>
+                                            {{ $nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('grupo_empresarial_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
                                 <div class="form-check form-switch mt-4">
                                     <input class="form-check-input"
                                         type="checkbox"
@@ -193,18 +226,17 @@
                                         {{ old('estado', true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="estado">Empresa Activa</label>
                                 </div>
-                                <div class="form-text" title="No puede inactivar o suspender la empresa por este formulario">
-                                    Esta opción solo está permitido para activar la empresa.
-                                </div>
+                                <div class="form-text">La empresa estará disponible para operaciones</div>
                             </div>
                         </div>
 
                         <!-- Información de Contacto -->
                         <div class="row mb-4 mt-4">
                             <div class="col-12">
-                                <h6 class="fw-bold mb-0">
+                                <h6 class="fw-bold">
                                     <i class="ti ti-phone me-2"></i> Información de Contacto
                                 </h6>
+                                <hr>
                             </div>
                         </div>
 
@@ -214,41 +246,37 @@
                                 <input type="text"
                                     class="form-control @error('telefono') is-invalid @enderror"
                                     id="telefono" name="telefono"
-                                    value="{{ old('telefono', $empresa->telefono) }}"
-                                    placeholder="Ingrese el teléfono">
+                                    value="{{ old('telefono') }}"
+                                    placeholder="(01) 123-4567">
                                 @error('telefono')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-md-6">
-                                <label for="correo" class="form-label">Correo Electrónico</label>
+                                <label for="email" class="form-label">Correo Electrónico</label>
                                 <input type="email"
-                                    class="form-control @error('correo') is-invalid @enderror"
-                                    id="correo" name="correo"
-                                    value="{{ old('correo', $empresa->correo) }}"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    id="email" name="email"
+                                    value="{{ old('email') }}"
                                     placeholder="empresa@ejemplo.com">
-                                @error('correo')
+                                @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
                         <!-- Botones de Acción -->
-                        <div class="row mt-5">
+                        <div class="row mt-4">
                             <div class="col-12">
                                 <hr>
                                 <div class="d-flex justify-content-between">
-                                    <div>
-                                        <a href="{{ route('empresas.index') }}" class="btn btn-outline-secondary">
-                                            <i class="ti ti-x me-1"></i> Cancelar
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="ti ti-check me-1"></i> Actualizar Empresa
-                                        </button>
-                                    </div>
+                                    <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-outline-secondary">
+                                        <i class="ti ti-x me-1"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="ti ti-check me-1"></i> Crear Empresa
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -267,25 +295,32 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
 
-    // Validación de formulario
+    // Auto-dismiss alertas después de 5 segundos
+    const alerts = document.querySelectorAll('.alert .btn-close');
+    alerts.forEach(function(closeBtn) {
+        setTimeout(function() {
+            closeBtn.click();
+        }, 8000); // 8 segundos para dar tiempo a leer
+    });
+
+    // Validación del formulario
     const form = document.querySelector('.needs-validation');
     if (form) {
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
+
+                // Scroll al primer campo inválido
+                const invalidInputs = form.querySelectorAll(':invalid');
+                if (invalidInputs.length > 0) {
+                    invalidInputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    invalidInputs[0].focus();
+                }
             }
             form.classList.add('was-validated');
         });
     }
-
-    // Auto-dismiss alertas después de 8 segundos
-    const alerts = document.querySelectorAll('.alert .btn-close');
-    alerts.forEach(function(closeBtn) {
-        setTimeout(function() {
-            closeBtn.click();
-        }, 8000);
-    });
 
     // Formato de RUC
     const rucInput = document.getElementById('numerodocumento');

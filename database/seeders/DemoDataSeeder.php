@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Admin\GrupoEmpresarial;
-use App\Models\Erp\Empresa;
+use App\Models\Workspace\Empresa;
 
 /**
  * Seeder de Datos de Demostración del ERP Multi-Empresa

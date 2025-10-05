@@ -1,4 +1,4 @@
-@extends('layouts.app-workspace')
+@extends('layouts.app-ws')
 
 @section('title', 'Personalización del Sistema')
 
@@ -43,25 +43,25 @@
             <div class="card">
                 {{-- @include('layouts.vuexy.header-card', $dataHeaderCard) --}}
                 <x-erp.card-header 
-                        title="Lista de Empresas" 
-                        description=""
+                        title="Configuración de Personalización" 
+                        description="Ajusta la apariencia del sistema según tus preferencias"
                         textColor="text-primary"
-                        icon="ti ti-building"
+                        icon="ti ti-palette"
                         iconColor="bg-label-primary"
                     >
-                        {{-- @can('empresas.create')
-                            <a href="{{ route('empresas.create') }}" class="btn btn-primary waves-effect">
-                                <i class="ti ti-plus me-2"></i>
-                                Crear Empresa
+                        @can('workspace.customization.reset')
+                            <a href="{{ route('workspace.customization.reset', ['grupoempresa' => $grupoActual->slug]) }}" onclick="event.preventDefault(); resetCustomization();" class="btn btn-label-warning waves-effect">
+                                <i class="ti ti-refresh me-2"></i>
+                                Restablecer
                             </a>
-                        @endcan --}}
-                    </x-erp.card-header>
+                        @endcan
+                </x-erp.card-header>
 
                 <div class="card-body">
                     <!-- Mensajes de estado -->
                     <div id="customization-alerts" class="mb-3"></div>
 
-                    <form id="customization-form" method="POST" action="{{ route('workspace.customization.update', ['grupoempresa' => $grupoActual->slug]) }}">
+                    <form id="customization-form" method="POST" action="{{ route('workspace.customization.update', ['grupoempresa' => $grupoActual->slug]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <!-- Configuración de Tema -->
@@ -349,6 +349,83 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Avatar del Grupo Empresarial -->
+                            <div class="col-lg-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="ti ti-photo me-2"></i>
+                                            Avatar del Grupo Empresarial
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Preview del avatar actual -->
+                                        <div class="mb-3 text-center">
+                                            <div class="avatar avatar-xl mx-auto mb-3">
+                                                @if($grupoActual->avatar)
+                                                    <img src="{{ Storage::url($grupoActual->avatar) }}" 
+                                                         alt="Avatar del grupo" 
+                                                         class="rounded-circle"
+                                                         id="avatar-preview">
+                                                @else
+                                                    <div class="avatar-initial bg-label-primary rounded-circle" id="avatar-preview">
+                                                        <i class="ti ti-building-bank ti-lg"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <h6 class="mb-1">{{ $grupoActual->nombre }}</h6>
+                                            <small class="text-muted">{{ $grupoActual->codigo }}</small>
+                                        </div>
+
+                                        <!-- Upload de nueva imagen -->
+                                        <div class="mb-3">
+                                            <label for="avatar" class="form-label">Subir nueva imagen</label>
+                                            <div class="input-group">
+                                                <input type="file" 
+                                                       class="form-control" 
+                                                       id="avatar" 
+                                                       name="avatar"
+                                                       accept="image/*,.svg"
+                                                       onchange="previewAvatar(this)">
+                                                <label class="input-group-text" for="avatar">
+                                                    <i class="ti ti-upload"></i>
+                                                </label>
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="ti ti-info-circle me-1"></i>
+                                                Formatos permitidos: JPG, PNG, GIF, SVG. Tamaño máximo: 5MB.
+                                            </div>
+                                        </div>
+
+                                        <!-- Opciones adicionales -->
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="remove_avatar" name="remove_avatar">
+                                                <label class="form-check-label" for="remove_avatar">
+                                                    <i class="ti ti-trash me-1 text-danger"></i>
+                                                    Eliminar avatar actual
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Información del avatar -->
+                                        @if($grupoActual->avatar)
+                                        <div class="card bg-label-info">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="ti ti-info-circle me-2"></i>
+                                                    <div class="small">
+                                                        <strong>Avatar actual:</strong><br>
+                                                        Subido: {{ $grupoActual->updated_at?->format('d/m/Y H:i') ?? 'Fecha no disponible' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mt-4">
@@ -435,6 +512,23 @@
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             
+            // Verificar si hay archivo de avatar
+            const avatarInput = document.getElementById('avatar');
+            if (avatarInput && avatarInput.files && avatarInput.files.length > 0) {
+                console.log('Avatar detectado:', avatarInput.files[0].name, 'Size:', avatarInput.files[0].size);
+                // Asegurar que el archivo esté en FormData
+                formData.set('avatar', avatarInput.files[0]);
+            } else {
+                console.log('No hay archivo de avatar seleccionado');
+            }
+            
+            // Verificar si se solicita eliminar avatar
+            const removeAvatarCheckbox = document.getElementById('remove_avatar');
+            if (removeAvatarCheckbox && removeAvatarCheckbox.checked) {
+                console.log('Eliminación de avatar solicitada');
+                formData.set('remove_avatar', '1');
+            }
+            
             // Manejar checkboxes para convertir a boolean correcto
             const navbarBlur = document.getElementById('navbar_blur');
             const sidebarCollapsed = document.getElementById('sidebar_collapsed');
@@ -483,8 +577,27 @@
                     setTimeout(() => { window.location.reload(); }, 1500);
 
                 } else {
-                    showAlert('danger', data.message || 'Error al guardar la configuración');
+                    // Mostrar errores de validación detallados
+                    let errorMessage = data.message || 'Error al guardar la configuración';
+                    
+                    if (data.errors) {
+                        const errorDetails = [];
+                        Object.keys(data.errors).forEach(field => {
+                            data.errors[field].forEach(error => {
+                                errorDetails.push(error);
+                            });
+                        });
+                        if (errorDetails.length > 0) {
+                            errorMessage = errorDetails.join('<br>');
+                        }
+                    }
+                    
+                    showAlert('danger', errorMessage);
                 }
+                
+                // Restaurar botón en todos los casos
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -516,6 +629,90 @@
             if (sidebarOptions) {
                 sidebarOptions.style.display = layoutTypeChecked.value === 'vertical' ? 'block' : 'none';
             }
+        }
+    });
+
+    // Función para previsualizar avatar
+    function previewAvatar(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            const file = input.files[0];
+            
+            // Validar tipo de archivo (incluyendo SVG)
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'];
+            if (!validTypes.includes(file.type) && !file.type.match('image.*')) {
+                showAlert('danger', 'Por favor selecciona un archivo de imagen válido (JPG, PNG, GIF, SVG)');
+                input.value = '';
+                return;
+            }
+            
+            // Validar tamaño (5MB máximo)
+            if (file.size > 5 * 1024 * 1024) {
+                showAlert('danger', 'El archivo es demasiado grande. Tamaño máximo: 5MB');
+                input.value = '';
+                return;
+            }
+            
+            reader.onload = function(e) {
+                const preview = document.getElementById('avatar-preview');
+                
+                // Si es una imagen, mostrar la imagen
+                if (preview.tagName === 'IMG') {
+                    preview.src = e.target.result;
+                } else {
+                    // Si es un div (placeholder), crear elemento img
+                    const newImg = document.createElement('img');
+                    newImg.src = e.target.result;
+                    newImg.alt = 'Preview del avatar';
+                    newImg.className = 'rounded-circle';
+                    newImg.id = 'avatar-preview';
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'cover';
+                    
+                    preview.parentNode.replaceChild(newImg, preview);
+                }
+                
+                // Desmarcar el checkbox de eliminar
+                const removeCheckbox = document.getElementById('remove_avatar');
+                if (removeCheckbox) {
+                    removeCheckbox.checked = false;
+                }
+                
+                showAlert('success', 'Vista previa del avatar cargada correctamente');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // Manejar checkbox de eliminar avatar
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeCheckbox = document.getElementById('remove_avatar');
+        const avatarInput = document.getElementById('avatar');
+        
+        if (removeCheckbox) {
+            removeCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Limpiar input de archivo
+                    if (avatarInput) {
+                        avatarInput.value = '';
+                    }
+                    
+                    // Mostrar placeholder
+                    const preview = document.getElementById('avatar-preview');
+                    if (preview) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'avatar-initial bg-label-primary rounded-circle';
+                        placeholder.id = 'avatar-preview';
+                        placeholder.innerHTML = '<i class="ti ti-building-bank ti-lg"></i>';
+                        
+                        preview.parentNode.replaceChild(placeholder, preview);
+                    }
+                    
+                    showAlert('info', 'El avatar será eliminado al guardar los cambios');
+                }
+            });
         }
     });
 

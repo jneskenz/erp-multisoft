@@ -11,7 +11,7 @@
             </button>
             <span style="padding-top:2px">{{ $items['title'] }}</span>
         </h5>
-        <div class="page-title-right">
+        <div class="page-title-right mb-1" style="opacity: 0.7;">
             <ol class="breadcrumb m-0">
                 @foreach ($items['items'] as $item)
                 <li class="breadcrumb-item {{ $loop->last ? 'active' : '' }}">
@@ -19,19 +19,13 @@
                 </li>
                 @endforeach
             </ol>
-        </div>
-        
+        </div>        
     </div>
     <div class="d-flex align-content-center flex-wrap gap-4">
-        
-        <!-- Slot extra -->
         {{ $extra ?? '' }}
-
-        <!-- Slot acciones -->
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             {{ $acciones ?? '' }}
         </div>
-
     </div>
 </div>
 <!-- breadcrumbs|end -->

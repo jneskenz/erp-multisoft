@@ -46,12 +46,12 @@ class LoginController extends Controller
             return redirect('/login')->withErrors(['email' => 'Su cuenta está desactivada. Por favor, contacte al administrador.']);
         }
 
-        if($user->isSuperAdmin()) {
-            return redirect('/admin');
-        }
+        // if($user->isSuperAdmin()) {
+        //     return redirect('/admin');
+        // }
 
         if($user->is_owner == 1 && $user->hasRole('admin')) {
-            return redirect('/workspace/index');
+            return redirect('/workspace/dashboard');
         } else {
             return redirect('/home');
         }

@@ -9,7 +9,7 @@
         'icon' => 'ti ti-building',
         'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Empresas', 'url' => route('empresas.index')],
+            ['name' => 'Empresas', 'url' => route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')])],
             ['name' => 'Detalle empresa', 'url' => '', 'active' => true]
         ],
     ];
@@ -23,7 +23,7 @@
 
         <x-slot:extra>
             @can('empresas.view')
-            <a href="{{ route('empresas.index') }}" class="btn btn-label-dark waves-effect">
+            <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-label-dark waves-effect">
                 <i class="ti ti-arrow-left me-2"></i>
                 Regresar
             </a>
@@ -46,7 +46,7 @@
                 >
                     
                     @can('empresas.edit')
-                        <a href="{{ route('empresas.edit', $empresa) }}" class="btn btn-primary waves-effect">
+                        <a href="{{ route('workspace.empresas.edit', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}" class="btn btn-primary waves-effect">
                             <i class="ti ti-edit me-2"></i>
                             Editar Empresa
                         </a>                        
@@ -260,7 +260,7 @@
                         <div class="col-12">
                             @can('empresas.delete')
                                 <form method="POST"
-                                        action="{{ route('empresas.destroy', $empresa) }}"
+                                        action="{{ route('workspace.empresas.destroy', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}"
                                         style="display: inline;"
                                         onsubmit="return confirm('¿Estás seguro de eliminar esta empresa? Esta acción no se puede deshacer.')">
                                     @csrf

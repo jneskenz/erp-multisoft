@@ -40,7 +40,7 @@ class AppsController extends Controller
                 'icono' => 'ti ti-building-store',
                 'color' => 'primary',
                 'activa' => true,
-                'ruta_base' => '/erp'
+                'ruta_base' => ''
             ],
             [
                 'id' => 'crm',

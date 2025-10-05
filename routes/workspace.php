@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Workspace\AppsController;
 use App\Http\Controllers\Workspace\CustomizationController;
+use App\Http\Controllers\Workspace\EmpresaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,8 +35,9 @@ use App\Http\Controllers\Workspace\CustomizationController;
 */
 
 Route::group([
-    'prefix' => '/{grupoempresa}',
+    'prefix' => 'ws/{grupoempresa}',
     'middleware' => ['auth', 'grupo.access'], // Middleware registrado correctamente
+    'as' => 'workspace.', // Prefijo para nombres de rutas
     'where' => [
         'grupoempresa' => '[a-zA-Z0-9\-]+', // Solo letras, números y guiones
     ]
@@ -46,16 +48,14 @@ Route::group([
     | Dashboard Principal del Grupo
     |--------------------------------------------------------------------------
     */
-    Route::get('/', [AppsController::class, 'index'])
-        ->name('workspace.dashboard');
+    Route::get('/', [AppsController::class, 'index'])->name('dashboard');
     
     /*
     |--------------------------------------------------------------------------
     | Aplicaciones del Grupo
     |--------------------------------------------------------------------------
     */
-    Route::get('/apps', [AppsController::class, 'index'])
-        ->name('workspace.apps');
+    Route::get('/apps', [AppsController::class, 'index'])->name('workspace.apps');
     
     /*
     |--------------------------------------------------------------------------
@@ -66,8 +66,7 @@ Route::group([
         Route::get('/', [AppsController::class, 'configuracion'])->name('index');
         Route::get('/empresas', [AppsController::class, 'empresas'])->name('empresas');
         Route::get('/usuarios', [AppsController::class, 'usuarios'])->name('usuarios');
-    });
-    
+    });    
     /*
     |--------------------------------------------------------------------------
     | Reportes del Grupo
@@ -77,6 +76,12 @@ Route::group([
         Route::get('/', [AppsController::class, 'reportes'])->name('index');
         Route::get('/general', [AppsController::class, 'reporteGeneral'])->name('general');
     });
+    /*
+    |--------------------------------------------------------------------------
+    | Gestión de Empresas
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('empresas', EmpresaController::class);
     
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +95,7 @@ Route::group([
     */
 
     // agrega aqui personalizaciones o nuevas rutas segun se requiera
-    Route::prefix('customization')->name('workspace.customization.')->group(function () {
+    Route::prefix('customization')->name('customization.')->group(function () {
         Route::get('/', [CustomizationController::class, 'index'])->name('index');
         Route::post('/update', [CustomizationController::class, 'update'])->name('update');
         Route::post('/reset', [CustomizationController::class, 'reset'])->name('reset');

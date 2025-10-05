@@ -1,47 +1,46 @@
 <?php
 
-namespace App\Models\Erp;
+namespace App\Models\Workspace;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class Sede extends Model
+class Pais extends Model
 {
-
     use HasFactory, HasRoles, LogsActivity;
-
-    protected $table = 'sedes';
+    
+    protected $table = 'paises';
 
     protected $fillable = [
-        'nombre',
-        'codigo',
         'descripcion',
+        'codigo',
+        'moneda',
+        'codigo_moneda',
+        'simbolo_moneda',
         'estado',
-        'empresa_id',
     ];
 
-    // Relación con el modelo Empresa
-    public function empresa()
+    public function empresas()
     {
-        return $this->belongsTo(Empresa::class);
+        return $this->hasMany(Empresa::class, 'pais_id');
     }
-
+    
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly([
-                'nombre',
-                'codigo',
                 'descripcion',
-                'estado',
-                'empresa_id',
+                'codigo',
+                'moneda',
+                'codigo_moneda',
+                'simbolo_moneda',
+                'estado'
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
+    
 }

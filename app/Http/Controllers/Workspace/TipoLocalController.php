@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Erp;
+namespace App\Http\Controllers\Workspace;
 
 use App\Http\Controllers\Controller;
-use App\Models\Erp\TipoLocal;
+use App\Models\Workspace\TipoLocal;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 

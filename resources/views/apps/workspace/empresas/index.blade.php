@@ -1,4 +1,4 @@
-@extends('layouts.app-erp')
+@extends('layouts.app-ws')
 
 @section('title', 'Gestión de Empresas - ERP Multisoft')
 
@@ -9,7 +9,7 @@
         'icon' => 'ti ti-building',
         'items' => [
             ['name' => 'Config. Administrativa', 'url' => route('home')],
-            ['name' => 'Empresas', 'url' => route('empresas.index')],
+            ['name' => 'Empresas', 'url' => route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')])],
         ],
     ];
 @endphp
@@ -75,7 +75,7 @@
                         iconColor="bg-label-primary"
                     >
                         @can('empresas.create')
-                            <a href="{{ route('empresas.create') }}" class="btn btn-primary waves-effect">
+                            <a href="{{ route('workspace.empresas.create', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-primary waves-effect">
                                 <i class="ti ti-plus me-2"></i>
                                 Crear Empresa
                             </a>
@@ -86,7 +86,7 @@
                         <!-- Filtros de búsqueda -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <form method="GET" action="{{ route('empresas.index') }}" class="d-flex gap-3 align-items-end">
+                                <form method="GET" action="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="d-flex gap-3 align-items-end">
                                     <div class="flex-grow-1">
                                         <label for="buscar" class="form-label">Buscar empresa</label>
                                         <input type="text" 
@@ -112,7 +112,7 @@
                                     </div>
                                     @if(request('buscar') || request('estado') !== null)
                                         <div class="flex-shrink-0">
-                                            <a href="{{ route('empresas.index') }}" class="btn btn-label-secondary">
+                                            <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-label-secondary">
                                                 <i class="ti ti-x me-1"></i>
                                                 Limpiar
                                             </a>
@@ -217,14 +217,14 @@
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             @can('empresas.view')
                                                                 <li>
-                                                                    <a class="dropdown-item" href="{{ route('empresas.show', $empresa) }}">
+                                                                    <a class="dropdown-item" href="{{ route('workspace.empresas.show', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}">
                                                                         <i class="ti ti-list-search me-2"></i> Ver detalles
                                                                     </a>
                                                                 </li>
                                                             @endcan
                                                             @can('empresas.edit')
                                                                 <li>
-                                                                    <a class="dropdown-item" href="{{ route('empresas.edit', $empresa) }}">
+                                                                    <a class="dropdown-item" href="{{ route('workspace.empresas.edit', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}">
                                                                         <i class="ti ti-edit me-2"></i> Editar
                                                                     </a>
                                                                 </li>
@@ -234,14 +234,14 @@
                                                             </li>
                                                             @can('empresas.delete')
                                                                 <li>
-                                                                    <a class="dropdown-item text-warning" href="{{ route('empresas.update', $empresa) }}">
+                                                                    <a class="dropdown-item text-warning" href="{{ route('workspace.empresas.update', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}">
                                                                         <i class="ti ti-alert-square-rounded"></i> Desactivar
                                                                     </a>
                                                                 </li>
                                                             @endcan
                                                             @can('empresas.delete')
                                                                 <li>
-                                                                    <form action="{{ route('empresas.destroy', $empresa) }}"
+                                                                    <form action="{{ route('workspace.empresas.destroy', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}"
                                                                         method="POST"
                                                                         onsubmit="return confirm('¿Estás seguro de eliminar esta empresa?')">
                                                                         @csrf
@@ -266,7 +266,7 @@
                                                             alt="No resultados" width="120" class="mb-3">
                                                         <h6 class="mb-1">No se encontraron empresas</h6>
                                                         <p class="text-muted mb-0">No hay empresas que coincidan con los criterios de búsqueda.</p>
-                                                        <a href="{{ route('empresas.index') }}" class="btn btn-primary mt-2">
+                                                        <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-primary mt-2">
                                                             <i class="ti ti-arrow-left me-1"></i>
                                                             Ver todas las empresas
                                                         </a>
@@ -276,7 +276,7 @@
                                                         <h6 class="mb-1">No se encontraron empresas</h6>
                                                         <p class="text-muted mb-0">Comienza creando tu primera empresa en el sistema.</p>
                                                         @can('empresas.create')
-                                                            <a href="{{ route('empresas.create') }}" class="btn btn-primary mt-2">
+                                                            <a href="{{ route('workspace.empresas.create', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-primary mt-2">
                                                                 <i class="ti ti-plus me-1"></i>
                                                                 Crear Primera Empresa
                                                             </a>

@@ -130,7 +130,7 @@ class User extends Authenticatable
     public function empresas()
     {
         return $this->hasManyThrough(
-            \App\Models\Erp\Empresa::class,
+            \App\Models\Workspace\Empresa::class,
             \App\Models\Admin\GrupoEmpresarial::class,
             'user_uuid', // Foreign key en grupo_empresarials
             'grupo_empresarial_id', // Foreign key en empresas

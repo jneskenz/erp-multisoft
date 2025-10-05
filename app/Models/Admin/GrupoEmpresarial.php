@@ -25,7 +25,8 @@ class GrupoEmpresarial extends Model
         'email',
         'sitio_web',
         'direccion_matriz',
-        'estado'
+        'estado',
+        'avatar'
     ];
 
     protected $casts = [
@@ -47,7 +48,7 @@ class GrupoEmpresarial extends Model
     // Relación con empresas
     public function empresas()
     {
-        return $this->hasMany(\App\Models\Erp\Empresa::class, 'grupo_empresarial_id');
+        return $this->hasMany(\App\Models\Workspace\Empresa::class, 'grupo_empresarial_id');
     }
 
     // Scope para grupos activos
@@ -60,5 +61,11 @@ class GrupoEmpresarial extends Model
     public function getNombreCompletoAttribute()
     {
         return $this->codigo ? "({$this->codigo}) {$this->nombre}" : $this->nombre;
+    }
+
+    // Accessor para URL del avatar
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Erp;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\GrupoEmpresarial;
-use App\Models\Erp\Empresa;
+use App\Models\Workspace\Empresa;
 use Illuminate\Support\Facades\Auth;
 
 /**

@@ -1,4 +1,4 @@
-@extends('layouts.app-workspace')
+@extends('layouts.app-ws')
 
 @section('title', 'Aplicaciones - ERP Multisoft')
 

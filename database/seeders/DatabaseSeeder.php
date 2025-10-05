@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin\LeadCliente;
-use App\Models\Erp\TipoLocal;
+use App\Models\Workspace\TipoLocal;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
