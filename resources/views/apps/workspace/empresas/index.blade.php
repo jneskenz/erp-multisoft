@@ -235,7 +235,7 @@
                                                             @can('empresas.delete')
                                                                 <li>
                                                                     <a class="dropdown-item text-warning" href="{{ route('workspace.empresas.update', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}">
-                                                                        <i class="ti ti-alert-square-rounded"></i> Desactivar
+                                                                        <i class="ti ti-alert-square-rounded me-2"></i> Desactivar
                                                                     </a>
                                                                 </li>
                                                             @endcan

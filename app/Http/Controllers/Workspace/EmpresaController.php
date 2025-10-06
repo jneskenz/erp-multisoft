@@ -146,7 +146,7 @@ class EmpresaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Empresa $empresa)
+    public function show(string $grupoempresa, Empresa $empresa)
     {
         // Obtener las actividades relacionadas a esta empresa
         $activities = $empresa->activities()->latest()->get();
@@ -158,17 +158,18 @@ class EmpresaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Empresa $empresa)
+    public function edit(string $grupoempresa, Empresa $empresa)
     {
-        $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
+        
+        // $gruposEmpresariales = \App\Models\Admin\GrupoEmpresarial::activos()->pluck('nombre', 'id');
         $grupoActual = $this->getGrupoActual();
-        return view('apps.workspace.empresas.edit', compact('empresa', 'gruposEmpresariales', 'grupoActual'));
+        return view('apps.workspace.empresas.edit', compact('empresa', 'grupoActual'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(EmpresaRequest $request, Empresa $empresa)
+    public function update(EmpresaRequest $request, string $grupoempresa, Empresa $empresa)
     {
         try {
             DB::beginTransaction();
@@ -213,7 +214,7 @@ class EmpresaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Empresa $empresa)
+    public function destroy(string $grupoempresa, Empresa $empresa)
     {
         try {
             DB::beginTransaction();

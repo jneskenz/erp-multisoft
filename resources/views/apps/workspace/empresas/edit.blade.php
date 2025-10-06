@@ -1,4 +1,4 @@
-@extends('layouts.app-erp')
+@extends('layouts.app-ws')
 
 @section('title', 'Editar Empresa - ERP Multisoft')
 
@@ -40,10 +40,10 @@
                     textColor="text-warning"
                     icon="ti ti-edit"
                     iconColor="bg-warning"
-                    estado="{{ $local->estado }}"
+                    estado="{{ $empresa->estado }}"
                 >
                     @can('empresas.view')
-                        <a href="{{ route('workspace.empresas.show', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}" class="btn btn-info waves-effect">
+                        <a href="{{ route('workspace.empresas.show', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}" class="btn btn-info waves-effect">
                             <i class="ti ti-list-search me-2"></i>
                             Ver detalle
                         </a>                        
@@ -90,7 +90,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('workspace.empresas.update', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}" method="POST" class="needs-validation" novalidate>
+                    <form action="{{ route('workspace.empresas.update', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}" method="POST" class="needs-validation" novalidate>
                         @csrf
                         @method('PUT')
 
@@ -240,7 +240,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa')]) }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('workspace.empresas.index', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}" class="btn btn-outline-secondary">
                                             <i class="ti ti-x me-1"></i> Cancelar
                                         </a>
                                     </div>

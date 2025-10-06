@@ -46,7 +46,7 @@
                 >
                     
                     @can('empresas.edit')
-                        <a href="{{ route('workspace.empresas.edit', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}" class="btn btn-primary waves-effect">
+                        <a href="{{ route('workspace.empresas.edit', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}" class="btn btn-primary waves-effect">
                             <i class="ti ti-edit me-2"></i>
                             Editar Empresa
                         </a>                        
@@ -260,7 +260,7 @@
                         <div class="col-12">
                             @can('empresas.delete')
                                 <form method="POST"
-                                        action="{{ route('workspace.empresas.destroy', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), $empresa) }}"
+                                        action="{{ route('workspace.empresas.destroy', ['grupoempresa' => $grupoActual->slug ?? request()->route('grupoempresa'), 'empresa' => $empresa->id]) }}"
                                         style="display: inline;"
                                         onsubmit="return confirm('¿Estás seguro de eliminar esta empresa? Esta acción no se puede deshacer.')">
                                     @csrf

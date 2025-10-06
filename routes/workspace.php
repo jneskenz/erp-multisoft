@@ -81,6 +81,7 @@ Route::group([
     | Gestión de Empresas
     |--------------------------------------------------------------------------
     */
+    Route::model('empresa', \App\Models\Workspace\Empresa::class);
     Route::resource('empresas', EmpresaController::class);
     
     /*
